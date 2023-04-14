@@ -6,13 +6,6 @@
     Overview
 @endsection
 @section('content')
-@extends('layouts.app')
-@section('heading')
-    Dashboard
-@endsection
-@section('sub-heading')
-    Overview
-@endsection
 @section('content')
 <div class="page-wrapper" style="display: block;">
     <!-- ============================================================== -->
