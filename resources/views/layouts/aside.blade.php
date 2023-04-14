@@ -1,12 +1,10 @@
-<!-- Left Sidebar - style you can find in sidebar.scss  -->
-<!-- ============================================================== -->
 <aside class="left-sidebar" data-sidebarbg="skin6">
     <!-- Sidebar scroll-->
     <div class="scroll-sidebar" data-sidebarbg="skin6">
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="index.html"
+                <li class="sidebar-item selected"> <a class="sidebar-link sidebar-link active" href="index.html"
                         aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
                             class="hide-menu">Dashboard</span></a></li>
                 <li class="list-divider"></li>
