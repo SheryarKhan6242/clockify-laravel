@@ -109,6 +109,9 @@
         <!--begin::Footer-->
         @include('layouts.footer')
         <!--end::Footer-->
+        <script>
+            setInterval(() => $("#dateTime").text(new Date().toLocaleString('en-US',{month: 'long', day: '2-digit', year: 'numeric',hour: '2-digit',minute: '2-digit',second: '2-digit',timeZone: 'Asia/Karachi'})), 1000);
+        </script>
     <!--end::Root-->
     <!--end::Main-->
 @yield('footer')

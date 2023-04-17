@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Storage;
+use Avatar;
 
 class User extends Authenticatable
 {
@@ -44,4 +46,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAvatarAttribute($value)
+    {
+        $result = "";
+
+        if(Storage::disk('public')->exists('uploads/'.$value) && !blank($value))
+        {
+            return asset('storage/uploads/' . $value);
+        }
+        else
+        {
+            $image_name = Avatar::create($this->name)->save('storage/uploads/'.str_replace(" ", "-",auth()->user()->name).'.webp', 100);
+            return asset('storage/uploads/' . $image_name->basename);
+        }
+    }
 }
