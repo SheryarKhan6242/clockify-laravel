@@ -10,7 +10,7 @@
                 <li class="list-divider"></li>
                 <li class="nav-small-cap"><span class="hide-menu">Applications</span></li>
 
-                <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html"
+                {{-- <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html"
                         aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span
                             class="hide-menu">Ticket List
                         </span></a>
@@ -20,10 +20,10 @@
                             class="hide-menu">Chat</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-calendar.html"
                         aria-expanded="false"><i data-feather="calendar" class="feather-icon"></i><span
-                            class="hide-menu">Calendar</span></a></li>
+                            class="hide-menu">Calendar</span></a></li> --}}
 
                 <li class="list-divider"></li>
-                <li class="nav-small-cap"><span class="hide-menu">Components</span></li>
+                {{-- <li class="nav-small-cap"><span class="hide-menu">Components</span></li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
                         aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
                             class="hide-menu">Forms </span></a>
@@ -145,7 +145,33 @@
                             class="hide-menu">Cards
                         </span></a>
                 </li>
-                <li class="list-divider"></li>
+                <li class="list-divider"></li> --}}
+                @foreach ( config('aside') as $menu )
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ $menu['route'] != '#' ? route($menu['route']) : $menu['route'] }}"
+                            aria-expanded="false"><i data-feather="message-square" class="{{ $menu['icon'] }}"></i><span
+                                class="hide-menu">{{ $menu['label'] }}</span></a></li>
+                    {{-- <li class="list-divider"></li> --}}
+                        {{-- @isset($menu['sub-menu'])
+                            <div class="menu-sub menu-sub-dropdown w-225px px-1 py-4">
+                                <div class="menu-item d-none">
+                                    <div class="menu-content">
+                                        <span class="menu-section fs-5 fw-bolder ps-1 py-1">{{ $menu['label'] }}</span>
+                                    </div>
+                                </div>
+                                @foreach ( $menu['sub-menu'] as $submenu )
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route($submenu['route']) }}">
+                                            <span class="menu-icon">
+                                                <i class="bi {{ $submenu['icon'] }} fs-3"></i>
+                                            </span>
+                                            <span class="menu-title">{{ $submenu['label'] }}</span>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        @endisset --}}
+                @endforeach
                 <li class="nav-small-cap"><span class="hide-menu">Authentication</span></li>
 
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
