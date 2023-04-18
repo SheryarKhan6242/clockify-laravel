@@ -64,10 +64,26 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
+            @php
+                date_default_timezone_set("Asia/Karachi");  
+                $h = date('G');
+                $message ="";
+                if($h>=5 && $h<=11)
+                {
+                    $message = "Good Morning";
+                }else if($h>=12 && $h<=15)
+                {
+                    $message = "Good Afternoon";
+                }
+                else
+                {
+                    $message = "Good Evening";
+                }
+            @endphp
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Jason!</h3>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">{{ $message }} {{ auth()->user()->name }}!</h3>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb m-0 p-0">
