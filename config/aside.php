@@ -3,47 +3,9 @@
 return [
     [
         'route'     => 'department.index',
-        'label'     => 'View Departments',
+        'label'     => 'Departments',
         'name'      => 'departments',
         'icon'      => 'feather-icon',
-        // 'sub-menu'  => [
-        //     [
-        //         'route'     => 'member.index',
-        //         'label'     => 'View Members',
-        //         'name'      => 'membership.view-members',
-        //         'icon'      => 'bi-person-badge',
-        //     ],
-        //     [
-        //         'route'     => 'member.create',
-        //         'label'     => 'Add Member',
-        //         'name'      => 'membership.add-member',
-        //         'icon'      => 'bi-person-plus',
-        //     ],
-        //     [
-        //         'route'     => 'membershipGrades.index',
-        //         'label'     => 'Membership Grades',
-        //         'name'      => 'membership.membership-grades',
-        //         'icon'      => 'bi-person-lines-fill',
-        //     ],
-        //     // [
-        //     //     'route'     => 'dashboard',
-        //     //     'label'     => 'Payment Options',
-        //     //     'name'      => 'membership.payment-options',
-        //     //     'icon'      => 'bi-cash-coin',
-        //     // ],
-        //     [
-        //         'route'     => 'member.renewal',
-        //         'label'     => 'Renewal',
-        //         'name'      => 'membership.payment-options',
-        //         'icon'      => 'bi-cash-coin',
-        //     ],
-        //     [
-        //         'route'     => 'member.mid.term',
-        //         'label'     => 'Mid Term Plan',
-        //         'name'      => 'membership.payment-options',
-        //         'icon'      => 'bi-cash-coin',
-        //     ]
-        // ]
     ],
     [
         'route'     => 'shift.index',

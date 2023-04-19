@@ -4,175 +4,17 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                <li class="sidebar-item selected"> <a class="sidebar-link sidebar-link active" href="index.html"
+                <li class="sidebar-item {{ request()->routeIs('dashboard') ? 'selected':'' }}"> <a class="sidebar-link sidebar-link" href="{{ route('dashboard') }}"
                         aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
                             class="hide-menu">Dashboard</span></a></li>
                 <li class="list-divider"></li>
-                <li class="nav-small-cap"><span class="hide-menu">Applications</span></li>
-
-                {{-- <li class="sidebar-item"> <a class="sidebar-link" href="ticket-list.html"
-                        aria-expanded="false"><i data-feather="tag" class="feather-icon"></i><span
-                            class="hide-menu">Ticket List
-                        </span></a>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-chat.html"
-                        aria-expanded="false"><i data-feather="message-square" class="feather-icon"></i><span
-                            class="hide-menu">Chat</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="app-calendar.html"
-                        aria-expanded="false"><i data-feather="calendar" class="feather-icon"></i><span
-                            class="hide-menu">Calendar</span></a></li> --}}
-
-                <li class="list-divider"></li>
-                {{-- <li class="nav-small-cap"><span class="hide-menu">Components</span></li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                        aria-expanded="false"><i data-feather="file-text" class="feather-icon"></i><span
-                            class="hide-menu">Forms </span></a>
-                    <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                        <li class="sidebar-item"><a href="form-inputs.html" class="sidebar-link"><span
-                                    class="hide-menu"> Form Inputs
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="form-input-grid.html" class="sidebar-link"><span
-                                    class="hide-menu"> Form Grids
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="form-checkbox-radio.html" class="sidebar-link"><span
-                                    class="hide-menu"> Checkboxes &
-                                    Radios
-                                </span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                        aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
-                            class="hide-menu">Tables </span></a>
-                    <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                        <li class="sidebar-item"><a href="table-basic.html" class="sidebar-link"><span
-                                    class="hide-menu"> Basic Table
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="table-dark-basic.html" class="sidebar-link"><span
-                                    class="hide-menu"> Dark Basic Table
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="table-sizing.html" class="sidebar-link"><span
-                                    class="hide-menu">
-                                    Sizing Table
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="table-layout-coloured.html" class="sidebar-link"><span
-                                    class="hide-menu">
-                                    Coloured
-                                    Table Layout
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="table-datatable-basic.html" class="sidebar-link"><span
-                                    class="hide-menu">
-                                    Basic
-                                    Datatables
-                                    Layout
-                                </span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                        aria-expanded="false"><i data-feather="bar-chart" class="feather-icon"></i><span
-                            class="hide-menu">Charts </span></a>
-                    <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                        <li class="sidebar-item"><a href="chart-morris.html" class="sidebar-link"><span
-                                    class="hide-menu"> Morris Chart
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="chart-chart-js.html" class="sidebar-link"><span
-                                    class="hide-menu"> ChartJs
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="chart-knob.html" class="sidebar-link"><span
-                                    class="hide-menu">
-                                    Knob Chart
-                                </span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
-                        aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
-                            class="hide-menu">UI Elements </span></a>
-                    <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                        <li class="sidebar-item"><a href="ui-buttons.html" class="sidebar-link"><span
-                                    class="hide-menu"> Buttons
-                                </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="ui-modals.html" class="sidebar-link"><span
-                                    class="hide-menu"> Modals </span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="ui-tab.html" class="sidebar-link"><span
-                                    class="hide-menu"> Tabs </span></a></li>
-                        <li class="sidebar-item"><a href="ui-tooltip-popover.html" class="sidebar-link"><span
-                                    class="hide-menu"> Tooltip &
-                                    Popover</span></a></li>
-                        <li class="sidebar-item"><a href="ui-notification.html" class="sidebar-link"><span
-                                    class="hide-menu">Notification</span></a></li>
-                        <li class="sidebar-item"><a href="ui-progressbar.html" class="sidebar-link"><span
-                                    class="hide-menu">Progressbar</span></a></li>
-                        <li class="sidebar-item"><a href="ui-typography.html" class="sidebar-link"><span
-                                    class="hide-menu">Typography</span></a></li>
-                        <li class="sidebar-item"><a href="ui-bootstrap.html" class="sidebar-link"><span
-                                    class="hide-menu">Bootstrap
-                                    UI</span></a></li>
-                        <li class="sidebar-item"><a href="ui-breadcrumb.html" class="sidebar-link"><span
-                                    class="hide-menu">Breadcrumb</span></a></li>
-                        <li class="sidebar-item"><a href="ui-list-media.html" class="sidebar-link"><span
-                                    class="hide-menu">List
-                                    Media</span></a></li>
-                        <li class="sidebar-item"><a href="ui-grid.html" class="sidebar-link"><span
-                                    class="hide-menu"> Grid </span></a></li>
-                        <li class="sidebar-item"><a href="ui-carousel.html" class="sidebar-link"><span
-                                    class="hide-menu">
-                                    Carousel</span></a></li>
-                        <li class="sidebar-item"><a href="ui-scrollspy.html" class="sidebar-link"><span
-                                    class="hide-menu">
-                                    Scrollspy</span></a></li>
-                        <li class="sidebar-item"><a href="ui-toasts.html" class="sidebar-link"><span
-                                    class="hide-menu"> Toasts</span></a>
-                        </li>
-                        <li class="sidebar-item"><a href="ui-spinner.html" class="sidebar-link"><span
-                                    class="hide-menu"> Spinner </span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="ui-cards.html"
-                        aria-expanded="false"><i data-feather="sidebar" class="feather-icon"></i><span
-                            class="hide-menu">Cards
-                        </span></a>
-                </li>
-                <li class="list-divider"></li> --}}
                 @foreach ( config('aside') as $menu )
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{{ $menu['route'] != '#' ? route($menu['route']) : $menu['route'] }}"
                             aria-expanded="false"><i data-feather="message-square" class="{{ $menu['icon'] }}"></i><span
                                 class="hide-menu">{{ $menu['label'] }}</span></a></li>
-                    {{-- <li class="list-divider"></li> --}}
-                        {{-- @isset($menu['sub-menu'])
-                            <div class="menu-sub menu-sub-dropdown w-225px px-1 py-4">
-                                <div class="menu-item d-none">
-                                    <div class="menu-content">
-                                        <span class="menu-section fs-5 fw-bolder ps-1 py-1">{{ $menu['label'] }}</span>
-                                    </div>
-                                </div>
-                                @foreach ( $menu['sub-menu'] as $submenu )
-                                    <div class="menu-item">
-                                        <a class="menu-link" href="{{ route($submenu['route']) }}">
-                                            <span class="menu-icon">
-                                                <i class="bi {{ $submenu['icon'] }} fs-3"></i>
-                                            </span>
-                                            <span class="menu-title">{{ $submenu['label'] }}</span>
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                        @endisset --}}
+                        <li class="list-divider"></li>
                 @endforeach
-                <li class="nav-small-cap"><span class="hide-menu">Authentication</span></li>
+                {{-- <li class="nav-small-cap"><span class="hide-menu">Authentication</span></li>
 
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="authentication-login1.html"
                         aria-expanded="false"><i data-feather="lock" class="feather-icon"></i><span
@@ -238,7 +80,7 @@
                                             class="hide-menu"> item
                                             1.4</span></a></li>
                             </ul>
-                        </li>
+                        </li> --}}
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
