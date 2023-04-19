@@ -10,7 +10,7 @@
             <div class="navbar-brand">
                 <!-- Logo icon -->
                 <a href="index.html">
-                    <img src="{{ asset('assets/images/freedashDark.svg')}}" alt="" class="img-fluid">
+                    <img src="{{ asset('assets/images/logo-icon.svg')}}" alt="" class="img-fluid">
                 </a>
             </div>
             <!-- ============================================================== -->

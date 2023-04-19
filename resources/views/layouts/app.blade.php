@@ -22,7 +22,12 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.min.css') }}" rel="stylesheet">
-
+    <style>
+        .sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link
+        {
+            background: linear-gradient(to right,#27E1EC,#2BCED8,#2AC0C9,#27B9C2,#27B9C2);
+        }
+    </style>
     @stack('header-css')
     @stack('header-css')
     @stack('header-scripts')
