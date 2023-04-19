@@ -71,7 +71,7 @@ class DepartmentController extends Controller
         }
         $department = new Department();
         $department->name = $request->name;
-        $department->status = isset($request->status) && $request->status == true ? 1 : 0 ;
+        $department->status = isset($request->status) && $request->status == "true" ? 1 : 0 ;
         $department->color = $request->color;
         $department->save();
         return response()->json(['type' =>'success']);
@@ -97,6 +97,9 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         //
+        $department = Department::find($id);
+        if($department)
+            return response()->json(['success'=>true,'department'=>$department]);
     }
 
     /**
@@ -109,6 +112,24 @@ class DepartmentController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+            'status' => 'required',
+        ]);
+        
+        if ($validator->fails())
+        {      
+            $errors = $validator->errors()->toArray();
+            // dd($errors);
+            return response()->json(['errors' => $errors]);
+            // return response()->json(['errors'=>$validator->errors()->all()]);
+        }
+        $department = Department::find($id);
+        $department->name = $request->name;
+        $department->status = (isset($request->status) && $request->status === "true") ? 1 : 0 ;
+        $department->color = $request->color;
+        $department->save();
+        return response()->json(['type' =>'success']);
     }
 
     /**
@@ -120,5 +141,7 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         //
+        Department::destroy($id);
+        return response()->json(['success'=>true]);
     }
 }

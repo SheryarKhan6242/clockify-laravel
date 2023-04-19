@@ -75,7 +75,7 @@ class LocationController extends Controller
         $location->title = $request->title;
         $location->timezone = $request->timezone;
         $location->description = $request->description;
-        $location->status = isset($request->status) && $request->status == true ? 1 : 0 ;
+        $location->status = isset($request->status) && $request->status == "true" ? 1 : 0 ;
         $location->save();
         return response()->json(['type' =>'success']);
     }
@@ -99,7 +99,10 @@ class LocationController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $location = Location::find($id);
+        if($location)
+            return response()->json(['success'=>true,'location'=>$location]);
     }
 
     /**
@@ -111,7 +114,28 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        $validator = \Validator::make($request->all(), [
+            'title' => 'required',
+            'timezone' => 'required',
+            'description' => 'required',
+            'status' => 'required'
+        ]);
+        
+        if ($validator->fails())
+        {      
+            $errors = $validator->errors()->toArray();
+            // dd($errors);
+            return response()->json(['errors' => $errors]);
+            // return response()->json(['errors'=>$validator->errors()->all()]);
+        }
+        $location = Location::find($id);
+        $location->title = $request->title;
+        $location->timezone = $request->timezone;
+        $location->description = $request->description;
+        $location->status = isset($request->status) && $request->status == "true" ? 1 : 0 ;
+        $location->save();
+        return response()->json(['type' =>'success']);
     }
 
     /**
@@ -123,5 +147,7 @@ class LocationController extends Controller
     public function destroy($id)
     {
         //
+        Location::destroy($id);
+        return response()->json(['success'=>true]);
     }
 }

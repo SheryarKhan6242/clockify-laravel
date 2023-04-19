@@ -22,6 +22,7 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom-style.css') }}" rel="stylesheet">
     <style>
         .sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link
         {

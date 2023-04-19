@@ -16,6 +16,9 @@
                     @else
                         <td><div class="text-danger">Inactive</div></td>
                     @endif
+                    <td>@include('department.actions', ['id' => $department->id]) </td>
+                    <td>
+                    </td>
                     {{-- <td class="text-end">@include('departments.include.action')</td> --}}
                 </tr>
             @endforeach

@@ -77,7 +77,7 @@ class ShiftController extends Controller
         $shift->start = $request->start_time;
         $shift->end = $request->end_time;
         $shift->late = $request->late;
-        $shift->status = isset($request->status) && $request->status == true ? 1 : 0 ;
+        $shift->status = isset($request->status) && $request->status == "true" ? 1 : 0 ;
         $shift->save();
         return response()->json(['type' =>'success']);
     }
@@ -102,6 +102,9 @@ class ShiftController extends Controller
     public function edit($id)
     {
         //
+        $shift = Shift::find($id);
+        if($shift)
+            return response()->json(['success'=>true,'shift'=>$shift]);
     }
 
     /**
@@ -113,7 +116,29 @@ class ShiftController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'late' => 'required',
+            'status' => 'required',
+        ]);
+        
+        if ($validator->fails())
+        {      
+            $errors = $validator->errors()->toArray();
+            // dd($errors);
+            return response()->json(['errors' => $errors]);
+            // return response()->json(['errors'=>$validator->errors()->all()]);
+        }
+        $shift = Shift::find($id);
+        $shift->name = $request->name;
+        $shift->start = $request->start_time;
+        $shift->end = $request->end_time;
+        $shift->late = $request->late;
+        $shift->status = isset($request->status) && $request->status == "true" ? 1 : 0 ;
+        $shift->save();
+        return response()->json(['type' =>'success']);
     }
 
     /**
@@ -125,5 +150,7 @@ class ShiftController extends Controller
     public function destroy($id)
     {
         //
+        Shift::destroy($id);
+        return response()->json(['success'=>true]);
     }
 }

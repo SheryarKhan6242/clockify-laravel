@@ -22,7 +22,7 @@
                 @else
                     <td><div class="text-danger">Inactive</div></td>
                 @endif
-                    {{-- <td class="text-end">@include('shifts.include.action')</td> --}}
+                    <td>@include('shift.actions', ['id' => $shift->id]) </td>
                 </tr>
             @endforeach
         </tbody>

@@ -77,6 +77,7 @@
 @endpush
 
 @push('modals')
+{{-- ADD LOC MODAL --}}
 <div class="modal fade" id="add_loc_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
@@ -95,56 +96,112 @@
                 </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                {{-- <!-- {{ aire()->open(route('location.store'))
-                    ->rules(['grade_name' => 'required',
-                    'name' => 'required',
-                    'annual_fee' => 'required',
-                    ],
-                    )->id('kt_modal_add_permission_form')
-                    ->class('form fv-plugins-bootstrap5 fv-plugins-framework') }} --> --}}
-                    <div class="fv-row mb-7">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Title</span>
-                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
-                        </label>
-                        {{ aire()->input('title')->placeholder('Location Title')->id('title')->class('form-control form-control-solid')->required() }}
-                       {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Title</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('title')->placeholder('Location Title')->id('title')->class('form-control form-control-solid')->required() }}
+                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Timezone</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('timezone')->placeholder('Location Timezone')->id('timezone')->class('form-control form-control-solid')->required() }}
+                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Description</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('description')->placeholder('Location Description')->id('description')->class('form-control form-control-solid')->required() }}
+                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                </div>
+                <div class="d-flex flex-stack mb-8">
+                    <div class="me-5">
+                        <label class="fs-6 fw-bold">Status</label>
                     </div>
-                    <div class="fv-row mb-7">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Timezone</span>
-                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
-                        </label>
-                        {{ aire()->input('timezone')->placeholder('Location Timezone')->id('timezone')->class('form-control form-control-solid')->required() }}
-                       {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
-                    </div>
-                    <div class="fv-row mb-7">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Description</span>
-                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
-                        </label>
-                        {{ aire()->input('description')->placeholder('Location Description')->id('description')->class('form-control form-control-solid')->required() }}
-                       {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
-                    </div>
-                    <div class="d-flex flex-stack mb-8">
-                        <div class="me-5">
-                            <label class="fs-6 fw-bold">Status</label>
-                        </div>
-                        <label class="form-check form-switch form-check-custom form-check-solid">
-                            {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
-                            {{ aire()->checkbox('status', '')->class('form-check-input')->id('location_status')->checked() }}
-                        </label>
-                    </div>
-                    {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
-                    <div class="text-center pt-15 show_update">
-                        <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
-                        <a href="#" onclick="storeLocation()" class="btn btn-rounded btn-success btn-change">Add Location</a>
-                    </div>
-                {{-- {{ aire()->close() }} --}}
+                    <label class="form-check form-switch form-check-custom form-check-solid">
+                        {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                        {{ aire()->checkbox('status', '')->class('form-check-input')->id('location_status')->checked() }}
+                    </label>
+                </div>
+                {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
+                <div class="text-center pt-15 show_update">
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" onclick="storeLocation()" class="btn btn-rounded btn-success btn-change">Add Location</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+{{-- ADD LOC MODAL --}}
+
+{{-- EDIT LOC MODAL --}}
+<div class="modal fade" id="edit_loc_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-bolder">Edit Location</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
+                            </g>
+                        </svg>
+                    </span>
+                </div> --}}
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Title</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('title')->placeholder('Location Title')->id('edit_title')->class('form-control form-control-solid')->required() }}
+                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Timezone</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('timezone')->placeholder('Location Timezone')->id('edit_timezone')->class('form-control form-control-solid')->required() }}
+                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Description</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('description')->placeholder('Location Description')->id('edit_description')->class('form-control form-control-solid')->required() }}
+                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
+                </div>
+                <div class="d-flex flex-stack mb-8">
+                    <div class="me-5">
+                        <label class="fs-6 fw-bold">Status</label>
+                    </div>
+                    <label class="form-check form-switch form-check-custom form-check-solid">
+                        {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                        {{ aire()->checkbox('status', '')->class('form-check-input')->id('edit_loc_status')->checked() }}
+                    </label>
+                </div>
+                {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
+                <div class="text-center pt-15 show_update">
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" id="update_loc" onclick="updateLoc()" class="btn btn-rounded btn-success btn-change">Update Location</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- EDIT LOC MODAL --}}
 @endpush
 
 <div class="modal fade" id="success_message" tabindex="-1"  aria-hidden="true">
@@ -195,10 +252,34 @@ function fetch_data(page,search_item)
 });
 
 $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+
+//AJAX TO GET LOCATION DATA BY ID
+function getLocById(id){
+    $.ajax({
+        url:  "{{url('/location/edit')}}/"+id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+        // success handling
+        console.log(response.location)
+        if(response.success == true && response.location != undefined){
+                //Fill Up edit modal values
+                $('#edit_title').val(response.location.title);
+                $('#edit_timezone').val(response.location.timezone);
+                $('#edit_description').val(response.location.description);
+                $('#edit_loc_status').prop('checked', response.location.status == 1);
+                //Add Update Location onclick event and append ID 
+                $('#update_loc').attr('onclick', $('#update_loc').attr('onclick').replace('()', '(' + response.location.id + ')'));
+                $('#edit_loc_modal').modal("show");
+            }
         }
     });
+}
 //Store Location data via ajax
 function storeLocation(){
   // get the form values
@@ -263,8 +344,76 @@ function storeLocation(){
         }
     });
 }
-    $(".btnClosePopup").click(function () {
-        $("#add_loc_modal").modal("hide");
+
+//Update Location data via ajax
+function updateLoc(id){
+  // get the form values
+    var title = $("#edit_title").val();
+    var timezone = $("#edit_timezone").val();
+    var description = $("#edit_description").val();
+    var status = $("#edit_loc_status").is(':checked');
+//   make the ajax request
+    $.ajax({
+        url:  "{{url('/location/update')}}/"+id,
+        type: 'POST',
+        data: {
+            title: title,
+            timezone: timezone,
+            description: description,
+            status: status,
+        },
+        dataType: 'json',
+        success: function(result) {
+        // success handling
+        //Server side validation
+            if(result.errors)
+            {
+                jQuery.each(result.errors, function(fieldName, errorMsg){
+                    var field = $('[name="'+fieldName+'"]');
+                    field.addClass('is-invalid');
+                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
+                });
+                // Remove the error message and is-invalid class when the user corrects the input
+                $('input, select').on('input', function() {
+                    var field = $(this);
+                    field.removeClass('is-invalid');
+                    field.next('.invalid-feedback').remove();
+                });
+            }
+            else
+            {
+                //Show Success message on saving location and hide form modal
+                $('#edit_loc_modal').hide() 
+                $('.show_message').append('Location Updated Successfully')
+                $('#success_message').modal('show');
+                setTimeout(function(){
+                window.location.reload();
+                }, 2000);
+            }
+        }
     });
+}
+
+//Delete Location data via ajax
+function deleteLoc(id){
+//   make the ajax request
+    $.ajax({
+        url:  "{{url('/location/delete')}}/"+id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+        //Show Success message on deleting Location and hide form modal 
+        $('.show_message').append('Location Deleted Successfully')
+            $('#success_message').modal('show');
+            setTimeout(function(){
+            window.location.reload();
+            }, 2000);                
+        }
+    });
+}
+
+$(".btnClosePopup").click(function () {
+    $("#add_loc_modal").modal("hide");
+});
 </script>
 @endpush

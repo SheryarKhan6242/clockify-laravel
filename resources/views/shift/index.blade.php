@@ -77,6 +77,7 @@
 @endpush
 
 @push('modals')
+{{-- ADD SHIFT MODAL --}}
 <div class="modal fade" id="add_shift_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
@@ -146,6 +147,80 @@
         </div>
     </div>
 </div>
+{{-- ADD SHIFT MODAL --}}
+
+{{-- EDIT SHIFT MODAL --}}
+<div class="modal fade" id="edit_shift_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-bolder">Edit Shift</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
+                            </g>
+                        </svg>
+                    </span>
+                </div> --}}
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                    <div class="fv-row mb-7">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Name</span>
+                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                        </label>
+                        {{ aire()->input('name')->placeholder('Shift Name')->id('edit_name')->class('form-control form-control-solid')->required() }}
+                       <div class = "alert-text" id = "dep_name_error" style="display:none">Shift Name is Required!</div>
+                    </div>
+                    <div class="fv-row mb-7">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Start Time</span>
+                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                        </label>
+                        {{ aire()->time('start_time')->id('edit_start_time')->class('form-control form-control-solid') }}
+                        {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Shift Name is Required!</div> --}}
+                    </div>
+                    <div class="fv-row mb-7">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">End Time</span>
+                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                        </label>
+                        {{ aire()->time('end_time')->id('edit_end_time')->class('form-control form-control-solid') }}
+                        {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Shift Name is Required!</div> --}}
+                    </div>
+                    <div class="fv-row mb-7">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">late</span>
+                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                        </label>
+                        {{ aire()->time('late')->id('edit_late')->class('form-control form-control-solid') }}
+                        {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Shift Name is Required!</div> --}}
+                    </div>
+                    <div class="d-flex flex-stack mb-8">
+                        <div class="me-5">
+                            <label class="fs-6 fw-bold">Status</label>
+                        </div>
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                            {{ aire()->checkbox('status', '')->class('form-check-input')->id('edit_shift_status')->checked() }}
+                        </label>
+                    </div>
+                    {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
+                    <div class="text-center pt-15 show_update">
+                        <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                        <a href="#" id="update_shift" onclick="updateShift()" class="btn btn-rounded btn-success btn-change">Update Shift</a>
+                    </div>
+                {{-- {{ aire()->close() }} --}}
+            </div>
+        </div>
+    </div>
+</div>
+{{-- EDIT SHIFT MODAL --}}
+
 @endpush
 
 <div class="modal fade" id="success_message" tabindex="-1"  aria-hidden="true">
@@ -196,10 +271,33 @@ function fetch_data(page,search_item)
 });
 
 $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+//AJAX TO GET SHIFT DATA BY ID
+function getShiftById(id){
+    $.ajax({
+        url:  "{{url('/shift/edit')}}/"+id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+        // success handling
+        if(response.success == true && response.shift != undefined){
+                //Fill Up edit modal values
+                $('#edit_name').val(response.shift.name);
+                $('#edit_start_time').val(response.shift.start);
+                $('#edit_end_time').val(response.shift.end);
+                $('#edit_late').val(response.shift.late);
+                $('#edit_shift_status').prop('checked', response.shift.status == 1);
+                //Add Update Shift onclick event and append ID 
+                $('#update_shift').attr('onclick', $('#update_shift').attr('onclick').replace('()', '(' + response.shift.id + ')'));
+                $('#edit_shift_modal').modal("show");
+            }
         }
     });
+}
 //Store Shift data via ajax
 function storeShift(){
   // get the form values
@@ -242,33 +340,86 @@ function storeShift(){
                 //Show Success message on saving shift and hide form modal
                 $('#add_shift_modal').hide() 
                 $('.show_message').append('Shift Added Successfully')
-                    $('#success_message').modal('show');
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 2000);
-                //Hide modal and submit ajax if no errors and redirect
-                // jQuery('.alert-danger').hide();
-                // $('#open').hide();
-                // $('#add_guest').modal('hide');
-                // //User Already Reigstered
-                // if (result.type == 'danger') {
-                //     $('#alert-div').find('h4').text('User Already Registered');
-                //     $('#alert-div').find('span').text(result.message);
-                //     $('#alert-div').show();
-                    
-                // } else {
-                //     //Success bookinng
-                // }                
-                //Append Booking details to modal
-                // var message = 'Your booking on <b>' + result.date + '</b> at <b>' + result.time + '</b> has been successful.';
-                // $('#booking_success .modal-body').html(message);
-                // $('#booking_success').modal('show');
+                $('#success_message').modal('show');
+                setTimeout(function(){
+                window.location.reload();
+                }, 2000);
             }
         }
     });
 }
-    $(".btnClosePopup").click(function () {
-        $("#add_shift_modal").modal("hide");
+
+//Update Shift data via ajax
+function updateShift(id){
+  // get the form values
+    var name = $("#edit_name").val();
+    var status = $("#edit_shift_status").is(':checked');
+    var start_time = $("#edit_start_time").val();
+    var end_time = $("#edit_end_time").val();
+    var late = $("#edit_late").val();
+//   make the ajax request
+    $.ajax({
+        url:  "{{url('/shift/update')}}/"+id,
+        type: 'POST',
+        data: {
+            name: name,
+            start_time: start_time,
+            end_time: end_time,
+            late: late,
+            status: status,
+        },
+        dataType: 'json',
+        success: function(result) {
+        // success handling
+        //Server side validation
+            if(result.errors)
+            {
+                jQuery.each(result.errors, function(fieldName, errorMsg){
+                    var field = $('[name="'+fieldName+'"]');
+                    field.addClass('is-invalid');
+                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
+                });
+                // Remove the error message and is-invalid class when the user corrects the input
+                $('input, select').on('input', function() {
+                    var field = $(this);
+                    field.removeClass('is-invalid');
+                    field.next('.invalid-feedback').remove();
+                });
+            }
+            else
+            {
+                //Show Success message on saving shift and hide form modal
+                $('#edit_shift_modal').hide() 
+                $('.show_message').append('Shift Updated Successfully')
+                $('#success_message').modal('show');
+                setTimeout(function(){
+                window.location.reload();
+                }, 2000);
+            }
+        }
     });
+}
+
+//Delete shift data via ajax
+function deleteShift(id){
+//   make the ajax request
+    $.ajax({
+        url:  "{{url('/shift/delete')}}/"+id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+        //Show Success message on deleting shift and hide form modal 
+        $('.show_message').append('Shift Deleted Successfully')
+            $('#success_message').modal('show');
+            setTimeout(function(){
+            window.location.reload();
+            }, 2000);                
+        }
+    });
+}
+
+$(".btnClosePopup").click(function () {
+    $("#add_shift_modal").modal("hide");
+});
 </script>
 @endpush

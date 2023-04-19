@@ -1,0 +1,14 @@
+.btn-primary {
+    background-color: #27B9C2 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 5px !important;
+}
+
+.btn-primary>span {
+    /* background-color: #27B9C2 !important; */
+    color: #fff !important;
+    fill: #fff !important;
+    /* border: none !important; */
+    /* border-radius: 5px !important; */
+}

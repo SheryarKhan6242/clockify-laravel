@@ -2,7 +2,6 @@
     <table class="table align-middle table-row-dashed fs-6 gy-5 table-row" id="table" >
         <thead>
         <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-            <th class="min-w-125px">NAME</th>
             <th class="min-w-125px">TITLE</th>
             <th class="min-w-125px">TIMEZONE</th>
             <th class="min-w-125px">DESCRIPTION</th>
@@ -13,7 +12,6 @@
         <tbody class="text-gray-600 fw-bold" id="tbody_render">
             @foreach ($locations as $location)
                 <tr>
-                    <td>{{$location->name}}</td>
                     <td>{{$location->title}}</td>
                     <td>{{$location->timezone}}</td>
                     <td>{{$location->description}}</td>
@@ -22,7 +20,7 @@
                     @else
                         <td><div class="text-danger">Inactive</div></td>
                     @endif
-                    {{-- <td class="text-end">@include('locations.include.action')</td> --}}
+                    <td>@include('location.actions', ['id' => $location->id]) </td>
                 </tr>
             @endforeach
         </tbody>

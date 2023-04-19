@@ -80,6 +80,7 @@
 @endpush
 
 @push('modals')
+{{-- Add department Modal --}}
 <div class="modal fade" id="add_dep_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
@@ -98,58 +99,95 @@
                 </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                {{-- <!-- {{ aire()->open(route('department.store'))
-                    ->rules(['grade_name' => 'required',
-                    'name' => 'required',
-                    'annual_fee' => 'required',
-                    ],
-                    )->id('kt_modal_add_permission_form')
-                    ->class('form fv-plugins-bootstrap5 fv-plugins-framework') }} --> --}}
-                    <div class="fv-row mb-7">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Name</span>
-                            {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
-                        </label>
-                        {{ aire()->input('name')->placeholder('Department Name')->id('name')->class('form-control form-control-solid')->required() }}
-                       <div class = "alert-text" id = "dep_name_error" style="display:none">Department Name is Required!</div>
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Name</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('name')->placeholder('Department Name')->id('name')->class('form-control form-control-solid')->required() }}
+                   <div class = "alert-text" id = "dep_name_error" style="display:none">Department Name is Required!</div>
+                </div>
+                <div class="d-flex flex-stack mb-8">
+                    <div class="me-1">
+                        <label class="fs-6 fw-bold">Color</label>
                     </div>
-                    <div class="d-flex flex-stack mb-8">
-                        <div class="me-1">
-                            <label class="fs-6 fw-bold">Color</label>
-                        </div>
-                        <label class="form-check form-switch form-check-custom form-check-solid me-5">
-                            {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
-                            {{ aire()->color('color')->addClass('w-16 h-16')->removeClass('w-full')->id('color') }}
-                        </label>
-                        <div class="me-4">
-                            <label class="fs-6 fw-bold">Status</label>
-                        </div>
-                        <label class="form-check form-switch form-check-custom form-check-solid">
-                            {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
-                            {{ aire()->checkbox('status', '')->class('form-check-input')->id('department_status')->checked() }}
-                        </label>
+                    <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                        {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                        {{ aire()->color('color')->addClass('w-16 h-16')->removeClass('w-full')->id('color') }}
+                    </label>
+                    <div class="me-4">
+                        <label class="fs-6 fw-bold">Status</label>
                     </div>
-                    {{-- <div class="d-flex flex-stack mb-8">
-                        <div class="me-5">
-                            <label class="fs-6 fw-bold">Color</label>
-                        </div>
-                        <label class="form-check form-switch form-check-custom form-check-solid">
-                            {{ aire()->color('color')->addClass('w-16 h-16')->removeClass('w-full')->id('color') }}
-                        </label>
-                    </div> --}}
-
-                    {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
-                    <div class="text-center pt-15 show_update">
-                        {{-- {{ aire()- >button('Cancel')->class('btn btn-rounded btn-danger btnClosePopup')->id('btnClosePopup') }} --}}
-                        <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
-                        <a href="#" onclick="storeDepartment()" class="btn btn-rounded btn-success btn-change">Add Department</a>
-                    </div>
-                {{-- {{ aire()->close() }} --}}
+                    <label class="form-check form-switch form-check-custom form-check-solid">
+                        {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                        {{ aire()->checkbox('status', '')->class('form-check-input')->id('department_status')->checked() }}
+                    </label>
+                </div>
+                
+                <div class="text-center pt-15 show_update">
+                    {{-- {{ aire()- >button('Cancel')->class('btn btn-rounded btn-danger btnClosePopup')->id('btnClosePopup') }} --}}
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" onclick="storeDepartment()" class="btn btn-rounded btn-success btn-change">Add Department</a>
+                </div>             
             </div>
         </div>
     </div>
 </div>
 @endpush
+{{-- Add department Modal --}}
+
+{{-- Edit department Modal --}}
+<div class="modal fade" id="edit_dep_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-bolder">Edit Department</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
+                            </g>
+                        </svg>
+                    </span>
+                </div> --}}
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="fv-row mb-7">
+                    <label class="fs-6 fw-bold">
+                        <span class="required">Name</span>
+                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
+                    </label>
+                    {{ aire()->input('name')->placeholder('Department Name')->id('edit_name')->class('form-control form-control-solid')->required() }}
+                </div>
+                <div class="d-flex flex-stack mb-8">
+                    <div class="me-1">
+                        <label class="fs-6 fw-bold">Color</label>
+                    </div>
+                    <label class="form-check form-switch form-check-custom form-check-solid me-5">
+                        {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                        {{ aire()->color('color')->addClass('w-16 h-16')->removeClass('w-full')->id('edit_color') }}
+                    </label>
+                    <div class="me-4">
+                        <label class="fs-6 fw-bold">Status</label>
+                    </div>
+                    <label class="form-check form-switch form-check-custom form-check-solid">
+                        {{-- <input class="form-check-input" name="newGradeOnline" type="checkbox" value="Y" checked="checked"> --}}
+                        {{ aire()->checkbox('status', '')->class('form-check-input')->id('edit_department_status')->checked() }}
+                    </label>
+                </div>
+                <div class="text-center pt-15 show_update">
+                    {{-- {{ aire()- >button('Cancel')->class('btn btn-rounded btn-danger btnClosePopup')->id('btnClosePopup') }} --}}
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" id="update_dep" onclick="updateDepartment()" class="btn btn-rounded btn-success btn-change">Update Department</a>
+                </div>             
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Edit department Modal --}}
 
 <div class="modal fade" id="success_message" tabindex="-1"  aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -261,6 +299,93 @@ function storeDepartment(){
         }
     });
 }
+
+//AJAX TO GET DEPARTMENT DATA BY ID
+function getDepartmentById(id){
+    $.ajax({
+        url:  "{{url('/department/edit')}}/"+id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // success handling
+            if(response.success == true && response.department != undefined){
+                //Fill Up edit modal values
+                $('#edit_name').val(response.department.name);
+                $('#edit_color').val(response.department.color);
+                $('#edit_department_status').prop('checked', response.department.status == 1);
+                //Add Update Department onclick event and append ID 
+                $('#update_dep').attr('onclick', $('#update_dep').attr('onclick').replace('()', '(' + response.department.id + ')'));
+                $('#edit_dep_modal').modal("show");
+            }
+        }
+    });
+}
+
+//UPDATE DEPARTMENT VIA AJAX
+function updateDepartment(id){
+  // get the form values
+    var name = $("#edit_name").val();
+    var status = $("#edit_department_status").is(':checked');
+    var color = $("#edit_color").val();
+//   make the ajax request
+    $.ajax({
+        url:  "{{url('/department/update')}}/"+id,
+        type: 'POST',
+        data: {
+            name: name,
+            status: status,
+            color: color
+        },
+        dataType: 'json',
+        success: function(result) {
+        // success handling
+        //Server side validation
+            if(result.errors)
+            {
+                jQuery.each(result.errors, function(fieldName, errorMsg){
+                    var field = $('[name="'+fieldName+'"]');
+                    field.addClass('is-invalid');
+                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
+                });
+                // Remove the error message and is-invalid class when the user corrects the input
+                $('input, select').on('input', function() {
+                    var field = $(this);
+                    field.removeClass('is-invalid');
+                    field.next('.invalid-feedback').remove();
+                });
+            }
+            else
+            {
+                //Show Success message on saving department and hide form modal
+                $('#edit_dep_modal').hide() 
+                $('.show_message').append('Department Updated Successfully')
+                    $('#success_message').modal('show');
+                    setTimeout(function(){
+                    window.location.reload();
+                    }, 2000);             
+            }
+        }
+    });
+}
+
+//Delete Department data via ajax
+function deleteDepartment(id){
+//   make the ajax request
+    $.ajax({
+        url:  "{{url('/department/delete')}}/"+id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+        //Show Success message on deleting department and hide form modal 
+        $('.show_message').append('Department Deleted Successfully')
+            $('#success_message').modal('show');
+            setTimeout(function(){
+            window.location.reload();
+            }, 2000);                
+        }
+    });
+}
+
     $(".btnClosePopup").click(function () {
         $("#add_dep_modal").modal("hide");
     });
