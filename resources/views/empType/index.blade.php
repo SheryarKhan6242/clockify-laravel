@@ -314,7 +314,7 @@ function updateType(id){
 }
 
 //Delete Employee Type data via ajax
-function deleteType(id){
+function deleteEmpType(id){
 //   make the ajax request
     $.ajax({
         url:  "{{url('/emp-type/delete')}}/"+id,
