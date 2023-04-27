@@ -19,7 +19,7 @@
     <link href="{{ asset('assets/extra-libs/c3/c3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/libs/chartist/dist/chartist.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom-style.css') }}" rel="stylesheet">
@@ -28,6 +28,14 @@
         {
             background: linear-gradient(to right,#27E1EC,#2BCED8,#2AC0C9,#27B9C2,#27B9C2);
         }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            padding-left: 0px !important;
+        }
+        .select2-container .select2-selection--single {
+            height: 38px !important;
+            padding-left: 6px;
+            padding-top: 9px;
+        }    
     </style>
     @stack('header-css')
     @stack('header-css')

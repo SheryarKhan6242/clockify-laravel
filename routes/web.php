@@ -6,6 +6,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\EmployeeTypeController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AjaxRequestController;
+
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,6 +72,29 @@ Route::middleware('auth')->group(function () {
         Route::post('/update/{id}', [LocationController::class, 'update'])->name('location.update');
         Route::get('/delete/{id}', [LocationController::class, 'destroy'])->name('location.delete');
         Route::get('/load-location-table', [LocationController::class, 'get_location_data'])->name('location.get_location_data');
+    });
+
+    Route::prefix('/emp-type')->group(function () {
+        Route::get('/', [EmployeeTypeController::class, 'index'])->name('emp.type.index');
+        Route::get('/edit/{id}', [EmployeeTypeController::class, 'edit'])->name('emp.type.edit');
+        Route::post('/store', [EmployeeTypeController::class, 'store'])->name('emp.type.store');
+        Route::post('/update/{id}', [EmployeeTypeController::class, 'update'])->name('emp.type.update');
+        Route::get('/delete/{id}', [EmployeeTypeController::class, 'destroy'])->name('emp.type.delete');
+        Route::get('/load-emp-type-table', [EmployeeTypeController::class, 'getEmpTypeData'])->name('emp_type.get_location_data');
+    });
+
+    Route::prefix('/employee')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index'])->name('emp.index');
+        Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('emp.edit');
+        Route::post('/store', [EmployeeController::class, 'store'])->name('emp.store');
+        Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('emp.update');
+        Route::get('/delete/{id}', [EmployeeController::class, 'destroy'])->name('emp.delete');
+        Route::get('/load-emp-table', [EmployeeController::class, 'getEmpData'])->name('emp_get_location_data');
+    });
+
+    Route::prefix('/ajax')->group(function () {
+        Route::get('/cities/{country_id}', [ AjaxRequestController::class, 'getCities' ])->name('country_cities');
+        Route::post('cities-selected', [ AjaxRequestController::class, 'getSelectedCities' ])->name('selected_country_cities');
     });
 
 });
