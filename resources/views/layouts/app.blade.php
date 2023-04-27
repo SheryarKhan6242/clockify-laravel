@@ -28,14 +28,14 @@
         {
             background: linear-gradient(to right,#27E1EC,#2BCED8,#2AC0C9,#27B9C2,#27B9C2);
         }
-        .select2-container .select2-selection--single .select2-selection__rendered {
+        /* .select2-container .select2-selection--single .select2-selection__rendered {
             padding-left: 0px !important;
         }
         .select2-container .select2-selection--single {
             height: 38px !important;
             padding-left: 6px;
             padding-top: 9px;
-        }    
+        }     */
     </style>
     @stack('header-css')
     @stack('header-css')

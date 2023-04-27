@@ -70,7 +70,7 @@
                             <img src="{{ asset('assets/images/big/icon.png') }}" alt="wrapkit">
                         </div>
                         <h2 class="mt-3 text-center">Sign In</h2>
-                        <p class="text-center">Enter your email address and password to access admin panel.</p>
+                        <p class="text-center">Enter your email address or username and password to access admin panel.</p>
                         <x-auth-session-status class="mb-4" :status="session('status')" />
                         {{-- START LOGIN FORM --}}
                             {{ aire()->open(route('login'))
@@ -82,8 +82,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group mb-3">
-                                        <label class="form-label text-dark" for="email">Email</label>
-                                        {{ aire()->email('email')->placeholder('Enter your email')->id('email')->class('form-control') }}
+                                        <label class="form-label text-dark" for="email">Email or username</label>
+                                        {{ aire()->input('email')->placeholder('Enter your email')->id('email')->class('form-control') }}
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -94,9 +94,6 @@
                                 </div>
                                 <div class="col-lg-12 text-center">
                                     {{ aire()->submit('Sign In')->class('btn w-100 btn-dark') }}
-                                </div>
-                                <div class="col-lg-12 text-center mt-5">
-                                    Don't have an account? <a href="#" class="text-danger">Sign Up</a>
                                 </div>
                             </div>
                         {{ aire()->close() }}

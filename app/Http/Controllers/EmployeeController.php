@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -79,8 +82,17 @@ class EmployeeController extends Controller
             return response()->json(['errors' => $errors]);
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
+
+        $user = new User();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = Hash::make(Str::random(10));
+        $user->save();
+
+        $user->assignRole(Role::findByName('employee'));
+
         $employee = new Employee();
-        $employee->user_id = auth()->user()->id;
+        $employee->user_id = $user->id;
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
         $employee->gen_id = $request->gen_id;
@@ -89,13 +101,16 @@ class EmployeeController extends Controller
         $employee->city_id = $request->city_id;
         $employee->mobile_no = $request->mobile_no;
         $employee->emergency_no = $request->emergency_no;
-        $employee->user_email = auth()->user()->email;
+        $employee->user_email = $request->email;
         $employee->marital_status = $request->marital_status;
         $employee->emp_type = $request->emp_type;
         $employee->dep_id = $request->dep_id;
         $employee->shift_id = $request->shift_id;
         $employee->designation = $request->designation;
         $employee->save();
+
+
+
         return response()->json(['type' =>'success']);
     }
 

@@ -22,17 +22,17 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required'],
             'password' => ['required'],
         ]);
         // return response()->json(['name' => 'shery']);
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api-token');
         return response()->json(['token' => $token]);
     }
 

@@ -122,6 +122,20 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
+                            <span class="required">Username</span>
+                        </label>
+                        {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Email Address</span>
+                        </label>
+                        {{ aire()->input('email')->placeholder('Email Address')->id('email')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
                             <span class="required">Gender</span>
                         </label>
                         {{ aire()->select(Gender::all()->pluck('name', 'id')->prepend('Select Gender',''), 'gen_id')->id('gen_id')->class('form-control form-control-solid selectjs2') }}
