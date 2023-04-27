@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\ClockController;
+use App\Http\Controllers\Api\CheckInTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +25,9 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
+    Route::prefix('clock')->group(function () {
+        Route::post('/clockin', [ClockController::class, 'clockin']);
+        Route::post('/clockout', [ClockController::class, 'clockout']);
+    });
+    Route::get('/get-checkin-type', [CheckInTypeController::class, 'getCheckInTypes']);
 });

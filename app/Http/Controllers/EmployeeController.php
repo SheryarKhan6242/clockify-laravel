@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -83,7 +85,10 @@ class EmployeeController extends Controller
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
 
+        // dd($request->all());
         $user = new User();
+        $user->name = $request->first_name.$request->last_name;
+        
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make(Str::random(10));
@@ -134,8 +139,10 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employees = Employee::find($id);
+        //Get employee username
+        $user = User::find($id);
         if($employees)
-            return response()->json(['success'=>true,'employees'=>$employees]);
+            return response()->json(['success'=>true,'employees'=>$employees,'username'=>$user->username]);
     }
 
     /**

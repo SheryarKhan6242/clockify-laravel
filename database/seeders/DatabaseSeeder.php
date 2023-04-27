@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GenderSeeder::class);
         $this->call(CountriesCitiesSeeder::class);
         $this->call(MaritalStatusSeeder::class);
+        $this->call(CheckinTypeSeeder::class);
     }
 }

@@ -54,7 +54,6 @@ return new class extends Migration
             $table->foreign('gen_id')->references('id')->on('genders');
             $table->foreign('dep_id')->references('id')->on('emp_departments');
             $table->foreign('shift_id')->references('id')->on('shifts');
-
             $table->timestamps();
         });
     }

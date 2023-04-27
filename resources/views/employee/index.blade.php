@@ -239,79 +239,106 @@
                 </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">First Name</span>
-                    </label>
-                    {{ aire()->input('edit_first_name')->placeholder('First Name')->id('edit_first_name')->class('form-control form-control-solid')->required() }}
+                
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">First Name</span>
+                        </label>
+                        {{ aire()->input('edit_first_name')->placeholder('First Name')->id('edit_first_name')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Last Name</span>
+                        </label>
+                        {{ aire()->input('edit_last_name')->placeholder('Last Name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Last Name</span>
-                    </label>
-                    {{ aire()->input('edit_last_name')->placeholder('Last Name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Username</span>
+                        </label>
+                        {{ aire()->input('username')->placeholder('Username')->id('edit_username')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Email Address</span>
+                        </label>
+                        {{ aire()->input('email')->placeholder('Email Address')->id('edit_email')->class('form-control form-control-solid')->required() }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Gender</span>
-                    </label>
-                    {{ aire()->select(Gender::all()->pluck('name', 'id')->prepend('Select Gender',''), 'edit_gen_id')->id('edit_gen_id')->class('form-control form-control-solid selectjs2') }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Gender</span>
+                        </label>
+                        {{ aire()->select(Gender::all()->pluck('name', 'id')->prepend('Select Gender',''), 'edit_gen_id')->id('edit_gen_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Marital Status</span>
+                        </label>
+                        {{ aire()->select(MaritalStatus::all()->pluck('status', 'id')->prepend('Select Marital status',''), 'edit_marital_status')->id('edit_marital_status')->class('form-control form-control-solid selectjs2') }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Marital Status</span>
-                    </label>
-                    {{ aire()->select(MaritalStatus::all()->pluck('status', 'id')->prepend('Select Marital status',''), 'edit_marital_status')->id('edit_marital_status')->class('form-control form-control-solid selectjs2') }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Employee Type</span>
+                        </label>
+                        {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee type',''), 'edit_emp_type')->id('edit_emp_type')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Department</span>
+                        </label>
+                        {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department',''), 'edit_dep_id')->id('edit_dep_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Employee Type</span>
-                    </label>
-                    {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee type',''), 'edit_emp_type')->id('edit_emp_type')->class('form-control form-control-solid selectjs2') }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Shift</span>
+                        </label>
+                        {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift',''), 'edit_shift_id')->id('edit_shift_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Permanent Address</span>
+                        </label>
+                        {{ aire()->input('edit_permanent_address')->placeholder('Permanent Address')->id('edit_permanent_address')->class('form-control form-control-solid')->required() }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Department</span>
-                    </label>
-                    {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department',''), 'edit_dep_id')->id('edit_dep_id')->class('form-control form-control-solid selectjs2') }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Country</span>
+                        </label>
+                        {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country',''), 'edit_country_id')->id('edit_country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange',"updateCities(this)") }}
+                    </div>
+                    <div class="col-md-6 fv-row city-call-back">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">City</span>
+                        </label>
+                        {{ aire()->select(['' => 'Select your city'],'edit_city_id', '')->id('edit_city_id')->class('form-control form-control-solid') }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Shift</span>
-                    </label>
-                    {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift',''), 'edit_shift_id')->id('edit_shift_id')->class('form-control form-control-solid selectjs2') }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Mobile No</span>
+                        </label>
+                        {{ aire()->input('edit_mobile_no')->placeholder('Mobile No')->id('edit_mobile_no')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Emergency No</span>
+                        </label>
+                        {{ aire()->input('edit_emergency_no')->placeholder('Emergency No')->id('edit_emergency_no')->class('form-control form-control-solid')->required() }}
+                    </div>
                 </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Permanent Address</span>
-                    </label>
-                    {{ aire()->input('edit_permanent_address')->placeholder('Permanent Address')->id('edit_permanent_address')->class('form-control form-control-solid')->required() }}
-                </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Country</span>
-                    </label>
-                    {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country',''), 'edit_country_id')->id('edit_country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange',"cities(this)") }}
-                </div>
-                <div class="fv-row mb-7 city-call-back">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">City</span>
-                    </label>
-                    {{ aire()->select(['' => 'Select your city'],'edit_city_id', '')->id('edit_city_id')->class('form-control form-control-solid')->value(old('city') ?? '') }}
-                </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Mobile No</span>
-                    </label>
-                    {{ aire()->input('edit_mobile_no')->placeholder('Mobile No')->id('edit_mobile_no')->class('form-control form-control-solid')->required() }}
-                </div>
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Emergency No</span>
-                    </label>
-                    {{ aire()->input('edit_emergency_no')->placeholder('Emergency No')->id('edit_emergency_no')->class('form-control form-control-solid')->required() }}
-                </div>
-                <div class="fv-row mb-7">
+                <div class="col-md-6 fv-row">
                     <label class="fs-6 fw-bold">
                         <span class="required">Designation</span>
                     </label>
@@ -395,6 +422,9 @@ function getEmpById(id){
                 //Fill Up edit modal values
                 $('#edit_first_name').val(response.employees.first_name);
                 $('#edit_last_name').val(response.employees.last_name);
+                $('#edit_username').val(response.username);
+                $('#edit_email').val(response.employees.user_email);
+                $('#edit_gen_id').val(response.employees.gen_id);
                 $('#edit_permanent_address').val(response.employees.permanent_address);
                 $('#edit_country_id').val(response.employees.country_id);
                 $('#edit_city_id').val(response.employees.city_id);
@@ -427,7 +457,7 @@ function getEmpById(id){
                             data: { country_id: country_id }
 
                         }).done(function(responseData) {
-                            $('#edit_country_id').replaceWith(responseData)
+                            $('#edit_city_id').replaceWith(responseData)
                             // $('.city-wrapper_'+id).html(responseData);
                         }).fail(function(responseData) {
 
@@ -447,6 +477,8 @@ function storeEmp(){
   // get the form values
     var first_name = $("#first_name").val();
     var last_name = $("#last_name").val();
+    var username = $("#username").val();
+    var email = $("#email").val();
     var gen_id = $("#gen_id").val();
     var permanent_address = $("#permanent_address").val();
     var country_id = $("#country_id").val();
@@ -466,6 +498,8 @@ function storeEmp(){
         data: {
             first_name: first_name,
             last_name: last_name,
+            username: username,
+            email:  email,
             gen_id: gen_id,
             permanent_address: permanent_address,
             country_id: country_id,
@@ -515,6 +549,8 @@ function updateEmp(id){
   // get the form values
     var first_name = $("#edit_first_name").val();
     var last_name = $("#edit_last_name").val();
+    var username = $("#username").val();
+    var email = $("#email").val();
     var gen_id = $("#edit_gen_id").val();
     var permanent_address = $("#edit_permanent_address").val();
     var country_id = $("#edit_country_id").val();
@@ -533,6 +569,8 @@ function updateEmp(id){
         data: {
             first_name: first_name,
             last_name: last_name,
+            email:  email,
+            username: username,
             gen_id: gen_id,
             permanent_address: permanent_address,
             country_id: country_id,
@@ -603,6 +641,7 @@ function cities(event){
     if (location.hostname == 'localhost')
         url = '/clockify-laravel/public/ajax/cities/'
     var country_id = event.value;
+    console.log(country_id);
     $(".preloader").show();
 
     $.ajax({
@@ -626,6 +665,38 @@ function cities(event){
 
     });
 }
+
+function updateCities(event){
+    console.log("select cities")
+    url = '/ajax/cities/'
+    if (location.hostname == 'localhost')
+        url = '/clockify-laravel/public/ajax/cities/'
+    var country_id = event.value;
+    console.log(country_id);
+    $(".preloader").show();
+
+    $.ajax({
+
+        url: url + country_id,
+        method: 'get',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: { country_id: country_id }
+
+    }).done(function(responseData) {
+        $('#edit_city_id').replaceWith(responseData)
+        // $('.city-wrapper').html(responseData);
+
+    }).fail(function(responseData) {
+
+    }).always(function() {
+
+        $(".preloader").hide();
+
+    });
+}
+
 
 $(".btnClosePopup").click(function () {
     $("#add_emp_modal").modal("hide");
