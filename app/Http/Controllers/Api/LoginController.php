@@ -11,6 +11,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 use App\Models\User;
+use App\Http\Requests\LoginRequest;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -19,12 +21,8 @@ class LoginController extends Controller
      *
      * @return json response
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => ['required'],
-            'password' => ['required'],
-        ]);
         // return response()->json(['name' => 'shery']);
         $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -32,6 +30,12 @@ class LoginController extends Controller
                 'email' => __('auth.failed'),
             ]);
         }
+        // dd($request->user());
+        $user->update([
+            'last_login_at' => Carbon::now()->toDateTimeString(),
+            'last_login_ip' => $request->getClientIp()
+        ]);
+
         $token = $user->createToken('api-token');
         return response()->json(['token' => $token]);
     }
