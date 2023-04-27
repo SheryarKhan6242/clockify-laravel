@@ -639,7 +639,7 @@ function cities(event){
     console.log("select cities")
     url = '/ajax/cities/'
     if (location.hostname == 'localhost')
-        url = '/clockify-laravel/public/ajax/cities/'
+        url = '/employee_attendance_management/public/ajax/cities/'
     var country_id = event.value;
     console.log(country_id);
     $(".preloader").show();
@@ -670,7 +670,7 @@ function updateCities(event){
     console.log("select cities")
     url = '/ajax/cities/'
     if (location.hostname == 'localhost')
-        url = '/clockify-laravel/public/ajax/cities/'
+        url = '/employee_attendance_management/public/ajax/cities/'
     var country_id = event.value;
     console.log(country_id);
     $(".preloader").show();

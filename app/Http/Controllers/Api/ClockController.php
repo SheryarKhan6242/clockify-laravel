@@ -23,7 +23,7 @@ class ClockController extends Controller
             'clockin_location' => ['required'],
             'login_user_ip' => ['required'],
         ]);
-
+        // dd($request->all());
         // Insert Clockin data for Reports
         $report = new Report();
         $report->user_id = $request->user_id;
@@ -33,6 +33,7 @@ class ClockController extends Controller
         $report->wfh_reason =  $request->wfh_reason ?? null;
         $report->clockin_location = $request->clockin_location;
         $report->login_user_ip = $request->login_user_ip;
+        $report->checkin_id = $request->checkin_id;
         $report->save();
         // Return the entire payload as a JSON response
         return response()->json($report);
@@ -52,10 +53,11 @@ class ClockController extends Controller
             $checkInTime = $report->office_in;
             $checkOutTime = Carbon::now()->format('H:i:m');
             //Calculate working hours
+            // $workHours = $checkInTime - $checkOutTime;
             $end = Carbon::parse($checkOutTime);
-            $workHours = $end->diffInHours($checkInTime);
+            $workHours = $end->diffInSeconds($checkInTime);
             //Calculate working hours
-            $report->total_work_hours = $workHours;
+            $report->total_work_hours = gmdate('H:i:s', $workHours);
             $report->office_out = $checkOutTime;
             $report->save();
             // Return the entire payload as a JSON response

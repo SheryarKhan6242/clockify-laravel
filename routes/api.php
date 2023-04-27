@@ -25,9 +25,9 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
-    Route::prefix('clock')->group(function () {
-        Route::post('/clockin', [ClockController::class, 'clockin']);
-        Route::post('/clockout', [ClockController::class, 'clockout']);
-    });
+
+    Route::post('/clockin', [ClockController::class, 'clockin']);
+    Route::post('/clockout', [ClockController::class, 'clockout']);
+
     Route::get('/get-checkin-type', [CheckInTypeController::class, 'getCheckInTypes']);
 });
