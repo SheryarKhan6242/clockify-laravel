@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\City;
+use App\Models\EmployeeLeaveType;
 
 class AjaxRequestController extends Controller
 {
@@ -28,5 +29,23 @@ class AjaxRequestController extends Controller
         $this->viewData['city_id'] = isset($request->city_id) ?  $request->city_id : 0;
          
         return view('partial.cities', $this->viewData);
+    }
+
+    public function storeEmpTypeLeaves(Request $request)
+    {
+        for ($i = 0; $i < count($request->leaveTypeValues); $i++) {
+            $result[] = [
+                "leave_type" => $request->leaveTypeValues[$i],
+                "nol" => $request->nolValues[$i],
+            ];
+        }
+        
+        $json_result = json_encode($result);
+
+        $empLeavetype = new EmployeeLeaveType();
+        $empLeavetype->emp_type_id = $request->empTypeId;
+        $empLeavetype->payload = $json_result;
+        $empLeavetype->save();
+        return response()->json(['success' =>'true']);
     }
 }

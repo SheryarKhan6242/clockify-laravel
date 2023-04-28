@@ -1,10 +1,11 @@
 @extends('layouts.app')
 @section('title')
-    Locations
+    Employee Types
 @endsection
+@php
+ use App\Models\LeaveType;
+@endphp
 @section('bread_crumb')
-<!-- Bread crumb and right sidebar toggle -->
-<!-- ============================================================== -->
 <div class="page-breadcrumb">
     <div class="row">
         <div class="col-7 align-self-center">
@@ -17,21 +18,8 @@
                 </nav>
             </div>
         </div>
-        {{-- <div class="col-5 align-self-center">
-            <div class="customize-input float-end">
-                <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
-                    <option selected>Aug 23</option>
-                    <option value="1">July 23</option>
-                    <option value="2">Jun 23</option>
-                </select>
-            </div>
-        </div> --}}
     </div>
 </div>
-<!-- ============================================================== -->
-<!-- End Bread crumb and right sidebar toggle -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
 @endsection
 @section('content')
 <div class="card-title">
@@ -73,38 +61,30 @@
 @endsection
 
 @push('header-css')
-
+<style>
+    .modal-dialog {
+        max-width: none !important;
+        width: 650px !important;
+    }
+</style>
 @endpush
 
 @push('modals')
-{{-- ADD TYPE MODAL --}}
+{{-- ADD EMPLOYEE TYPE MODAL --}}
 <div class="modal fade" id="add_emp_type_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="fw-bolder">Add New Type</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
-                            </g>
-                        </svg>
-                    </span>
-                </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                 <div class="fv-row mb-7">
                     <label class="fs-6 fw-bold">
                         <span class="required">Type</span>
-                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
                     </label>
                     {{ aire()->input('name')->placeholder('Employee Type')->id('name')->class('form-control form-control-solid')->required() }}
-                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
                 </div>
-                {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
                 <div class="text-center pt-15 show_update">
                     <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
                     <a href="#" onclick="storeType()" class="btn btn-rounded btn-success btn-change">Add Type</a>
@@ -113,36 +93,23 @@
         </div>
     </div>
 </div>
-{{-- ADD TYPE MODAL --}}
+{{-- ADD EMPLOYEE TYPE MODAL --}}
 
-{{-- EDIT TYPE MODAL --}}
+{{-- EDIT EMPLOYEE TYPE MODAL --}}
 <div class="modal fade" id="edit_emp_type_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="fw-bolder">Edit Type</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
-                            </g>
-                        </svg>
-                    </span>
-                </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                 <div class="fv-row mb-7">
                     <label class="fs-6 fw-bold">
                         <span class="required">Type</span>
-                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
                     </label>
                     {{ aire()->input('name')->placeholder('Employee Type')->id('edit_name')->class('form-control form-control-solid')->required() }}
-                    {{-- <div class = "alert-text" id = "dep_name_error" style="display:none">Location Name is Required!</div> --}}
                 </div>
-                {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
                 <div class="text-center pt-15 show_update">
                     <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
                     <a href="#" id="update_emp_type" onclick="updateType()" class="btn btn-rounded btn-success btn-change">Update Type</a>
@@ -151,7 +118,45 @@
         </div>
     </div>
 </div>
-{{-- EDIT TYPE MODAL --}}
+{{-- EDIT EMPLOYEE TYPE MODAL --}}
+
+
+{{-- ADD EMPLOYEE TYPE LEAVE MODAL --}}
+{{-- 
+TYPES: Annual, Sick, Casual,Hald day
+Set the leaves per/type --}}
+<div class="modal fade" id="add_emp_type_leave_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-bolder">Add Employee Type leaves</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="row g-9 add-emp-type-leave">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Leave Type</span>
+                        </label>
+                        {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_type[]')->id('leave_type[]')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">No Of Leaves</span>
+                        </label>
+                        {{ aire()->input('nol[]')->placeholder('No Of Leaves')->id('nol[]')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <i class="fas fa-plus-circle"></i>
+                <div class="text-center pt-15 show_update">
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" onclick="storeEmpTypeLeave()" class="btn btn-rounded btn-success btn-change">Add Leave Type</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- ADD TYPE MODAL --}}
 @endpush
 
 <div class="modal fade" id="success_message" tabindex="-1"  aria-hidden="true">
@@ -199,7 +204,30 @@ function fetch_data(page,search_item)
     });
 }
 
+//Add Additional Employee type leaves
+var counter = 1;
+$("#add_emp_type_leave_modal .fa-plus-circle").click(function() {
+    var fields = `
+        <div class="row g-9">
+            <div class="col-md-6 fv-row">
+                <label class="fs-6 fw-bold">
+                    <span class="required">Leave Type</span>
+                </label>
+                {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_type[]')->id('leave_type[]')->class('form-control form-control-solid selectjs2') }}
+            </div>
+            <div class="col-md-6 fv-row">
+                <label class="fs-6 fw-bold">
+                    <span class="required">No Of Leaves</span>
+                </label>
+                {{ aire()->input('nol[]')->placeholder('No Of Leaves')->id('nol[]')->class('form-control form-control-solid')->required() }}
+            </div>
+        </div>
+        `
+        if(counter < 4)
+            $("#add_emp_type_leave_modal .add-emp-type-leave").append(fields);
+    counter++; // increment the counter variable
 });
+//Add Additional Employee type leaves    
 
 $.ajaxSetup({
     headers: {
@@ -207,26 +235,17 @@ $.ajaxSetup({
     }
 });
 
+});
 
-//AJAX TO GET EMPLOYEE TYPE DATA BY ID
-function getTypeById(id){
-    $.ajax({
-        url:  "{{url('/emp-type/edit')}}/"+id,
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-        // success handling
-        console.log(response.empTypes)
-        if(response.success == true && response.empType != undefined){
-                //Fill Up edit modal values
-                $('#edit_name').val(response.empType.name);
-                //Add Update empType onclick event and append ID 
-                $('#update_emp_type').attr('onclick', $('#update_emp_type').attr('onclick').replace('()', '(' + response.empType.id + ')'));
-                $('#edit_emp_type_modal').modal("show");
-            }
-        }
+$(document).ready(function() {
+    $('#mng_emp_type_leave').click(function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        mngEmpTypeLeave(id);
     });
-}
+});
+
+
 //Store Emp Type data via ajax
 function storeType(){
   // get the form values
@@ -313,23 +332,61 @@ function updateType(id){
     });
 }
 
-//Delete Employee Type data via ajax
-function deleteEmpType(id){
-//   make the ajax request
-    $.ajax({
-        url:  "{{url('/emp-type/delete')}}/"+id,
-        type: 'GET',
+function storeEmpTypeLeave(){
+// loop through each pair of employee type and no of leaves
+var nolValues = [];
+var leaveTypeValues = [];
+//Fetch Hidden Emp Type Id
+var empTypeId = $('.hidden_emp_type_id').data('id');
+
+$("input[name='nol[]']").each(function() {
+    var value = $(this).val();
+    nolValues.push(value);
+});
+
+$("select[name='leave_type[]']").each(function() {
+    var value = $(this).val();
+    leaveTypeValues.push(value);
+});
+
+$.ajax({
+        url:  "{{url('/ajax/store/emp-type-leave')}}",
+        type: 'POST',
+        data: {
+            leaveTypeValues: leaveTypeValues,
+            nolValues: nolValues,
+            empTypeId: empTypeId
+        },
         dataType: 'json',
-        success: function(result) {
-        //Show Success message on employee type and hide form modal 
-        $('.show_message').append('Type Deleted Successfully')
-            $('#success_message').modal('show');
-            setTimeout(function(){
-            window.location.reload();
-            }, 2000);                
+        success: function(response) {
+        //Show Success message on saving Employee and hide form modal
+        if(response.success){
+            $('#add_emp_type_leave_modal').hide() 
+            $('.show_message').append('Employee Type Leave Added Successfully')
+                $('#success_message').modal('show');
+                setTimeout(function(){
+                    window.location.reload();
+                }, 2000);
+            }
         }
     });
+// });
 }
+
+// $("#add_emp_type_leave_modal form").submit(function(event) {
+//         event.preventDefault();
+//         var formData = $(this).serializeArray();
+//         var typeAndNolArr = [];
+//         for (var i = 0; i < formData.length; i += 2) {
+//             var typeAndNol = {};
+//             typeAndNol.type = formData[i].value;
+//             typeAndNol.nol = formData[i + 1].value;
+//             typeAndNolArr.push(typeAndNol);
+//         }
+//         var typeAndNolJson = JSON.stringify(typeAndNolArr);
+//         console.log(typeAndNolJson);
+//         // You can now send the typeAndNolJson to the server using AJAX or submit the form normally
+//     });
 
 $(".btnClosePopup").click(function () {
     $("#add_emp_type_modal").modal("hide");

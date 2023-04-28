@@ -276,28 +276,7 @@ $.ajaxSetup({
     }
 });
 
-//AJAX TO GET SHIFT DATA BY ID
-function getShiftById(id){
-    $.ajax({
-        url:  "{{url('/shift/edit')}}/"+id,
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-        // success handling
-        if(response.success == true && response.shift != undefined){
-                //Fill Up edit modal values
-                $('#edit_name').val(response.shift.name);
-                $('#edit_start_time').val(response.shift.start);
-                $('#edit_end_time').val(response.shift.end);
-                $('#edit_late').val(response.shift.late);
-                $('#edit_shift_status').prop('checked', response.shift.status == 1);
-                //Add Update Shift onclick event and append ID 
-                $('#update_shift').attr('onclick', $('#update_shift').attr('onclick').replace('()', '(' + response.shift.id + ')'));
-                $('#edit_shift_modal').modal("show");
-            }
-        }
-    });
-}
+
 //Store Shift data via ajax
 function storeShift(){
   // get the form values
@@ -396,24 +375,6 @@ function updateShift(id){
                 window.location.reload();
                 }, 2000);
             }
-        }
-    });
-}
-
-//Delete shift data via ajax
-function deleteShift(id){
-//   make the ajax request
-    $.ajax({
-        url:  "{{url('/shift/delete')}}/"+id,
-        type: 'GET',
-        dataType: 'json',
-        success: function(result) {
-        //Show Success message on deleting shift and hide form modal 
-        $('.show_message').append('Shift Deleted Successfully')
-            $('#success_message').modal('show');
-            setTimeout(function(){
-            window.location.reload();
-            }, 2000);                
         }
     });
 }

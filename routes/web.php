@@ -40,7 +40,8 @@ Route::middleware('auth')->group(function () {
     //Profile Default made by breeze
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    });
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
+    });
 
     Route::prefix('/logs')->group(function () {
         Route::get('/addToLog', [LogActivityController::class, 'AddLogActivity'])->name('add.logs');
@@ -95,6 +96,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/ajax')->group(function () {
         Route::get('/cities/{country_id}', [ AjaxRequestController::class, 'getCities' ])->name('country_cities');
         Route::post('cities-selected', [ AjaxRequestController::class, 'getSelectedCities' ])->name('selected_country_cities');
+        Route::post('/store/emp-type-leave', [ AjaxRequestController::class, 'storeEmpTypeLeaves' ])->name('emp_type_leaves');
     });
 
 });
