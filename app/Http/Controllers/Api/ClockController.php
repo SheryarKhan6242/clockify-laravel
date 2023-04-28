@@ -16,13 +16,18 @@ class ClockController extends Controller
      */
     public function clockin(Request $request)
     {
-        $data = $request->validate([
+        $validator = \Validator::make($request->all(), [
             'user_id' => ['required'],
             'checkin_id' => ['required'],
             'shift_id' => ['required'],
             'clockin_location' => ['required'],
             'login_user_ip' => ['required'],
         ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(['errors' => $errors], 400);
+        }
         // dd($request->all());
         // Insert Clockin data for Reports
         $report = new Report();
@@ -41,10 +46,15 @@ class ClockController extends Controller
 
     public function clockout(Request $request)
     {
-        $data = $request->validate([
+        $validator = \Validator::make($request->all(), [
             'user_id' => ['required'],
-            'login_date' => ['required'],
+            'login_date' => ['required']
         ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(['errors' => $errors], 400);
+        }
 
         // Get Current Check in time from reports for the following user and the date 
         $report = Report::where('user_id',$request->user_id)->where('login_date',$request->login_date)->first();
