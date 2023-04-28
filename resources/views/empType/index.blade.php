@@ -86,7 +86,7 @@
                     {{ aire()->input('name')->placeholder('Employee Type')->id('name')->class('form-control form-control-solid')->required() }}
                 </div>
                 <div class="text-center pt-15 show_update">
-                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" id="btnClosePopup" data-dismiss="modal" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
                     <a href="#" onclick="storeType()" class="btn btn-rounded btn-success btn-change">Add Type</a>
                 </div>
             </div>
@@ -148,8 +148,9 @@ Set the leaves per/type --}}
                     </div>
                 </div>
                 <i class="fas fa-plus-circle"></i>
+                <i class="fas fa-minus-circle"></i>
                 <div class="text-center pt-15 show_update">
-                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup" data-dismiss="modal">Cancel</a>
                     <a href="#" onclick="storeEmpTypeLeave()" class="btn btn-rounded btn-success btn-change">Add Leave Type</a>
                 </div>
             </div>
@@ -208,7 +209,7 @@ function fetch_data(page,search_item)
 var counter = 1;
 $("#add_emp_type_leave_modal .fa-plus-circle").click(function() {
     var fields = `
-        <div class="row g-9">
+        <div class="row g-9 type_leaves_field_${counter}">
             <div class="col-md-6 fv-row">
                 <label class="fs-6 fw-bold">
                     <span class="required">Leave Type</span>
@@ -228,6 +229,32 @@ $("#add_emp_type_leave_modal .fa-plus-circle").click(function() {
     counter++; // increment the counter variable
 });
 //Add Additional Employee type leaves    
+
+// //Delete Additional Employee type leaves
+// $("#add_emp_type_leave_modal .fa-minus-circle").click(function() {
+//     if(counter > 1) {
+//         $("#add_emp_type_leave_modal .add-emp-type-leave").last().remove();
+//         counter--; // decrement the counter variable
+//     }
+//     if(counter == 1) {
+//         $(this).attr('disabled', true);
+//     }
+// });
+
+$("#add_emp_type_leave_modal .fa-minus-circle").click(function() {
+    var fieldCount = $("#add_emp_type_leave_modal .add-emp-type-leave .row").length;
+
+    // Remove the last field using the counter variable
+    $(`.type_leaves_field_${fieldCount}`).remove();
+    $('.type_leaves_field_1').remove() 
+    if (fieldCount > 1) {
+        // Decrement the counter variable to get the index of the last field
+        fieldCount--;
+    }
+});
+//Delete Additional Employee type leaves
+
+
 
 $.ajaxSetup({
     headers: {
@@ -390,6 +417,8 @@ $.ajax({
 
 $(".btnClosePopup").click(function () {
     $("#add_emp_type_modal").modal("hide");
+    $("#add_emp_type_leave_modal").modal("hide");
+    
 });
 </script>
 @endpush
