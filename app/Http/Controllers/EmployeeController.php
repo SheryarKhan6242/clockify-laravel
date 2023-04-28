@@ -64,6 +64,8 @@ class EmployeeController extends Controller
         $validator = \Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
+            'email' => 'required',
+            'username' => 'required',
             'gen_id' => 'required',
             'permanent_address' => 'required',
             'country_id' => 'required',
@@ -80,7 +82,6 @@ class EmployeeController extends Controller
         if ($validator->fails())
         {      
             $errors = $validator->errors()->toArray();
-            dd($errors);
             return response()->json(['errors' => $errors]);
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
@@ -100,18 +101,25 @@ class EmployeeController extends Controller
         $employee->user_id = $user->id;
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
+        $employee->father_name = $request->father_name;
         $employee->gen_id = $request->gen_id;
+        $employee->cnic_no = $request->cnic_no;
         $employee->permanent_address = $request->permanent_address;
+        $employee->temporary_address = $request->temporary_address;
         $employee->country_id = $request->country_id;
         $employee->city_id = $request->city_id;
         $employee->mobile_no = $request->mobile_no;
         $employee->emergency_no = $request->emergency_no;
+        $employee->alternative_no = $request->alternative_no;
         $employee->user_email = $request->email;
+        $employee->personal_email = $request->personal_email;
         $employee->marital_status = $request->marital_status;
         $employee->emp_type = $request->emp_type;
         $employee->dep_id = $request->dep_id;
         $employee->shift_id = $request->shift_id;
         $employee->designation = $request->designation;
+        $employee->salary = $request->salary;
+        $employee->is_lead = isset($request->is_lead) && $request->is_lead == true ? 1 : 0;
         $employee->save();
 
 
@@ -157,13 +165,14 @@ class EmployeeController extends Controller
         $validator = \Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
+            'email' => 'required',
+            'username' => 'required',
             'gen_id' => 'required',
             'permanent_address' => 'required',
             'country_id' => 'required',
             'city_id' => 'required',
             'mobile_no' => 'required',
             'emergency_no' => 'required',
-            'user_email' => 'required',
             'marital_status' => 'required',
             'emp_type' => 'required',
             'dep_id' => 'required',
@@ -182,18 +191,25 @@ class EmployeeController extends Controller
         $employee->user_id = auth()->user()->id;
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
+        $employee->father_name = $request->father_name;
         $employee->gen_id = $request->gen_id;
+        $employee->cnic_no = $request->cnic_no;
         $employee->permanent_address = $request->permanent_address;
+        $employee->temporary_address = $request->temporary_address;
         $employee->country_id = $request->country_id;
         $employee->city_id = $request->city_id;
         $employee->mobile_no = $request->mobile_no;
+        $employee->alternative_no = $request->alternative_no;
         $employee->emergency_no = $request->emergency_no;
         $employee->user_email = auth()->user()->email;
+        $employee->personal_email = $request->personal_email;
         $employee->marital_status = $request->marital_status;
         $employee->emp_type = $request->emp_type;
         $employee->dep_id = $request->dep_id;
         $employee->shift_id = $request->shift_id;
         $employee->designation = $request->designation;
+        $employee->salary = $request->salary;
+        $employee->is_lead = isset($request->is_lead) && $request->is_lead == true ? 1 : 0;
         $employee->save();
         return response()->json(['type' =>'success']);
     }

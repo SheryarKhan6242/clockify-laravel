@@ -82,13 +82,18 @@
 @endsection
 
 @push('header-css')
-
+<style>
+    .modal-dialog {
+        max-width: none !important;
+        width: 650px !important;
+    }
+</style>
 @endpush
 
 @push('modals')
 {{-- ADD EMP MODAL --}}
 <div class="modal fade" id="add_emp_modal" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-650px">
+    <div class="modal-dialog" style="width: 800px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="fw-bolder">Add New Employee</h2>
@@ -108,13 +113,13 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">First Name</span>
+                            <span class="required">First Name*</span>
                         </label>
                         {{ aire()->input('first_name')->placeholder('First Name')->id('first_name')->class('form-control form-control-solid')->required() }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Last Name</span>
+                            <span class="required">Last Name*</span>
                         </label>
                         {{ aire()->input('last_name')->placeholder('Last Name')->id('last_name')->class('form-control form-control-solid')->required() }}
                     </div>
@@ -122,27 +127,41 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Username</span>
+                            <span class="required">Father Name</span>
                         </label>
-                        {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->input('father_name')->placeholder('Father Name')->id('father_name')->class('form-control form-control-solid')->required() }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Email Address</span>
+                            <span class="required">Username*</span>
                         </label>
-                        {{ aire()->input('email')->placeholder('Email Address')->id('email')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Gender</span>
+                            <span class="required">Email Address*</span>
+                        </label>
+                        {{ aire()->input('email')->placeholder('Email Address')->id('email')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Personal Email</span>
+                        </label>
+                        {{ aire()->input('personal_email')->placeholder('Personal Email')->id('personal_email')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Gender*</span>
                         </label>
                         {{ aire()->select(Gender::all()->pluck('name', 'id')->prepend('Select Gender',''), 'gen_id')->id('gen_id')->class('form-control form-control-solid selectjs2') }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Marital Status</span>
+                            <span class="required">Marital Status*</span>
                         </label>
                         {{ aire()->select(MaritalStatus::all()->pluck('status', 'id')->prepend('Select Marital status',''), 'marital_status')->id('marital_status')->class('form-control form-control-solid selectjs2') }}
                     </div>
@@ -150,41 +169,27 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Employee Type</span>
+                            <span class="required">Employee Type*</span>
                         </label>
                         {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee type',''), 'emp_type')->id('emp_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Department</span>
-                        </label>
-                        {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department',''), 'dep_id')->id('dep_id')->class('form-control form-control-solid selectjs2') }}
-                    </div>
-                </div>
-                <div class="row g-9">
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Shift</span>
+                            <span class="required">Shift*</span>
                         </label>
                         {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift',''), 'shift_id')->id('shift_id')->class('form-control form-control-solid selectjs2') }}
                     </div>
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Permanent Address</span>
-                        </label>
-                        {{ aire()->input('permanent_address')->placeholder('Permanent Address')->id('permanent_address')->class('form-control form-control-solid')->required() }}
-                    </div>
                 </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Country</span>
+                            <span class="required">Country*</span>
                         </label>
                         {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country',''), 'country_id')->id('country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange',"cities(this)") }}
                     </div>
                     <div class="col-md-6 fv-row city-call-back">
                         <label class="fs-6 fw-bold">
-                            <span class="required">City</span>
+                            <span class="required">City*</span>
                         </label>
                         {{ aire()->select(['' => 'Select your city'],'city_id', '')->id('city_id')->class('form-control form-control-solid')->value(old('city') ?? '') }}
                     </div>
@@ -192,24 +197,73 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Mobile No</span>
+                            <span class="required">Mobile No*</span>
                         </label>
                         {{ aire()->input('mobile_no')->placeholder('Mobile No')->id('mobile_no')->class('form-control form-control-solid')->required() }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Emergency No</span>
+                            <span class="required">Emergency No*</span>
                         </label>
                         {{ aire()->input('emergency_no')->placeholder('Emergency No')->id('emergency_no')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
-                <div class="col-md-6 fv-row">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Designation</span>
-                    </label>
-                    {{ aire()->input('designation')->placeholder('Designation')->id('designation')->class('form-control form-control-solid')->required() }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Alternative No</span>
+                        </label>
+                        {{ aire()->input('alt_no')->placeholder('Alternative No')->id('alt_no')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">CNIC</span>
+                        </label>
+                        {{ aire()->input('cnic')->placeholder('CNIC')->id('cnic')->class('form-control form-control-solid')->required() }}
+                    </div>
                 </div>
-                {{-- <div class="text-gray-600">Once a grade is added, it can't be deleted, only deactivated.</div> --}}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Permanent Address*</span>
+                        </label>
+                        {{ aire()->input('permanent_address')->placeholder('Permanent Address')->id('permanent_address')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Temporary Address</span>
+                        </label>
+                        {{ aire()->input('temporary_address')->placeholder('Temporary Address')->id('temporary_address')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Department*</span>
+                        </label>
+                        {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department',''), 'dep_id')->id('dep_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Designation*</span>
+                        </label>
+                        {{ aire()->input('designation')->placeholder('Designation')->id('designation')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span>Salary</span>
+                        </label>
+                        {{ aire()->input('salary')->placeholder('Salary')->id('salary')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">Is Lead</label>
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            {{ aire()->checkbox('is_lead', '')->class('form-check-input')->id('is_lead') }}
+                        </label>
+                    </div>
+                </div>
                 <div class="text-center pt-15 show_update">
                     <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
                     <a href="#" onclick="storeEmp()" class="btn btn-rounded btn-success btn-change">Add Employee</a>
@@ -239,33 +293,46 @@
                 </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                
                 <div class="row g-9">
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">First Name</span>
-                        </label>
-                        {{ aire()->input('edit_first_name')->placeholder('First Name')->id('edit_first_name')->class('form-control form-control-solid')->required() }}
+                    <div class="row g-9">
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">First Name</span>
+                            </label>
+                            {{ aire()->input('edit_first_name')->placeholder('First Name')->id('edit_first_name')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">Last Name</span>
+                            </label>
+                            {{ aire()->input('edit_last_name')->placeholder('Last Name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
+                        </div>
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Last Name</span>
+                            <span class="required">Father Name</span>
                         </label>
-                        {{ aire()->input('edit_last_name')->placeholder('Last Name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->input('edit_father_name')->placeholder('Father Name')->id('edit_father_name')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Username</span>
+                        </label>
+                        {{ aire()->input('edit_username')->placeholder('Username')->id('edit_username')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Username</span>
+                            <span class="required">Email Address</span>
                         </label>
-                        {{ aire()->input('username')->placeholder('Username')->id('edit_username')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->input('edit_email')->placeholder('Email Address')->id('edit_email')->class('form-control form-control-solid')->required() }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Email Address</span>
+                            <span class="required">Personal Email</span>
                         </label>
-                        {{ aire()->input('email')->placeholder('Email Address')->id('edit_email')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->input('edit_personal_email')->placeholder('Personal Email')->id('edit_personal_email')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
                 <div class="row g-9">
@@ -291,23 +358,9 @@
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Department</span>
-                        </label>
-                        {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department',''), 'edit_dep_id')->id('edit_dep_id')->class('form-control form-control-solid selectjs2') }}
-                    </div>
-                </div>
-                <div class="row g-9">
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
                             <span class="required">Shift</span>
                         </label>
                         {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift',''), 'edit_shift_id')->id('edit_shift_id')->class('form-control form-control-solid selectjs2') }}
-                    </div>
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Permanent Address</span>
-                        </label>
-                        {{ aire()->input('edit_permanent_address')->placeholder('Permanent Address')->id('edit_permanent_address')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
                 <div class="row g-9">
@@ -315,13 +368,13 @@
                         <label class="fs-6 fw-bold">
                             <span class="required">Country</span>
                         </label>
-                        {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country',''), 'edit_country_id')->id('edit_country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange',"updateCities(this)") }}
+                        {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country',''), 'edit_country_id')->id('edit_country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange',"cities(this)") }}
                     </div>
                     <div class="col-md-6 fv-row city-call-back">
                         <label class="fs-6 fw-bold">
                             <span class="required">City</span>
                         </label>
-                        {{ aire()->select(['' => 'Select your city'],'edit_city_id', '')->id('edit_city_id')->class('form-control form-control-solid') }}
+                        {{ aire()->select(['' => 'Select your city'],'edit_city_id', '')->id('edit_city_id')->class('form-control form-control-solid')->value(old('city') ?? '') }}
                     </div>
                 </div>
                 <div class="row g-9">
@@ -338,11 +391,61 @@
                         {{ aire()->input('edit_emergency_no')->placeholder('Emergency No')->id('edit_emergency_no')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
-                <div class="col-md-6 fv-row">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Designation</span>
-                    </label>
-                    {{ aire()->input('edit_designation')->placeholder('Designation')->id('edit_designation')->class('form-control form-control-solid')->required() }}
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Alternative No</span>
+                        </label>
+                        {{ aire()->input('edit_alt_no')->placeholder('Alternative No')->id('edit_alt_no')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">CNIC</span>
+                        </label>
+                        {{ aire()->input('edit_cnic')->placeholder('CNIC')->id('edit_cnic')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Permanent Address</span>
+                        </label>
+                        {{ aire()->input('edit_permanent_address')->placeholder('Permanent Address')->id('edit_permanent_address')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Temporary Address</span>
+                        </label>
+                        {{ aire()->input('edit_temporary_address')->placeholder('Temporary Address')->id('edit_temporary_address')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Department</span>
+                        </label>
+                        {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department',''), 'edit_dep_id')->id('edit_dep_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Designation</span>
+                        </label>
+                        {{ aire()->input('edit_designation')->placeholder('Designation')->id('edit_designation')->class('form-control form-control-solid')->required() }}
+                    </div>
+                </div>
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span>Salary</span>
+                        </label>
+                        {{ aire()->input('edit_salary')->placeholder('Salary')->id('edit_salary')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">Is Lead</label>
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            {{ aire()->checkbox('edit_is_lead', '')->class('form-check-input')->id('edit_is_lead') }}
+                        </label>
+                    </div>
                 </div>
                 <div class="text-center pt-15 show_update">
                     <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
@@ -422,19 +525,27 @@ function getEmpById(id){
                 //Fill Up edit modal values
                 $('#edit_first_name').val(response.employees.first_name);
                 $('#edit_last_name').val(response.employees.last_name);
+                $('#edit_father_name').val(response.employees.father_name);
                 $('#edit_username').val(response.username);
                 $('#edit_email').val(response.employees.user_email);
+                $('#edit_personal_email').val(response.employees.personal_email);
                 $('#edit_gen_id').val(response.employees.gen_id);
                 $('#edit_permanent_address').val(response.employees.permanent_address);
+                $('#edit_temporary_address').val(response.employees.temporary_address);
                 $('#edit_country_id').val(response.employees.country_id);
                 $('#edit_city_id').val(response.employees.city_id);
                 $('#edit_mobile_no').val(response.employees.mobile_no);
+                $('#edit_alt_no').val(response.employees.alternative_no);
+                $('#edit_cnic').val(response.employees.cnic_no);
                 $('#edit_emergency_no').val(response.employees.emergency_no);
                 $('#edit_marital_status').val(response.employees.marital_status);
                 $('#edit_emp_type').val(response.employees.emp_type);
                 $('#edit_dep_id').val(response.employees.dep_id);
                 $('#edit_shift_id').val(response.employees.shift_id);
                 $('#edit_designation').val(response.employees.designation);
+                $('#edit_salary').val(response.employees.salary);
+                $('#edit_is_lead').val(response.employees.is_lead);
+
                 //Add Update employee onclick event and append ID 
                 $('#update_emp').attr('onclick', $('#update_emp').attr('onclick').replace('()', '(' + response.employees.id + ')'));
                 //USED LATER WHEN WE FILL UP CITIES ON EDIT
@@ -477,19 +588,27 @@ function storeEmp(){
   // get the form values
     var first_name = $("#first_name").val();
     var last_name = $("#last_name").val();
+    var father_name = $("#father_name").val();
     var username = $("#username").val();
     var email = $("#email").val();
+    var personal_email = $("#personal_email").val();
     var gen_id = $("#gen_id").val();
     var permanent_address = $("#permanent_address").val();
+    var temporary_address = $("#temporary_address").val();
+    var cnic_no = $("#cnic").val();
     var country_id = $("#country_id").val();
     var city_id = $("#city_id").val();
     var mobile_no = $("#mobile_no").val();
+    var alternative_no = $("#alt_no").val();
     var emergency_no = $("#emergency_no").val();
     var marital_status = $("#marital_status").val();
     var emp_type = $("#emp_type").val();
     var dep_id = $("#dep_id").val();
     var shift_id = $("#shift_id").val();
     var designation = $("#designation").val();
+    var salary = $("#salary").val();
+    var is_lead = $("#is_lead").is(':checked');
+
 
     //   make the ajax request
     $.ajax({
@@ -498,19 +617,26 @@ function storeEmp(){
         data: {
             first_name: first_name,
             last_name: last_name,
+            father_name: father_name,
             username: username,
             email:  email,
+            personal_email: personal_email,
             gen_id: gen_id,
             permanent_address: permanent_address,
+            temporary_address: temporary_address,
             country_id: country_id,
             city_id: city_id,
             mobile_no: mobile_no,
+            alternative_no: alternative_no,
             emergency_no: emergency_no,
+            cnic_no: cnic_no,
             marital_status: marital_status,
             emp_type: emp_type,
             dep_id: dep_id,
             shift_id: shift_id,
             designation: designation,
+            salary: salary,
+            is_lead: is_lead,
         },
         dataType: 'json',
         success: function(result) {
@@ -518,8 +644,21 @@ function storeEmp(){
         //Server side validation
             if(result.errors)
             {
+                // jQuery.each(result.errors, function(fieldName, errorMsg){
+                //     var field = $('[name="'+fieldName+'"]');
+                //     field.addClass('is-invalid');
+                //     field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
+                // });
+                // // Remove the error message and is-invalid class when the user corrects the input
+                // $('input, select').on('input', function() {
+                //     var field = $(this);
+                //     field.removeClass('is-invalid');
+                //     field.next('.invalid-feedback').remove();
+                // });
+
                 jQuery.each(result.errors, function(fieldName, errorMsg){
                     var field = $('[name="'+fieldName+'"]');
+                    field.html('');
                     field.addClass('is-invalid');
                     field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
                 });
@@ -537,7 +676,7 @@ function storeEmp(){
                 $('.show_message').append('Employee Added Successfully')
                     $('#success_message').modal('show');
                     setTimeout(function(){
-                    window.location.reload();
+                        window.location.reload();
                     }, 2000);
             }
         }
@@ -549,19 +688,26 @@ function updateEmp(id){
   // get the form values
     var first_name = $("#edit_first_name").val();
     var last_name = $("#edit_last_name").val();
+    var father_name = $("#edit_father_name").val();
     var username = $("#username").val();
-    var email = $("#email").val();
+    var email = $("#edit_email").val();
+    var personal_email = $("#edit_personal_email").val();
     var gen_id = $("#edit_gen_id").val();
     var permanent_address = $("#edit_permanent_address").val();
+    var temporary_address = $("#edit_temporary_address").val();
     var country_id = $("#edit_country_id").val();
     var city_id = $("#edit_city_id").val();
     var mobile_no = $("#edit_mobile_no").val();
     var emergency_no = $("#edit_emergency_no").val();
+    var alternative_no = $("#edit_alt_no").val();
+    var cnic_no = $("#edit_cnic").val();
     var marital_status = $("#edit_marital_status").val();
     var emp_type = $("#edit_emp_type").val();
     var dep_id = $("#edit_dep_id").val();
     var shift_id = $("#edit_shift_id").val();
     var designation = $("#edit_designation").val();
+    var salary = $("#edit_salary").val();
+    var is_lead = $("#edit_is_lead").is(':checked');
 //   make the ajax request
     $.ajax({
         url:  "{{url('/employee/update')}}/"+id,
@@ -569,19 +715,26 @@ function updateEmp(id){
         data: {
             first_name: first_name,
             last_name: last_name,
-            email:  email,
+            father_name: father_name,
             username: username,
+            email:  email,
+            personal_email: personal_email,
             gen_id: gen_id,
             permanent_address: permanent_address,
+            temporary_address: temporary_address,
             country_id: country_id,
             city_id: city_id,
             mobile_no: mobile_no,
+            alternative_no: alternative_no,
             emergency_no: emergency_no,
+            cnic_no: cnic_no,
             marital_status: marital_status,
             emp_type: emp_type,
             dep_id: dep_id,
             shift_id: shift_id,
             designation: designation,
+            salary: salary,
+            is_lead: is_lead,
         },
         dataType: 'json',
         success: function(result) {
@@ -608,7 +761,7 @@ function updateEmp(id){
                 $('.show_message').append('Employee Updated Successfully')
                 $('#success_message').modal('show');
                 setTimeout(function(){
-                window.location.reload();
+                    window.location.reload();
                 }, 2000);
             }
         }
@@ -627,7 +780,7 @@ function deleteEmp(id){
         $('.show_message').append('Employee Deleted Successfully')
             $('#success_message').modal('show');
             setTimeout(function(){
-            window.location.reload();
+                window.location.reload();
             }, 2000);                
         }
     });
@@ -639,7 +792,7 @@ function cities(event){
     console.log("select cities")
     url = '/ajax/cities/'
     if (location.hostname == 'localhost')
-        url = '/employee_attendance_management/public/ajax/cities/'
+        url = '/clockify-laravel/public/ajax/cities/'
     var country_id = event.value;
     console.log(country_id);
     $(".preloader").show();
@@ -670,7 +823,7 @@ function updateCities(event){
     console.log("select cities")
     url = '/ajax/cities/'
     if (location.hostname == 'localhost')
-        url = '/employee_attendance_management/public/ajax/cities/'
+        url = '/clockify-laravel/public/ajax/cities/'
     var country_id = event.value;
     console.log(country_id);
     $(".preloader").show();
