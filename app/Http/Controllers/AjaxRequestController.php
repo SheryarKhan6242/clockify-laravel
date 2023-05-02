@@ -33,6 +33,7 @@ class AjaxRequestController extends Controller
 
     public function storeEmpTypeLeaves(Request $request)
     {
+        // dd($request->all());
         for ($i = 0; $i < count($request->leaveTypeValues); $i++) {
             $result[] = [
                 "leave_type" => $request->leaveTypeValues[$i],
@@ -47,5 +48,12 @@ class AjaxRequestController extends Controller
         $empLeavetype->payload = $json_result;
         $empLeavetype->save();
         return response()->json(['success' =>'true']);
+    }
+
+    public function getEmpTypeLeaves(Request $request, $id)
+    {
+        // dd($request->all());
+        $empLeavetype = EmployeeLeaveType::where('emp_type_id',$id)->first();
+        return response()->json(['success' =>'true','empLeavetype'=>$empLeavetype]);
     }
 }

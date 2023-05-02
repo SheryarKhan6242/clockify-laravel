@@ -120,12 +120,11 @@
 </div>
 {{-- EDIT EMPLOYEE TYPE MODAL --}}
 
-
 {{-- ADD EMPLOYEE TYPE LEAVE MODAL --}}
 {{-- 
 TYPES: Annual, Sick, Casual,Hald day
 Set the leaves per/type --}}
-<div class="modal fade" id="add_emp_type_leave_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+{{-- <div class="modal fade" id="add_emp_type_leave_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
             <div class="modal-header">
@@ -133,23 +132,64 @@ Set the leaves per/type --}}
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <div class="row g-9 add-emp-type-leave">
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Leave Type</span>
-                        </label>
-                        {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_type[]')->id('leave_type[]')->class('form-control form-control-solid selectjs2') }}
+                    <div class="single-entity row">
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                                <label class="fs-6 fw-bold">
+                                    <span class="required">Leave Type</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_0')->id('leave_0')->class('form-control form-control-solid selectjs2') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                                <label class="fs-6 fw-bold">
+                                    <span class="required">No Of Leaves</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    {{ aire()->input('nol_0')->placeholder('No Of Leaves')->id('nol_0')->class('form-control form-control-solid')->required() }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 pb-2">
+                            <div class="form-group row change">
+                                <a onclick="remove_setup_leaves(8,)" class="btn btn-danger remove_leave_field_8">Remove</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">No Of Leaves</span>
-                        </label>
-                        {{ aire()->input('nol[]')->placeholder('No Of Leaves')->id('nol[]')->class('form-control form-control-solid')->required() }}
+                <i class="fas fa-plus-circle"></i>
+                <div class="text-center pt-15 show_update">
+                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup" data-dismiss="modal">Cancel</a>
+                    <a href="#" onclick="storeEmpTypeLeave()" class="btn btn-rounded btn-success btn-change">Add Leave Type</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}
+<div class="modal" id="add_emp_type_leave_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-bolder">Manage Employee Type leaves</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="leave-row row">
+                    <div class="col-sm-5">
+                        {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_type[]')->id('leave_type[]')->class('form-control form-control-solid selectjs2 leave-type') }}
+                    </div>
+                    <div class="col-sm-5">
+                        {{ aire()->input('leave_count[]')->placeholder('No Of Leaves')->id('leave_count[]')->class('form-control form-control-solid leave-count')->required() }}
+                    </div>
+                    <div class="col-md-2 pb-2">
+                        <button type="button" class="remove-leave btn btn-rounded btn-danger">Remove</button>
                     </div>
                 </div>
-                <i class="fas fa-plus-circle"></i>
-                <i class="fas fa-minus-circle"></i>
-                <div class="text-center pt-15 show_update">
+                  <button type="button" id="add-leave" class="btn btn-rounded btn-primary">Add</button>
+                  {{-- <button type="button" id="save-leave">Save</button> --}}
+                  <div class="text-center pt-15 show_update">
                     <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup" data-dismiss="modal">Cancel</a>
                     <a href="#" onclick="storeEmpTypeLeave()" class="btn btn-rounded btn-success btn-change">Add Leave Type</a>
                 </div>
@@ -165,7 +205,6 @@ Set the leaves per/type --}}
         <div class="modal-content">
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                 <div class="text-center show_message">
-
                 </div>
             </div>
         </div>
@@ -177,6 +216,88 @@ Set the leaves per/type --}}
 
 //AJAX FOR SEARCHING AND GET PAGINATION DATA
 $(document).ready(function(){
+
+    $('#add-leave').click(function() {
+        // Clone first row 
+        // var newRow = $('.leave-row:first').clone();
+        var newRow = `
+        <div class="leave-row row">
+        <div class="col-sm-5">
+            <select class="form-control form-control-solid selectjs2 leave-type text-gray-900" data-aire-component="select" name="leave_type[]" id="leave_type[]" data-aire-for="leave_type">
+                <option value="">
+                    Select Leave type
+                </option>
+                <option value="1">
+                    Annual
+                </option>
+                <option value="2">
+                    Sick
+                </option>
+                <option value="3">
+                    Casual
+                </option>
+                <option value="4">
+                    Half Day
+                </option>
+                </select>
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control form-control-solid leave-count p-2 text-base rounded-sm text-gray-900" data-aire-component="input" name="leave_count[]" placeholder="No Of Leaves" id="leave_count[]" value="" required="" data-aire-for="leave_count">
+        </div>
+            <div class="col-md-2 pb-2">
+                <button type="button" class="remove-leave btn btn-rounded btn-danger">Remove</button>
+            </div>
+        `;
+        // Clear select value
+        // newRow.find('.leave-type').val('');
+        // newRow.find('.leave-count').val('');
+        // // Reset leave count to 1          
+        // // newRow.find('.leave-count').val('1');      
+        // // Show remove button  
+        // newRow.find('.remove-leave').show();       
+        // Insert new row before the "Add" button
+        $(this).before(newRow);                  
+    });
+
+    // Remove leave row
+    $('.modal-body').on('click', '.remove-leave', function() {
+        // $(this).parent().remove();  // Remove leave row
+        $(this).closest(".leave-row").remove();
+    });
+
+    // Save leave data
+    $('#save-leave').click(function() {
+        var leaveData = [];
+        $('.leave-row').each(function() {
+            var leaveType = $(this).find('.leave-type').val();
+            var leaveCount = $(this).find('.leave-count').val();
+            if (leaveType && leaveCount) {
+                leaveData.push({
+                    'type': leaveType,
+                    'count': leaveCount
+                });
+            }
+        });
+
+        // Send leave data to server using AJAX
+        $.ajax({
+            url: 'save_leave_data.php',
+            method: 'POST',
+            data: {
+                leave_data: leaveData
+            },
+            success: function(response) {
+                alert('Leave data saved successfully!');
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+
+        // Hide modal
+        $('#add_emp_type_leave_modal').hide();
+    });
+
 
 $('#searchTerm').on('keyup',function(){
     search_item = $(this).val();
@@ -205,29 +326,6 @@ function fetch_data(page,search_item)
     });
 }
 
-//Add Additional Employee type leaves
-var counter = 1;
-$("#add_emp_type_leave_modal .fa-plus-circle").click(function() {
-    var fields = `
-        <div class="row g-9 type_leaves_field_${counter}">
-            <div class="col-md-6 fv-row">
-                <label class="fs-6 fw-bold">
-                    <span class="required">Leave Type</span>
-                </label>
-                {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_type[]')->id('leave_type[]')->class('form-control form-control-solid selectjs2') }}
-            </div>
-            <div class="col-md-6 fv-row">
-                <label class="fs-6 fw-bold">
-                    <span class="required">No Of Leaves</span>
-                </label>
-                {{ aire()->input('nol[]')->placeholder('No Of Leaves')->id('nol[]')->class('form-control form-control-solid')->required() }}
-            </div>
-        </div>
-        `
-        if(counter < 4)
-            $("#add_emp_type_leave_modal .add-emp-type-leave").append(fields);
-    counter++; // increment the counter variable
-});
 //Add Additional Employee type leaves    
 
 // //Delete Additional Employee type leaves
@@ -241,17 +339,6 @@ $("#add_emp_type_leave_modal .fa-plus-circle").click(function() {
 //     }
 // });
 
-$("#add_emp_type_leave_modal .fa-minus-circle").click(function() {
-    var fieldCount = $("#add_emp_type_leave_modal .add-emp-type-leave .row").length;
-
-    // Remove the last field using the counter variable
-    $(`.type_leaves_field_${fieldCount}`).remove();
-    $('.type_leaves_field_1').remove() 
-    if (fieldCount > 1) {
-        // Decrement the counter variable to get the index of the last field
-        fieldCount--;
-    }
-});
 //Delete Additional Employee type leaves
 
 
@@ -366,7 +453,7 @@ var leaveTypeValues = [];
 //Fetch Hidden Emp Type Id
 var empTypeId = $('.hidden_emp_type_id').data('id');
 
-$("input[name='nol[]']").each(function() {
+$("input[name='leave_count[]']").each(function() {
     var value = $(this).val();
     nolValues.push(value);
 });
@@ -377,7 +464,7 @@ $("select[name='leave_type[]']").each(function() {
 });
 
 $.ajax({
-        url:  "{{url('/ajax/store/emp-type-leave')}}",
+        url:  "{{url('/ajax/store-emp-type-leave')}}",
         type: 'POST',
         data: {
             leaveTypeValues: leaveTypeValues,
@@ -414,6 +501,19 @@ $.ajax({
 //         console.log(typeAndNolJson);
 //         // You can now send the typeAndNolJson to the server using AJAX or submit the form normally
 //     });
+
+function remove_setup_leaves(emp_id, el) {
+    "use strict";
+    console.log("removing leaves");
+    if (el == undefined)
+        var el = window.event.target;
+    var ecount = jQuery('#leave_fields_length_' + emp_id).val();
+    var d = ecount;
+    jQuery(el).parent().parent().parent('.single-entity').remove();
+    jQuery('#leave_fields_length_' + emp_id).val(d - 1);
+
+};
+//EMPLOYEE LEAVES SETUP
 
 $(".btnClosePopup").click(function () {
     $("#add_emp_type_modal").modal("hide");

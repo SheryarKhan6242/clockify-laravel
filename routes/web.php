@@ -96,7 +96,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/ajax')->group(function () {
         Route::get('/cities/{country_id}', [ AjaxRequestController::class, 'getCities' ])->name('country_cities');
         Route::post('cities-selected', [ AjaxRequestController::class, 'getSelectedCities' ])->name('selected_country_cities');
-        Route::post('/store/emp-type-leave', [ AjaxRequestController::class, 'storeEmpTypeLeaves' ])->name('emp_type_leaves');
+        Route::post('/store-emp-type-leave', [ AjaxRequestController::class, 'storeEmpTypeLeaves' ])->name('store_emp_type_leaves');
+        Route::get('/get-emp-type-leave/{id}', [ AjaxRequestController::class, 'getEmpTypeLeaves' ])->name('get_emp_type_leaves');
     });
 
 });
