@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\ClockController;
 use App\Http\Controllers\Api\CheckInTypeController;
+use App\Http\Controllers\Api\EmployeeApiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/clockin', [ClockController::class, 'clockin']);
     Route::post('/clockout', [ClockController::class, 'clockout']);
-
     Route::get('/get-checkin-type', [CheckInTypeController::class, 'getCheckInTypes']);
+
+    Route::prefix('/employee')->group(function () {
+        Route::get('/get-profile/{id}', [EmployeeApiController::class, 'getProfile'])->name('getProfile');
+        Route::post('/update-profile', [EmployeeApiController::class, 'updateProfile'])->name('updateProfile');
+    });
 });

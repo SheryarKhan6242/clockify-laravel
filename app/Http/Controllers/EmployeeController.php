@@ -225,4 +225,5 @@ class EmployeeController extends Controller
         Employee::destroy($id);
         return response()->json(['success'=>true]);
     }
+
 }

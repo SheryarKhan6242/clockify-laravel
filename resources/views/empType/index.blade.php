@@ -223,26 +223,10 @@ $(document).ready(function(){
         var newRow = `
         <div class="leave-row row">
         <div class="col-sm-5">
-            <select class="form-control form-control-solid selectjs2 leave-type text-gray-900" data-aire-component="select" name="leave_type[]" id="leave_type[]" data-aire-for="leave_type">
-                <option value="">
-                    Select Leave type
-                </option>
-                <option value="1">
-                    Annual
-                </option>
-                <option value="2">
-                    Sick
-                </option>
-                <option value="3">
-                    Casual
-                </option>
-                <option value="4">
-                    Half Day
-                </option>
-                </select>
+            {{ aire()->select(LeaveType::all()->pluck('type', 'id')->prepend('Select Leave type',''), 'leave_type[]')->id('leave_type[]')->class('form-control form-control-solid selectjs2 leave-type') }}
         </div>
         <div class="col-sm-5">
-            <input type="text" class="form-control form-control-solid leave-count p-2 text-base rounded-sm text-gray-900" data-aire-component="input" name="leave_count[]" placeholder="No Of Leaves" id="leave_count[]" value="" required="" data-aire-for="leave_count">
+            {{ aire()->input('leave_count[]')->placeholder('No Of Leaves')->id('leave_count[]')->class('form-control form-control-solid leave-count')->required() }}
         </div>
             <div class="col-md-2 pb-2">
                 <button type="button" class="remove-leave btn btn-rounded btn-danger">Remove</button>
