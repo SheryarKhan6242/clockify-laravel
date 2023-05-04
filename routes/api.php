@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\ClockController;
 use App\Http\Controllers\Api\CheckInTypeController;
 use App\Http\Controllers\Api\EmployeeApiController;
+use App\Http\Controllers\Api\ReportApiController;
 
 
 /*
@@ -35,5 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/employee')->group(function () {
         Route::get('/get-profile/{id}', [EmployeeApiController::class, 'getProfile'])->name('getProfile');
         Route::post('/update-profile', [EmployeeApiController::class, 'updateProfile'])->name('updateProfile');
+    });
+
+    Route::prefix('/report')->group(function () {
+        Route::get('/get-report', [ReportApiController::class, 'getReport'])->name('getReport');
     });
 });

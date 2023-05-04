@@ -24,7 +24,7 @@ class EmployeeApiController extends Controller
         }
         $employee = Employee::where('user_id',$request->user_id)->first();
         $employee = Employee::find($employee->id);
-    $employee->update($request->all());
+        $employee->update($request->all());
         // return response()->json(['employee'=>$employee]);
         // $employee->user_id = $request->user_id;
         // $employee->first_name = $request->first_name;
