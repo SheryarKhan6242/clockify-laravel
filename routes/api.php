@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-checkin-type', [CheckInTypeController::class, 'getCheckInTypes']);
 
     Route::prefix('/employee')->group(function () {
-        Route::get('/get-profile/{id}', [EmployeeApiController::class, 'getProfile'])->name('getProfile');
+        Route::get('/profile/{id}', [EmployeeApiController::class, 'getProfile'])->name('getProfile');
         Route::post('/update-profile', [EmployeeApiController::class, 'updateProfile'])->name('updateProfile');
     });
 
