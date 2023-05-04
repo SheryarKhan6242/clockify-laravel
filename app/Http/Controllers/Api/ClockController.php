@@ -47,7 +47,7 @@ class ClockController extends Controller
         ]);
 
         // Get Current Check in time from reports for the following user and the date 
-        $report = Report::where('user_id',$request->user_id)->where('login_date',$request->login_date)->first();
+        $report = Report::where('user_id',$request->user_id)->where('login_date',$request->login_date)->orderBy('id','DESC')->first();
         if($report)
         {
             $checkInTime = $report->office_in;
