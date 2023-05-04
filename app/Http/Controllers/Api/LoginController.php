@@ -25,6 +25,10 @@ class LoginController extends Controller
     {
         // return response()->json(['name' => 'shery']);
         $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
+        if($user && $user->status == 0)
+        {
+            return response()->json(['message'=> 'User profile has been deleted']);
+        }
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
