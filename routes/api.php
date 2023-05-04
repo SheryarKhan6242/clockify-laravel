@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\ClockController;
 use App\Http\Controllers\Api\CheckInTypeController;
 use App\Http\Controllers\Api\EmployeeApiController;
 use App\Http\Controllers\Api\ReportApiController;
+use App\Http\Controllers\Api\DashboardApiController;
+
 
 
 /*
@@ -41,4 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/report')->group(function () {
         Route::get('/get-report', [ReportApiController::class, 'getReport'])->name('getReport');
     });
+
+    Route::get('/dashboard-widget', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
+    
 });
