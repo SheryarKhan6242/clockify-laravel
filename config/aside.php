@@ -44,4 +44,10 @@ return [
             ],
         ]
     ],
+    [
+        'route'     => 'leaveType.index',
+        'label'     => 'Leave Types',
+        'name'      => 'Leave Types',
+        'icon'      => 'feather-icon',
+    ],
 ];

@@ -59,16 +59,15 @@ class DashboardApiController extends Controller
         $yearsOfService = $anniversaryDate->diffInYears($currentDate);
 
         // Check if it's the employee's birthday
-        // $birthdate = Carbon::parse($employee->birthdate);
+        $birthdate = Carbon::parse($employee->dob);
 
-        // if ($currentDate->isSameDay($birthdate)) {
-        //     $message = "Today is {$firstName} {$lastName}'s birthday!";
-        // } else {
-        //     $message = '';
-        // }
+        if ($currentDate->isSameDay($birthdate)) {
+            $message = "Today is {$firstName} {$lastName}'s birthday!";
+        } else {
+            $message = '';
+        }
 
         // Check if it's the employee's work anniversary
-        $message = '';
         if ($anniversaryDate->isSameMonth($currentDate) && $anniversaryDate->isSameYear($currentDate)) {
             $message .= " Happy Work Anniversary $firstName $lastName!";
         }

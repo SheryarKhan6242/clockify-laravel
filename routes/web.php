@@ -9,6 +9,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\EmployeeTypeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AjaxRequestController;
+use App\Http\Controllers\LeaveTypeController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [DepartmentController::class, 'store'])->name('department.store');
         Route::get('/delete/{id}', [DepartmentController::class, 'destroy'])->name('department.delete');
         Route::get('/load-department-table', [DepartmentController::class, 'get_department_data'])->name('department.get_department_data');
+    });
+
+    Route::prefix('/leave-type')->group(function () {
+        Route::get('/', [LeaveTypeController::class, 'index'])->name('leaveType.index');
+        Route::get('/edit/{id}', [LeaveTypeController::class, 'edit'])->name('leaveType.edit');
+        Route::post('/update/{id}', [LeaveTypeController::class, 'update'])->name('leaveType.update');
+        Route::post('/store', [LeaveTypeController::class, 'store'])->name('leaveType.store');
+        Route::get('/delete/{id}', [LeaveTypeController::class, 'destroy'])->name('leaveType.delete');
+        Route::get('/load-table', [LeaveTypeController::class, 'get_leave_type_data'])->name('leaveType.get_leave_type_data');
     });
 
     Route::prefix('/shift')->group(function () {

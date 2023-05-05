@@ -64,6 +64,7 @@ class EmployeeController extends Controller
         $validator = \Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
+            'dob' => 'required',
             'email' => 'required',
             'username' => 'required',
             'gen_id' => 'required',
@@ -102,6 +103,7 @@ class EmployeeController extends Controller
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
         $employee->father_name = $request->father_name;
+        $employee->dob = $request->dob;
         $employee->gen_id = $request->gen_id;
         $employee->cnic_no = $request->cnic_no;
         $employee->permanent_address = $request->permanent_address;
@@ -165,6 +167,7 @@ class EmployeeController extends Controller
         $validator = \Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
+            'dob' => 'required',
             'email' => 'required',
             'username' => 'required',
             'gen_id' => 'required',
@@ -192,6 +195,7 @@ class EmployeeController extends Controller
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
         $employee->father_name = $request->father_name;
+        $employee->dob = $request->dob;
         $employee->gen_id = $request->gen_id;
         $employee->cnic_no = $request->cnic_no;
         $employee->permanent_address = $request->permanent_address;

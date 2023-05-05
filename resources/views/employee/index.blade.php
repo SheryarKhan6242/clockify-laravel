@@ -133,6 +133,12 @@
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
+                            <span class="required">DOB*</span>
+                        </label>
+                        {{ aire()->date('dob')->placeholder('DOB')->id('dob')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
                             <span class="required">Username*</span>
                         </label>
                         {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
@@ -306,6 +312,12 @@
                                 <span class="required">Last Name</span>
                             </label>
                             {{ aire()->input('edit_last_name')->placeholder('Last Name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">DOB*</span>
+                            </label>
+                            {{ aire()->date('edit_dob')->placeholder('DOB')->id('edit_dob')->class('form-control form-control-solid')->required() }}
                         </div>
                     </div>
                     <div class="col-md-6 fv-row">
@@ -517,6 +529,7 @@ function storeEmp(){
     var first_name = $("#first_name").val();
     var last_name = $("#last_name").val();
     var father_name = $("#father_name").val();
+    var dob = $("#dob").val();
     var username = $("#username").val();
     var email = $("#email").val();
     var personal_email = $("#personal_email").val();
@@ -546,6 +559,7 @@ function storeEmp(){
             first_name: first_name,
             last_name: last_name,
             father_name: father_name,
+            dob: dob,
             username: username,
             email:  email,
             personal_email: personal_email,
@@ -617,6 +631,7 @@ function updateEmp(id){
     var first_name = $("#edit_first_name").val();
     var last_name = $("#edit_last_name").val();
     var father_name = $("#edit_father_name").val();
+    var dob = $("#edit_dob").val();
     var username = $("#username").val();
     var email = $("#edit_email").val();
     var personal_email = $("#edit_personal_email").val();
@@ -644,6 +659,7 @@ function updateEmp(id){
             first_name: first_name,
             last_name: last_name,
             father_name: father_name,
+            dob: dob,
             username: username,
             email:  email,
             personal_email: personal_email,
