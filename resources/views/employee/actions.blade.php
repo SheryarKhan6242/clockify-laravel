@@ -24,6 +24,8 @@ function getEmpById(id){
                 $('#edit_last_name').val(response.employees.last_name);
                 $('#edit_father_name').val(response.employees.father_name);
                 $('#edit_username').val(response.username);
+                $('#edit_dob').val(response.employees.date_of_birth);
+                $('#edit_work_type').val(response.employees.work_type);
                 $('#edit_email').val(response.employees.user_email);
                 $('#edit_personal_email').val(response.employees.personal_email);
                 $('#edit_gen_id').val(response.employees.gen_id);
@@ -40,6 +42,7 @@ function getEmpById(id){
                 $('#edit_dep_id').val(response.employees.dep_id);
                 $('#edit_shift_id').val(response.employees.shift_id);
                 $('#edit_designation').val(response.employees.designation);
+                $('#edit_joining_date').val(response.employees.joining_date);
                 $('#edit_salary').val(response.employees.salary);
                 $('#edit_is_lead').val(response.employees.is_lead);
 

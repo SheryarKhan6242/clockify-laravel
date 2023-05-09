@@ -66,8 +66,10 @@ class EmployeeController extends Controller
             'last_name' => 'required',
             'dob' => 'required',
             'email' => 'required',
+            'work_type' => 'required',
             'username' => 'required',
             'gen_id' => 'required',
+            'joining_date' => 'required',
             'permanent_address' => 'required',
             'country_id' => 'required',
             'city_id' => 'required',
@@ -103,9 +105,11 @@ class EmployeeController extends Controller
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
         $employee->father_name = $request->father_name;
-        $employee->dob = $request->dob;
+        $employee->work_type = $request->work_type;
+        $employee->date_of_birth = $request->dob;
         $employee->gen_id = $request->gen_id;
         $employee->cnic_no = $request->cnic_no;
+        $employee->joining_date = $request->joining_date;
         $employee->permanent_address = $request->permanent_address;
         $employee->temporary_address = $request->temporary_address;
         $employee->country_id = $request->country_id;
@@ -150,7 +154,7 @@ class EmployeeController extends Controller
     {
         $employees = Employee::find($id);
         //Get employee username
-        $user = User::find($id);
+        $user = User::find($employees->user_id);
         if($employees)
             return response()->json(['success'=>true,'employees'=>$employees,'username'=>$user->username]);
     }
@@ -171,6 +175,8 @@ class EmployeeController extends Controller
             'email' => 'required',
             'username' => 'required',
             'gen_id' => 'required',
+            'work_type' => 'required',
+            'joining_date' => 'required',
             'permanent_address' => 'required',
             'country_id' => 'required',
             'city_id' => 'required',
@@ -195,8 +201,10 @@ class EmployeeController extends Controller
         $employee->first_name = $request->first_name;
         $employee->last_name = $request->last_name;
         $employee->father_name = $request->father_name;
-        $employee->dob = $request->dob;
+        $employee->work_type = $request->work_type;
+        $employee->date_of_birth = $request->dob;
         $employee->gen_id = $request->gen_id;
+        $employee->joining_date = $request->joining_date;
         $employee->cnic_no = $request->cnic_no;
         $employee->permanent_address = $request->permanent_address;
         $employee->temporary_address = $request->temporary_address;

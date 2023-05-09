@@ -9,6 +9,7 @@
  use App\Models\Department;
  use App\Models\Shift;
  use App\Models\Gender;
+ use App\Models\EmployeeWorkingType;
 
 @endphp
 @section('bread_crumb')
@@ -137,11 +138,19 @@
                         </label>
                         {{ aire()->date('dob')->placeholder('DOB')->id('dob')->class('form-control form-control-solid')->required() }}
                     </div>
+                </div>
+                <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
                             <span class="required">Username*</span>
                         </label>
                         {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Work Type*</span>
+                        </label>
+                        {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type',''), 'work_type')->id('work_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                 </div>
                 <div class="row g-9">
@@ -259,10 +268,18 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
+                            <span>Joining Date*</span>
+                        </label>
+                        {{ aire()->date('joining_date')->placeholder('Joining Date')->id('joining_date')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
                             <span>Salary</span>
                         </label>
                         {{ aire()->input('salary')->placeholder('Salary')->id('salary')->class('form-control form-control-solid')->required() }}
                     </div>
+                </div>
+                <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">Is Lead</label>
                         <label class="form-check form-switch form-check-custom form-check-solid">
@@ -313,6 +330,14 @@
                             </label>
                             {{ aire()->input('edit_last_name')->placeholder('Last Name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
                         </div>
+                    </div>
+                    <div class="row g-9">
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">Father Name</span>
+                            </label>
+                            {{ aire()->input('edit_father_name')->placeholder('Father Name')->id('edit_father_name')->class('form-control form-control-solid')->required() }}
+                        </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
                                 <span class="required">DOB*</span>
@@ -320,17 +345,19 @@
                             {{ aire()->date('edit_dob')->placeholder('DOB')->id('edit_dob')->class('form-control form-control-solid')->required() }}
                         </div>
                     </div>
+                </div>
+                <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Father Name</span>
+                            <span class="required">Username*</span>
                         </label>
-                        {{ aire()->input('edit_father_name')->placeholder('Father Name')->id('edit_father_name')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->input('edit_username')->placeholder('Username')->id('edit_username')->class('form-control form-control-solid')->required() }}
                     </div>
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Username</span>
+                            <span class="required">Work Type*</span>
                         </label>
-                        {{ aire()->input('edit_username')->placeholder('Username')->id('edit_username')->class('form-control form-control-solid')->required() }}
+                        {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type',''), 'edit_work_type')->id('edit_work_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                 </div>
                 <div class="row g-9">
@@ -448,10 +475,18 @@
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
+                            <span>Joining Date*</span>
+                        </label>
+                        {{ aire()->date('edit_joining_date')->placeholder('Joining Date')->id('edit_joining_date')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
                             <span>Salary</span>
                         </label>
                         {{ aire()->input('edit_salary')->placeholder('Salary')->id('edit_salary')->class('form-control form-control-solid')->required() }}
                     </div>
+                </div>
+                <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">Is Lead</label>
                         <label class="form-check form-switch form-check-custom form-check-solid">
@@ -531,6 +566,7 @@ function storeEmp(){
     var father_name = $("#father_name").val();
     var dob = $("#dob").val();
     var username = $("#username").val();
+    var work_type = $("#work_type").val();
     var email = $("#email").val();
     var personal_email = $("#personal_email").val();
     var gen_id = $("#gen_id").val();
@@ -547,6 +583,7 @@ function storeEmp(){
     var dep_id = $("#dep_id").val();
     var shift_id = $("#shift_id").val();
     var designation = $("#designation").val();
+    var joining_date = $("#joining_date").val();
     var salary = $("#salary").val();
     var is_lead = $("#is_lead").is(':checked');
 
@@ -560,6 +597,7 @@ function storeEmp(){
             last_name: last_name,
             father_name: father_name,
             dob: dob,
+            work_type: work_type,
             username: username,
             email:  email,
             personal_email: personal_email,
@@ -577,6 +615,7 @@ function storeEmp(){
             dep_id: dep_id,
             shift_id: shift_id,
             designation: designation,
+            joining_date: joining_date,
             salary: salary,
             is_lead: is_lead,
         },
@@ -632,6 +671,7 @@ function updateEmp(id){
     var last_name = $("#edit_last_name").val();
     var father_name = $("#edit_father_name").val();
     var dob = $("#edit_dob").val();
+    var work_type = $("#edit_work_type").val();
     var username = $("#username").val();
     var email = $("#edit_email").val();
     var personal_email = $("#edit_personal_email").val();
@@ -649,6 +689,7 @@ function updateEmp(id){
     var dep_id = $("#edit_dep_id").val();
     var shift_id = $("#edit_shift_id").val();
     var designation = $("#edit_designation").val();
+    var joining_date = $("#edit_joining_date").val();
     var salary = $("#edit_salary").val();
     var is_lead = $("#edit_is_lead").is(':checked');
 //   make the ajax request
@@ -660,6 +701,7 @@ function updateEmp(id){
             last_name: last_name,
             father_name: father_name,
             dob: dob,
+            work_type: work_type,
             username: username,
             email:  email,
             personal_email: personal_email,
@@ -677,6 +719,7 @@ function updateEmp(id){
             dep_id: dep_id,
             shift_id: shift_id,
             designation: designation,
+            joining_date: joining_date,
             salary: salary,
             is_lead: is_lead,
         },
