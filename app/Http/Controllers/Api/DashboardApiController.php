@@ -48,35 +48,44 @@ class DashboardApiController extends Controller
             ->value('total_work_hours');
 
         // Fetch the user's work anniversary date
+        $currentDate = Carbon::now();
         $employee = Employee::where('user_id',$request->user_id)->first();
-        $joinDate = $employee->created_at;
         $firstName = $employee->first_name;
         $lastName = $employee->last_name;
 
-        // Check if it's the employee's work anniversary
-        $currentDate = Carbon::now();
-        $anniversaryDate = Carbon::parse($joinDate);
-        $yearsOfService = $anniversaryDate->diffInYears($currentDate);
-
-        // Check if it's the employee's birthday
-        $birthdate = Carbon::parse($employee->dob);
-
-        if ($currentDate->isSameDay($birthdate)) {
-            $message = "Today is {$firstName} {$lastName}'s birthday!";
+        if ($employee->joining_date != null) {
+            $anniversaryDate = Carbon::parse($employee->joining_date);
+            $yearsOfService = $anniversaryDate->diffInYears($currentDate);
         } else {
-            $message = '';
+            $anniversaryDate = null; // or false, 0, etc.
         }
+        // return response()->json(['join'=>$anniversaryDate]);
 
+        //NOTE: If this condition is missing, carbon will parse to current date automatically if the date_of_birth is null
+        if ($employee->date_of_birth != null) {
+            $birthdate = Carbon::parse($employee->date_of_birth);
+        } else {
+            $birthdate = null; // or false, 0, etc.
+        }
+        // return response()->json(['join'=>$birthdate]);
+        $birthDayMessage = '';
+        $anniversaryMessage = '';
+
+         // Check if it's the employee's birthday
+        if ($birthdate !=null && $currentDate->isSameDay($birthdate)) {            
+            $birthDayMessage = "Today is {$firstName} {$lastName}'s birthday!";
+        }
+        
         // Check if it's the employee's work anniversary
-        if ($anniversaryDate->isSameMonth($currentDate) && $anniversaryDate->isSameYear($currentDate)) {
-            $message .= " Happy Work Anniversary $firstName $lastName!";
+        if ($anniversaryDate !=null && $currentDate->isSameDay($anniversaryDate)) {
+            $anniversaryMessage = "Happy Work Anniversary $firstName $lastName!";
         }
 
         $user = [
             'name' => $username,
             'last_working_hour' => $lastHourOfWeek,
             'total_week_hours' => $totalWorkingHours,
-            'announcement' => $message
+            'celebration' => ["birthday"=>$birthDayMessage, "anniversary"=> $anniversaryMessage]
         ];
         
         return response()->json(['dashboard_info' => $user]);
