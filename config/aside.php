@@ -50,4 +50,10 @@ return [
         'name'      => 'Leave Types',
         'icon'      => 'feather-icon',
     ],
+    [
+        'route'     => 'workType.index',
+        'label'     => 'Work Types',
+        'name'      => 'Work Types',
+        'icon'      => 'feather-icon',
+    ],
 ];

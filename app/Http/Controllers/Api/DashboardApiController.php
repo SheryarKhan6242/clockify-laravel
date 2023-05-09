@@ -68,8 +68,8 @@ class DashboardApiController extends Controller
             $birthdate = null; // or false, 0, etc.
         }
         // return response()->json(['join'=>$birthdate]);
-        $birthDayMessage = '';
-        $anniversaryMessage = '';
+        $birthDayMessage = null;
+        $anniversaryMessage = null;
 
          // Check if it's the employee's birthday
         if ($birthdate !=null && $currentDate->isSameDay($birthdate)) {            
