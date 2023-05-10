@@ -153,8 +153,7 @@
                         {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type',''), 'work_type')->id('work_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                 </div>
-                <div class="work-type-add">
-                </div>
+                <div class="work-type-add"></div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
@@ -289,6 +288,7 @@
                         </label>
                     </div>
                 </div>
+                <div class="emp-leaves row g-9 pb-4"></div>
                 <div class="text-center pt-15 show_update">
                     <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
                     <a href="#" onclick="storeEmp()" class="btn btn-rounded btn-success btn-change">Add Employee</a>
@@ -605,6 +605,20 @@ function storeEmp(){
             weekdays.push($(this).val());
         });
     }
+
+    // loop through each pair of employee type and no of leaves
+    var nolValues = [];
+    var leaveTypeValues = [];
+
+    $("input[name='leave_count[]']").each(function() {
+        var value = $(this).val();
+        nolValues.push(value);
+    });
+
+    $("select[name='leave_type[]']").each(function() {
+        var value = $(this).val();
+        leaveTypeValues.push(value);
+    });
     
     //   make the ajax request
     $.ajax({
@@ -638,6 +652,8 @@ function storeEmp(){
             is_lead: is_lead,
             per_day_hours: per_day_hours,
             weekdays: weekdays,
+            leaveTypeValues: leaveTypeValues,
+            nolValues: nolValues,
         },
         dataType: 'json',
         success: function(result) {
@@ -882,6 +898,98 @@ $('#work_type').change(function() {
         else {
             $(this).closest('.fv-row').nextAll().remove();
         }
+    });
+
+// Add change event to the work type select box
+$('#emp_type').change(function() {
+        // Get the selected value
+        var id = $(this).val();        
+        console.log(id)
+        $.ajax({
+            url:  "{{url('/ajax/get-emp-type-leave')}}/"+id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response){
+                // console.log(response.empLeavetype.payload);
+                var jsonPayload = response.empLeavetype.payload;
+                var decodePayload = JSON.parse(jsonPayload)
+                console.log(decodePayload);
+                if (decodePayload !=undefined && decodePayload.length > 0) {
+                    $('.emp-leaves').html('');
+                    // Loop through each item and create a new row
+                    $('.emp-leaves').append(`
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Leaves</span>
+                        </label>
+                    `);
+                    for(var i = 0; i < decodePayload.length; i++){
+                        var leave_type = decodePayload[i].leave_type;
+                        var nol = decodePayload[i].nol;
+                        var row = $('<div>', { class: 'emp-leaves' });
+                        // Create leave type select box and preselect the option
+                        console.log(leave_type == 1)
+                        var leaveTypeSelect = `
+                        <div class="row g-9 leaves-row">
+                            <div class="col-sm-5">
+                                <select class="form-control form-control-solid selectjs2 leave-type text-gray-900" data-aire-component="select" name="leave_type[]" id="leave_type[]" data-aire-for="leave_type">
+                                    <option value="">
+                                        Select Leave type
+                                    </option>
+                                    <option value="1" ${leave_type == 1 ? ' selected' : ''}>
+                                        Annual
+                                    </option>
+                                    <option value="2" ${leave_type == 2 ? ' selected' : ''}>
+                                        Sick
+                                    </option>
+                                    <option value="3" ${leave_type == 3 ? ' selected' : ''}>
+                                        Casual
+                                    </option>
+                                    <option value="4" ${leave_type == 4 ? ' selected' : ''}>
+                                        Half Day
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control form-control-solid leave-count p-2 text-base rounded-sm text-gray-900" data-aire-component="input" name="leave_count[]" placeholder="No Of Leaves" id="leave_count[]" value="${nol}" required="" data-aire-for="leave_count">
+                            </div>
+                            <div class= 'col-md-2 pb-2'>
+                                    <button type="button" class="remove-leave btn btn-rounded btn-danger">Remove</button>
+                            </div>
+                        </div>
+                        `;
+                        // Append columns to row
+                        $('.emp-leaves').append(leaveTypeSelect);
+                    }
+                }
+            },
+        });
+        // $('.work-type-add').html('') 
+        // // Check if the value is Part Time
+        // if (selectedValue === 'Part Time') {
+        //     console.log("Part time selected")
+        //     // Create a new div with the integer field for per day hours
+        //     var newDiv = $('<div class="row g-9 pb-2"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Per Day Hours*</span></label><input type="number" id="per_day_hours" name="per_day_hours" class="form-control form-control-solid" /></div></div>');
+        //     // Insert the new div after the work type div
+        //     $('.work-type-add').append(newDiv)
+        // }
+        // // Check if the value is Hybrid
+        // else if (selectedValue === 'Hybrid') {
+        //     console.log("Hybrid selected")
+        //     // Create a new div with the checkboxes for the weekdays
+        //     var newDiv = $('<div class="row g-9 pb-2"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Weekdays*</span></label><div style="display: inline-flex;"><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Monday" /> Monday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Tuesday" /> Tuesday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Wednesday" /> Wednesday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Thursday" /> Thursday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Friday" /> Friday</label></div></div></div>');            // var newDiv = $('<div class="row g-9"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Weekdays*</span></label><br /><input type="checkbox" name="weekday[]" value="Monday" /> Monday<br /><input type="checkbox" name="weekday[]" value="Tuesday" /> Tuesday<br /><input type="checkbox" name="weekday[]" value="Wednesday" /> Wednesday<br /><input type="checkbox" name="weekday[]" value="Thursday" /> Thursday<br /><input type="checkbox" name="weekday[]" value="Friday" /> Friday</div></div>');
+        //     // Insert the new div after the work type div
+        //     $('.work-type-add').append(newDiv)
+        // }
+        // // If the value is neither Part Time nor Hybrid, remove any added fields
+        // else {
+        //     $(this).closest('.fv-row').nextAll().remove();
+        // }
+    });
+
+    // Remove leave row
+    $('.modal-body').on('click', '.remove-leave', function() {
+        // $(this).parent().remove();  // Remove leave row
+        $(this).closest(".leaves-row").remove();
     });
 
 

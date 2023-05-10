@@ -89,7 +89,6 @@ class EmployeeController extends Controller
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
 
-        // dd($request->all());
         $user = new User();
         $user->name = $request->first_name.$request->last_name;
         
@@ -127,7 +126,7 @@ class EmployeeController extends Controller
         $employee->salary = $request->salary;
         $employee->is_lead = isset($request->is_lead) && $request->is_lead == true ? 1 : 0;
 
-        //Check work type and add values in payload
+        //Add No of working hours based on Part Time Work Type OR Add Weekdays on selecting Hyrid Work Type
         if(isset($request->per_day_hours) && $request->per_day_hours !=null)
         {
             $payload['per_day_hours'] = $request->per_day_hours;
@@ -140,10 +139,22 @@ class EmployeeController extends Controller
             }
             // Remove the trailing comma and space
             $weekdaysStr = rtrim($weekdaysStr, ', ');
-            // $payload = ['week_days' => $weekdaysStr];
             $payload['week_days'] = $weekdaysStr;
             $employee->work_time_schedule =  json_encode($payload);
         }
+
+
+        //Add Employee leaves based on Employee Type Selected
+        if(isset($request->leaveTypeValues) && count($request->leaveTypeValues) > 0 ){
+            for ($i = 0; $i < count($request->leaveTypeValues); $i++) {
+                $result[] = [
+                    "leave_type" => $request->leaveTypeValues[$i],
+                    "nol" => $request->nolValues[$i],
+                ];
+            }
+            $employee->leaves_payload = json_encode($result);
+        }
+
         $employee->save();
         return response()->json(['type' =>'success']);
     }
@@ -254,6 +265,13 @@ class EmployeeController extends Controller
             $payload['week_days'] = $weekdaysStr;
             $employee->work_time_schedule =  json_encode($payload);
         }
+
+        if(isset($request->per_day_hours) && $request->per_day_hours !=null)
+        {
+            $payload['per_day_hours'] = $request->per_day_hours;
+            $employee->work_time_schedule = json_encode($payload);
+        } 
+
         $employee->save();
         return response()->json(['type' =>'success']);
     }
