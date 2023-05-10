@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
 
 class DashboardController extends Controller
 {
@@ -14,7 +15,11 @@ class DashboardController extends Controller
     public function index()
     {
         //
-        return view('dashboard');
+        $data['totalEmployees'] = Employee::all()->count();
+        $data['activeEmployees'] = Employee::where('status',1)->count();
+        $data['nonActiveEmployees'] = $data['totalEmployees'] - $data['activeEmployees'];
+        
+        return view('dashboard',$data);
     }
 
     /**
