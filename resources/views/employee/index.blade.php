@@ -153,6 +153,8 @@
                         {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type',''), 'work_type')->id('work_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                 </div>
+                <div class="work-type-add">
+                </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
@@ -360,6 +362,8 @@
                         {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type',''), 'edit_work_type')->id('edit_work_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                 </div>
+                <div class="edit-work-type-add">
+                </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
@@ -550,6 +554,7 @@ function fetch_data(page,search_item)
     });
 }
 
+
 });
 
 $.ajaxSetup({
@@ -586,8 +591,21 @@ function storeEmp(){
     var joining_date = $("#joining_date").val();
     var salary = $("#salary").val();
     var is_lead = $("#is_lead").is(':checked');
-
-
+    var per_day_hours = null
+    if($('#per_day_hours').val()!= undefined && $('#per_day_hours').val()!= '' ){
+        per_day_hours = $('#per_day_hours').val();
+    }
+     // Get the checked checkboxes
+     var checkedBoxes = $('input[name="weekday[]"]:checked');
+    // Loop through the checked checkboxes and get their values
+    var weekdays = null;
+    if(checkedBoxes !=undefined && checkedBoxes.length >0){
+        var weekdays = [];
+        checkedBoxes.each(function() {
+            weekdays.push($(this).val());
+        });
+    }
+    
     //   make the ajax request
     $.ajax({
         url: '{{ route("emp.store") }}',
@@ -618,6 +636,8 @@ function storeEmp(){
             joining_date: joining_date,
             salary: salary,
             is_lead: is_lead,
+            per_day_hours: per_day_hours,
+            weekdays: weekdays,
         },
         dataType: 'json',
         success: function(result) {
@@ -692,6 +712,20 @@ function updateEmp(id){
     var joining_date = $("#edit_joining_date").val();
     var salary = $("#edit_salary").val();
     var is_lead = $("#edit_is_lead").is(':checked');
+    var per_day_hours = null
+    if($('#per_day_hours').val()!= undefined && $('#per_day_hours').val()!= '' ){
+        per_day_hours = $('#per_day_hours').val();
+    }
+     // Get the checked checkboxes
+     var checkedBoxes = $('input[name="weekday[]"]:checked');
+    // Loop through the checked checkboxes and get their values
+    var weekdays = null;
+    if(checkedBoxes !=undefined && checkedBoxes.length >0){
+        var weekdays = [];
+        checkedBoxes.each(function() {
+            weekdays.push($(this).val());
+        });
+    }
 //   make the ajax request
     $.ajax({
         url:  "{{url('/employee/update')}}/"+id,
@@ -722,9 +756,13 @@ function updateEmp(id){
             joining_date: joining_date,
             salary: salary,
             is_lead: is_lead,
+            per_day_hours: per_day_hours,
+            weekdays: weekdays,
         },
         dataType: 'json',
         success: function(result) {
+            console.log("updated")
+            console.log(result);
         // success handling
         //Server side validation
             if(result.errors)
@@ -817,6 +855,34 @@ function updateCities(event){
 
     });
 }
+
+// Add change event to the work type select box
+$('#work_type').change(function() {
+        // Get the selected value
+        var selectedValue = $(this).find(':selected').text().trim();        
+        console.log(selectedValue)
+        $('.work-type-add').html('') 
+        // Check if the value is Part Time
+        if (selectedValue === 'Part Time') {
+            console.log("Part time selected")
+            // Create a new div with the integer field for per day hours
+            var newDiv = $('<div class="row g-9 pb-2"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Per Day Hours*</span></label><input type="number" id="per_day_hours" name="per_day_hours" class="form-control form-control-solid" /></div></div>');
+            // Insert the new div after the work type div
+            $('.work-type-add').append(newDiv)
+        }
+        // Check if the value is Hybrid
+        else if (selectedValue === 'Hybrid') {
+            console.log("Hybrid selected")
+            // Create a new div with the checkboxes for the weekdays
+            var newDiv = $('<div class="row g-9 pb-2"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Weekdays*</span></label><div style="display: inline-flex;"><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Monday" /> Monday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Tuesday" /> Tuesday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Wednesday" /> Wednesday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Thursday" /> Thursday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Friday" /> Friday</label></div></div></div>');            // var newDiv = $('<div class="row g-9"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Weekdays*</span></label><br /><input type="checkbox" name="weekday[]" value="Monday" /> Monday<br /><input type="checkbox" name="weekday[]" value="Tuesday" /> Tuesday<br /><input type="checkbox" name="weekday[]" value="Wednesday" /> Wednesday<br /><input type="checkbox" name="weekday[]" value="Thursday" /> Thursday<br /><input type="checkbox" name="weekday[]" value="Friday" /> Friday</div></div>');
+            // Insert the new div after the work type div
+            $('.work-type-add').append(newDiv)
+        }
+        // If the value is neither Part Time nor Hybrid, remove any added fields
+        else {
+            $(this).closest('.fv-row').nextAll().remove();
+        }
+    });
 
 
 $(".btnClosePopup").click(function () {

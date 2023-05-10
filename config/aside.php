@@ -37,23 +37,26 @@ return [
                 'name'  => 'emp-type',
                 'icon'  => 'feather-icon',
             ],
-            [   'route' => 'emp.type.index',
-                'label' => 'Leaves',
-                'name'  => 'leaves',
-                'icon'  => 'feather-icon',
+            [
+                'route'     => 'workType.index',
+                'label'     => 'Work Type',
+                'name'      => 'Work Type',
+                'icon'      => 'feather-icon',
             ],
         ]
     ],
     [
-        'route'     => 'leaveType.index',
-        'label'     => 'Leave Types',
-        'name'      => 'Leave Types',
+        'route'     => '#',
+        'label'     => 'Leaves',
+        'name'      => 'leaves',
         'icon'      => 'feather-icon',
-    ],
-    [
-        'route'     => 'workType.index',
-        'label'     => 'Work Types',
-        'name'      => 'Work Types',
-        'icon'      => 'feather-icon',
+        'sub-menu'  => [
+            [
+                'route'     => 'leaveType.index',
+                'label'     => 'Leave Types',
+                'name'      => 'Leave Types',
+                'icon'      => 'feather-icon',
+            ],
+        ]
     ],
 ];

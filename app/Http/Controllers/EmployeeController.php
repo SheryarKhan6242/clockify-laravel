@@ -126,10 +126,25 @@ class EmployeeController extends Controller
         $employee->designation = $request->designation;
         $employee->salary = $request->salary;
         $employee->is_lead = isset($request->is_lead) && $request->is_lead == true ? 1 : 0;
+
+        //Check work type and add values in payload
+        if(isset($request->per_day_hours) && $request->per_day_hours !=null)
+        {
+            $payload['per_day_hours'] = $request->per_day_hours;
+            $employee->work_time_schedule = json_encode($payload);
+
+        } else if(isset($request->weekdays) && $request->weekdays !=null) {
+            $weekdaysStr = '';
+            foreach ($request->weekdays as $weekday) {
+                $weekdaysStr .= $weekday . ', ';
+            }
+            // Remove the trailing comma and space
+            $weekdaysStr = rtrim($weekdaysStr, ', ');
+            // $payload = ['week_days' => $weekdaysStr];
+            $payload['week_days'] = $weekdaysStr;
+            $employee->work_time_schedule =  json_encode($payload);
+        }
         $employee->save();
-
-
-
         return response()->json(['type' =>'success']);
     }
 
@@ -222,6 +237,23 @@ class EmployeeController extends Controller
         $employee->designation = $request->designation;
         $employee->salary = $request->salary;
         $employee->is_lead = isset($request->is_lead) && $request->is_lead == true ? 1 : 0;
+        //Check work type and add values in payload
+        if(isset($request->per_day_hours) && $request->per_day_hours !=null)
+        {
+            $payload['per_day_hours'] = $request->per_day_hours;
+            $employee->work_time_schedule = json_encode($payload);
+
+        } else if(isset($request->weekdays) && $request->weekdays !=null) {
+            $weekdaysStr = '';
+            foreach ($request->weekdays as $weekday) {
+                $weekdaysStr .= $weekday . ', ';
+            }
+            // Remove the trailing comma and space
+            $weekdaysStr = rtrim($weekdaysStr, ', ');
+            // $payload = ['week_days' => $weekdaysStr];
+            $payload['week_days'] = $weekdaysStr;
+            $employee->work_time_schedule =  json_encode($payload);
+        }
         $employee->save();
         return response()->json(['type' =>'success']);
     }

@@ -46,6 +46,25 @@ function getEmpById(id){
                 $('#edit_salary').val(response.employees.salary);
                 $('#edit_is_lead').val(response.employees.is_lead);
 
+                // Parse weekdays array from JSON string
+                if(response.employees.work_time_schedule != undefined && response.employees.work_time_schedule != ''){
+                    var payload = JSON.parse(response.employees.work_time_schedule);
+                    var selectedValue = $('#edit_work_type').val(response.employees.work_type).find(':selected').text().trim();
+                    $('.edit-work-type-add').html('')
+                    if(selectedValue == 'Hybrid')
+                    {
+                        var days = payload.week_days.split(", ");
+                        // Create a new div with the checkboxes for the weekdays
+                        var newDiv = $('<div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Weekdays*</span></label><div style="display: inline-flex;"><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Monday" ' + (days.includes("Monday") ? 'checked' : '') + ' /> Monday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Tuesday" ' + (days.includes("Tuesday") ? 'checked' : '') + ' /> Tuesday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Wednesday" ' + (days.includes("Wednesday") ? 'checked' : '') + ' /> Wednesday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Thursday" ' + (days.includes("Thursday") ? 'checked' : '') + ' /> Thursday</label><label style="padding: 0 10px;"><input type="checkbox" name="weekday[]" value="Friday" ' + (days.includes("Friday") ? 'checked' : '') + ' /> Friday</label></div></div>');
+                        // Insert the new div after the work type div
+                        $('.edit-work-type-add').append(newDiv)
+                    } else if (selectedValue == 'Part Time'){
+                        var hours = payload.per_day_hours;
+                        var newDiv = $('<div class="row g-9 pb-2"><div class="col-md-6 fv-row"><label class="fs-6 fw-bold"><span class="required">Per Day Hours*</span></label><input type="number" id="per_day_hours" name="per_day_hours" value="'+ hours + '" class="form-control form-control-solid" /></div></div>');
+                        $('.edit-work-type-add').append(newDiv)
+                    }
+                }
+
                 //Add Update employee onclick event and append ID 
                 $('#update_emp').attr('onclick', $('#update_emp').attr('onclick').replace('()', '(' + response.employees.id + ')'));
                 //USED LATER WHEN WE FILL UP CITIES ON EDIT
