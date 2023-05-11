@@ -52,6 +52,12 @@ return [
         'icon'      => 'feather-icon',
         'sub-menu'  => [
             [
+                'route'     => 'leave.index',
+                'label'     => 'Managae Leaves',
+                'name'      => 'Managae Leaves',
+                'icon'      => 'feather-icon',
+            ],
+            [
                 'route'     => 'leaveType.index',
                 'label'     => 'Leave Types',
                 'name'      => 'Leave Types',
