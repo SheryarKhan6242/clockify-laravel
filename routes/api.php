@@ -8,6 +8,10 @@ use App\Http\Controllers\Api\CheckInTypeController;
 use App\Http\Controllers\Api\EmployeeApiController;
 use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\DashboardApiController;
+use App\Http\Controllers\Api\LeaveTypeApiController;
+use App\Http\Controllers\Api\LeaveRequestApiController;
+
+
 
 
 
@@ -42,6 +46,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('/report')->group(function () {
         Route::get('/get-report', [ReportApiController::class, 'getReport'])->name('getReport');
+    });
+
+    Route::prefix('/leave-type')->group(function () {
+        Route::get('/', [LeaveTypeApiController::class, 'getLeaveType'])->name('getLeaveType');
+    });
+
+    Route::prefix('/leave')->group(function () {
+        Route::post('/add-request', [LeaveRequestApiController::class, 'addLeaveRequest'])->name('addLeaveRequest');
     });
 
     Route::get('/dashboard-widget', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
