@@ -36,11 +36,7 @@ class EmployeeApiController extends Controller
             return response()->json(['errors' => $errors]);
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
-        $employee = Employee::where('user_id',$request->user_id)
-            ->where('first_name',$request->first_name)
-            ->where('last_name',$request->last_name)
-            ->where('father_name',$request->father_name)
-            ->first();
+        $employee = Employee::where('user_id',$request->user_id)->first();
 
         if($employee)
         {
