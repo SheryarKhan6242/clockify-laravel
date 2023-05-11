@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('/report')->group(function () {
-        Route::get('/get-report', [ReportApiController::class, 'getReport'])->name('getReport');
+        Route::get('/', [ReportApiController::class, 'getReport'])->name('getReport');
     });
 
     Route::get('/dashboard-widget', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');

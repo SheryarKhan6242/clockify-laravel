@@ -27,6 +27,7 @@ class ReportApiController extends Controller
 
         //Fetch report based on user_id
         $report = Report::where('user_id', $request->user_id);
+        
         if (!$request->start_date && !$request->end_date && $request->month) {
             // Fetch reports for the given month and year
             $date = Carbon::createFromFormat('Y-m', date('Y') . '-' . $request->month);
