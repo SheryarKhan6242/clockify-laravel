@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\EmployeeWorkingType;
+
 
 class EmployeeApiController extends Controller
 {
@@ -16,7 +18,16 @@ class EmployeeApiController extends Controller
         if($employee)
             return response()->json(['employee'=>$employee]);
         
-            return response()->json(['message'=>'Employee does not exist.']); 
+        return response()->json(['message'=>'Employee does not exist.']); 
+    }
+
+    public function getEmpWorkingTypes(Request $request)
+    {
+        $types = EmployeeWorkingType::all();
+        if($types)
+            return response()->json(['workingTypes'=>$types]);
+        
+        return response()->json(['message'=>'Employee Working Types does not exist.']); 
     }
 
     public function updateProfile(Request $request)

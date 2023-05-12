@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\DashboardApiController;
 use App\Http\Controllers\Api\LeaveTypeApiController;
 use App\Http\Controllers\Api\LeaveRequestApiController;
+use App\Http\Controllers\Api\WorkFromHomeApiController;
 
 
 
@@ -40,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-checkin-type', [CheckInTypeController::class, 'getCheckInTypes']);
 
     Route::prefix('/employee')->group(function () {
+        Route::get('/working-types', [EmployeeApiController::class, 'getEmpWorkingTypes'])->name('getEmpWorkingTypes');
         Route::get('/profile/{id}', [EmployeeApiController::class, 'getProfile'])->name('getProfile');
         Route::post('/update-profile', [EmployeeApiController::class, 'updateProfile'])->name('updateProfile');
     });
@@ -54,6 +56,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('/leave')->group(function () {
         Route::post('/add-request', [LeaveRequestApiController::class, 'addLeaveRequest'])->name('addLeaveRequest');
+    });
+
+    Route::prefix('/work-from-home')->group(function () {
+        Route::post('/add-request', [WorkFromHomeApiController::class, 'addWfhRequest'])->name('addWfhRequest');
     });
 
     Route::get('/dashboard-widget', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
