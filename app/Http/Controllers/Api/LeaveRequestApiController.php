@@ -15,10 +15,10 @@ class LeaveRequestApiController extends Controller
     public function addLeaveRequest(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'user_id' => 'required',
-            'leave_type' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'user_id' => 'required|integer',
+            'leave_type' => 'required|integer',
+            'start_date' => 'required|date_format:d-m-Y',
+            'end_date' => 'required|date_format:d-m-Y',
             'subject' => 'required',
             'description' => 'required',
         ]);

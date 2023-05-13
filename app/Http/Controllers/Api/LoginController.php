@@ -53,7 +53,7 @@ class LoginController extends Controller
     //     return response($response, 200);
 
         $validator = \Validator::make($request->all(), [
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
         
@@ -75,7 +75,7 @@ class LoginController extends Controller
 
         } else if(!$user)
         {
-            return $this->sendError('Invalid email address', null);
+            return $this->sendError('Invalid Credentials', null);
         }
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
 
@@ -87,8 +87,14 @@ class LoginController extends Controller
         }
     }
 
-    public function sendResponse($result, $message)
+    public function logout(Request $request) {
+        return $request;
+        $request->user()->currentAccessToken()->delete();
+        $response = ['message' => 'You have been successfully logged out!'];
+        return response($response, 200);
+    }
 
+    public function sendResponse($result, $message)
     {
         $response = [
             'success' => true,

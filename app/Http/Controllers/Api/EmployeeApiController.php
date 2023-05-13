@@ -33,7 +33,7 @@ class EmployeeApiController extends Controller
     public function updateProfile(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'user_id' => 'required',
+            'user_id' => 'required|integer',
             'first_name' => 'required',
             'last_name' => 'required',
             'father_name' => 'required',

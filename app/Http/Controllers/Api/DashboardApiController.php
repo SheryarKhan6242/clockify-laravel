@@ -15,7 +15,7 @@ class DashboardApiController extends Controller
     public function dashboardWidget(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'user_id' => 'required' 
+            'user_id' => 'required|integer' 
 
         ]);
         
@@ -30,7 +30,6 @@ class DashboardApiController extends Controller
         // Fetch the user's username
         $user = User::find($request->user_id)->first();
         $username = $user->username;
-
         // Fetch the total working hours for the current week
         $currentDate = Carbon::now();
         $currentWeek = $currentDate->weekOfYear;
