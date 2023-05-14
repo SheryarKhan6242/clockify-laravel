@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Report;
+use App\Models\Leave;
 use Carbon\Carbon;
 
 class DashboardApiController extends Controller
@@ -54,19 +55,19 @@ class DashboardApiController extends Controller
          ->orderBy('login_date', 'desc')
          ->first();
         
-        // Check current clock in hours
+        // Get current clock in hours
         $currentClockInHours = Report::where('user_id', $id)
         ->where('login_date', '=', $currentDate->toDateString())
         ->orderBy('login_date', 'desc')
         ->first();
          
 
-        // Fetch the user's work anniversary date
         $currentDate = Carbon::now();
         $employee = Employee::where('user_id',$id)->first();
         $firstName = $employee->first_name;
         $lastName = $employee->last_name;
 
+        // Fetch the user's work anniversary date
         if ($employee->joining_date != null) {
             $anniversaryDate = Carbon::parse($employee->joining_date);
             $yearsOfService = $anniversaryDate->diffInYears($currentDate);
@@ -96,13 +97,9 @@ class DashboardApiController extends Controller
         }
 
         //Already clockin today
+        $is_clock_in = false;
         if($currentClockIn)
-        {
             $is_clock_in = true;
-
-        }else{
-            $is_clock_in = false;
-        }
         
         if($currentClockInHours)
         {
@@ -112,14 +109,73 @@ class DashboardApiController extends Controller
             $currentClockInHours = gmdate('H:i:s',$currentClockInHours);
         }
 
+        //Get Checkin Type Only when not clocked out
+        $type = Report::where('user_id', $id)->where('office_out', null)->with('checkinType')->first();
+
+        //Calculate total absents in current month
+        $currentDate = Carbon::now(); // current date
+        $currentMonth = $currentDate->format('m'); // current month
+        // First, check if there are any missing records in Reports table for current month
+        $reports = Report::where('user_id', $id)->whereMonth('login_date', $currentMonth)->pluck('login_date')->toArray();
+        $datesInMonth = Carbon::parse("{$currentDate->year}-{$currentMonth}-01")->daysUntil($currentDate);
+
+        $absentDays = [];
+        foreach ($datesInMonth as $date) {
+            $dateStr = $date->format('Y-m-d');
+            if (!in_array($dateStr, $reports)) {
+                // if record is missing, check if there is an approved leave request for the user on that day
+                $leave = Leave::where('user_id', $id)
+                    ->where('status', 'approved')
+                    ->whereDate('start_date', '<=', $dateStr)
+                    ->whereDate('end_date', '>=', $dateStr)
+                    ->first();
+                if (!$leave) {
+                    // if no leave request found, mark as absent
+                    $absentDays[] = $dateStr;
+                }
+            }
+        }
+
+        $totalAbsents = count($absentDays);
+
+        // Get All reports for clockouts with current month
+        $reports = Report::where('user_id', $id)
+            ->whereMonth('login_date', '=', Carbon::now()->month)
+            ->where('office_out', '!=', null)
+            ->get();
+
+        // return response()->json($currentDate->format('Y-m-d'));
+        // Based on current month, calculate dff bw hours in office_in and office_out
+        $clockinHours = [];
+        foreach ($reports as $report) {
+            // check if report is for current date
+            if ($report->login_date == $currentDate->format('Y-m-d')) {
+                $officeIn = Carbon::parse($report->office_in);
+                $officeOut = Carbon::parse($report->office_out);
+                $clockinHours[] = $officeOut->diffInHours($officeIn);
+            }
+        }
+
+        $totalClockinHours = array_sum($clockinHours);
+        // return response()->json($totalClockinHours);
+
+        $lastOfficeOut = Report::where('user_id', $id)
+            ->whereDate('login_date', '=', Carbon::now()->format('Y-m-d'))
+            ->whereNotNull('office_out')
+            ->pluck('office_out')
+            ->first();
+        
         $dashboard_widget = [
             'name' => $username,
             'last_working_hour' => $lastHourOfWeek,
             'total_week_hours' => $totalWorkingHours,
             'celebration' => ["birthday"=>$birthDayMessage, "anniversary"=> $anniversaryMessage],
             'is_clock_in' => $is_clock_in,
-            'currentClockInHours' => $currentClockInHours ?? null,
             "profile_photo_path" => $user->profile_photo_path ?? null,
+            'clockin_hours_today' => $totalClockinHours ?? 0,
+            'checkin_type_today' => isset($type->checkinType->type) ? $type->checkinType->type : null,
+            'last_clockin_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
+            'monthly_absents' => $totalAbsents, 
         ];
         
         return response()->json(['dashboard_info' => $dashboard_widget]);

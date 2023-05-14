@@ -10,4 +10,9 @@ class Report extends Model
     use HasFactory;
     
     protected $guarded = [];  
+
+    public function checkinType()
+    {
+        return $this->belongsTo(CheckinType::class,'checkin_id');
+    }
 }
