@@ -17,11 +17,11 @@ class ClockController extends Controller
     public function clockin(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'user_id' => ['required'],
-            'checkin_id' => ['required'],
-            'shift_id' => ['required'],
-            'clockin_location' => ['required'],
-            'login_user_ip' => ['required'],
+            'user_id' => 'required|integer',
+            'checkin_id' => 'required|integer',
+            'shift_id' => 'required|integer',
+            'clockin_location' => 'required',
+            'login_user_ip' => 'required',
         ]);
 
         if ($validator->fails()) {

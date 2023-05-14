@@ -14,7 +14,7 @@ class ReportApiController extends Controller
     {
         // return response()->json(['helo'=>'user']);
         $validator = \Validator::make($request->all(), [
-            'user_id' => 'required',
+            'user_id' => 'required|integer',
         ]);
 
         if ($validator->fails())

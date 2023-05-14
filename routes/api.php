@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\DashboardApiController;
 use App\Http\Controllers\Api\LeaveTypeApiController;
 use App\Http\Controllers\Api\LeaveRequestApiController;
+use App\Http\Controllers\Api\WorkFromHomeApiController;
 
 
 
@@ -30,18 +31,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->middleware('formdata');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::post('/logout', [LoginController::class, 'logout'])->middleware('formdata');
 
-    Route::post('/clockin', [ClockController::class, 'clockin']);
-    Route::post('/clockout', [ClockController::class, 'clockout']);
+    Route::post('/clockin', [ClockController::class, 'clockin'])->middleware('formdata');
+    Route::post('/clockout', [ClockController::class, 'clockout'])->middleware('formdata');
     Route::get('/get-checkin-type', [CheckInTypeController::class, 'getCheckInTypes']);
 
     Route::prefix('/employee')->group(function () {
+        Route::get('/working-types', [EmployeeApiController::class, 'getEmpWorkingTypes'])->name('getEmpWorkingTypes');
         Route::get('/profile/{id}', [EmployeeApiController::class, 'getProfile'])->name('getProfile');
-        Route::post('/update-profile', [EmployeeApiController::class, 'updateProfile'])->name('updateProfile');
+        Route::post('/update-profile', [EmployeeApiController::class, 'updateProfile'])->name('updateProfile')->middleware('formdata');
     });
 
     Route::prefix('/report')->group(function () {
@@ -53,7 +55,11 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('/leave')->group(function () {
-        Route::post('/add-request', [LeaveRequestApiController::class, 'addLeaveRequest'])->name('addLeaveRequest');
+        Route::post('/add-request', [LeaveRequestApiController::class, 'addLeaveRequest'])->name('addLeaveRequest')->middleware('formdata');
+    });
+
+    Route::prefix('/work-from-home')->group(function () {
+        Route::post('/add-request', [WorkFromHomeApiController::class, 'addWfhRequest'])->name('addWfhRequest')->middleware('formdata');
     });
 
     Route::get('/dashboard-widget', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');

@@ -4,23 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Leave;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\WorkFromHome;
+use Carbon\Carbon;
 
-class LeaveRequestApiController extends Controller
+
+class WorkFromHomeApiController extends Controller
 {
     //
-
-    public function addLeaveRequest(Request $request)
+    public function addWfhRequest(Request $request)
     {
         $validator = \Validator::make($request->all(), [
             'user_id' => 'required|integer',
-            'leave_type' => 'required|integer',
             'start_date' => 'required|date_format:d-m-Y',
             'end_date' => 'required|date_format:d-m-Y',
-            'subject' => 'required',
-            'description' => 'required',
+            'reason' => 'required',
+            'status' => 'required',
         ]);
         
         if ($validator->fails())
@@ -30,16 +29,16 @@ class LeaveRequestApiController extends Controller
             return response()->json(['errors' => $errors]);
         }
 
-        $leave = new Leave();
-        $leave->user_id = $request->user_id;
-        $leave->leave_type_id = $request->leave_type;
-        $leave->subject = $request->subject;
-        $leave->description = $request->description;
-        
-        $leave->start_date = Carbon::parse($request->start_date);
-        $leave->end_date = Carbon::parse($request->end_date);
-        $leave->status = 'pending';
-        $leave->approval_id = null;
+        $home = new WorkFromHome();
+        $home->user_id = $request->user_id;
+        // if(Carbon::parse($request->start_date) < Carbon::now())
+        //     return response()->json(['message' => 'Start date cannot be less than current date.']);
+
+        $home->start_date = Carbon::parse($request->start_date);
+        $home->end_date = Carbon::parse($request->end_date);
+        $home->reason = $request->reason;
+        $home->status = $request->status;
+        $home->approved_by = null;
 
         //Upload image from URL to Laravel storage
         // if ($request->hasFile('avatar')) {
@@ -50,7 +49,7 @@ class LeaveRequestApiController extends Controller
         //     $path = Storage::disk('public')->url($path);
         //     $memberProfile->profile_photo = $fileName;
         // }
-        if(isset($request->media))
+        if(isset($request->attach_file))
         {
             // $imageData = file_get_contents($request->media);
             // $imageData = file_get_contents($request->media, false, stream_context_create([
@@ -68,16 +67,16 @@ class LeaveRequestApiController extends Controller
             // $leave->media = $fileName;
 
             //USING URL AS AN IMAGE
-            $contents = file_get_contents($request->media);
-            $name = substr($request->media, strrpos($request->media, '/') + 1);
+            $contents = file_get_contents($request->attach_file);
+            $name = substr($request->attach_file, strrpos($request->attach_file, '/') + 1);
             $filepath = 'uploads/' . $name;
             $path = Storage::disk('public')->put($filepath, $contents);
             $path = Storage::disk('public')->url($path);
-            $leave->media = $name;
+            $home->attach_file = $name;
             // Storage::put($name, $contents);
         }
-        $leave->save();
+        $home->save();
             
-        return response()->json(['message' =>'Leave Request Submitted Successfully!']);
+        return response()->json(['message' =>'Work From Home Request Submitted Successfully!']);
     }
 }
