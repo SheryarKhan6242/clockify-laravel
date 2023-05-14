@@ -112,15 +112,16 @@ class DashboardApiController extends Controller
             $currentClockInHours = gmdate('H:i:s',$currentClockInHours);
         }
 
-        $user = [
+        $dashboard_widget = [
             'name' => $username,
             'last_working_hour' => $lastHourOfWeek,
             'total_week_hours' => $totalWorkingHours,
             'celebration' => ["birthday"=>$birthDayMessage, "anniversary"=> $anniversaryMessage],
             'is_clock_in' => $is_clock_in,
-            'currentClockInHours' => $currentClockInHours ?? null
+            'currentClockInHours' => $currentClockInHours ?? null,
+            "profile_photo_path" => $user->profile_photo_path ?? null,
         ];
         
-        return response()->json(['dashboard_info' => $user]);
+        return response()->json(['dashboard_info' => $dashboard_widget]);
     }
 }

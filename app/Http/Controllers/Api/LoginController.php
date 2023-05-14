@@ -55,8 +55,21 @@ class LoginController extends Controller
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
 
             $user = Auth::user(); 
+
+            $request->user()->update([
+                'last_login_at' => Carbon::now()->toDateTimeString(),
+                'last_login_ip' => $request->getClientIp()
+            ]);
+            
             $success['token'] =  $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
+            $success['user'] = [
+                "id" => $user->id,
+                "name" => $user->name,
+                "email" => $user->email,
+                "last_login_at" => $user->last_login_at,
+                "last_login_ip" => $user->last_login_ip
+            ];
 
             return $this->sendResponse($success, 'User logged in successfully.');
         }
