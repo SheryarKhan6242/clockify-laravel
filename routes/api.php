@@ -62,6 +62,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/add-request', [WorkFromHomeApiController::class, 'addWfhRequest'])->name('addWfhRequest')->middleware('formdata');
     });
 
-    Route::get('/dashboard-widget', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
+    Route::get('/dashboard-widget/{user}', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
     
 });

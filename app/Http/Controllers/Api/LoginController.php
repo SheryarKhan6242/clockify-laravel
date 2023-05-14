@@ -25,35 +25,8 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        // return response()->json(['name' => 'shery']);
-    //     $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
-    //     if($user && $user->status == 0)
-    //     {
-    //         return response()->json(['message'=> 'User profile has been deleted']);
-    //     }
-    //     if (! $user || ! Hash::check($request->password, $user->password)) {
-    //         throw ValidationException::withMessages([
-    //             'email' => __('auth.failed'),
-    //         ]);
-    //     }
-    //     // dd($request->user());
-    //     $user->update([
-    //         'last_login_at' => Carbon::now()->toDateTimeString(),
-    //         'last_login_ip' => $request->getClientIp()
-    //     ]);
-
-    //     $token = $user->createToken('api-token');
-    //     $user = ['name' => $user->name];
-    //     return response()->json(['token' => $token,'user' => $user]);
-    // }
-
-    // public function logout(Request $request) {
-    //     $request->user()->currentAccessToken()->delete();
-    //     $response = ['message' => 'You have been successfully logged out!'];
-    //     return response($response, 200);
-
         $validator = \Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ]);
         
@@ -66,7 +39,8 @@ class LoginController extends Controller
         }
 
         $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
-        // return $user;
+
+
         if($user && $user->status == 0)
         {
             return $this->sendResponse(null, 'User profile has been deactivated.');
@@ -77,6 +51,7 @@ class LoginController extends Controller
         {
             return $this->sendError('Invalid Credentials', null);
         }
+
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
 
             $user = Auth::user(); 
@@ -88,7 +63,6 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request) {
-        return $request;
         $request->user()->currentAccessToken()->delete();
         $response = ['message' => 'You have been successfully logged out!'];
         return response($response, 200);
