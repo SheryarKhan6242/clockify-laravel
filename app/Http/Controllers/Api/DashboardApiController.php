@@ -188,17 +188,20 @@ class DashboardApiController extends Controller
             'name' => $username,
             'last_working_hour' => $lastHourOfWeek,
             'total_week_hours' => $totalWorkingHours,
-            'celebration' => 
-                ["birthday"=>$birthdayMessages, 
-                "anniversary"=> $anniversaryMessages
-                ],
+            'widget_collections' => [
+                'celebrations' => 
+                    [
+                        "birthday"=>$birthdayMessages, 
+                        "anniversary"=> $anniversaryMessages
+                    ],
+            ],
             'is_clock_in' => $is_clock_in,
             "profile_photo_path" => $user->profile_photo_path ?? null,
             'clockin_hours_today' => $totalClockinHours ?? 0,
             'checkin_type_today' => isset($type->checkinType->type) ? $type->checkinType->type : null,
             'last_clockin_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
             'monthly_absents' => $totalAbsents,
-            'wfhAllowed' => $wfhAllowed,
+            'wfh_allowed' => $wfhAllowed,
         ];
         
         return response()->json(['dashboard_info' => $dashboard_widget]);
