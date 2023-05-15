@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Employee;
 use App\Models\Report;
 use App\Models\Leave;
+use App\Models\WorkFromHome;
 use Carbon\Carbon;
 
 class DashboardApiController extends Controller
@@ -15,19 +16,6 @@ class DashboardApiController extends Controller
     //
     public function dashboardWidget($id)
     {
-        // $validator = \Validator::make($request->all(), [
-        //     'user_id' => 'required|integer' 
-
-        // ]);
-        
-        // if ($validator->fails())
-        // {      
-        //     $errors = $validator->errors()->toArray();
-        //     // dd($errors);
-        //     return response()->json(['errors' => $errors]);
-        //     // return response()->json(['errors'=>$validator->errors()->all()]);
-        // }
-
         // Fetch the user's username
         $user = User::find($id)->first();
         $username = $user->username;
@@ -60,41 +48,59 @@ class DashboardApiController extends Controller
         ->where('login_date', '=', $currentDate->toDateString())
         ->orderBy('login_date', 'desc')
         ->first();
-         
 
+        //Calculate All active Employee's Birthday and Anniversary
         $currentDate = Carbon::now();
-        $employee = Employee::where('user_id',$id)->first();
-        $firstName = $employee->first_name;
-        $lastName = $employee->last_name;
+        $birthdayMessages = [];
+        $anniversaryMessages = [];
+        $employees = Employee::where('status', 1)->get();
 
-        // Fetch the user's work anniversary date
-        if ($employee->joining_date != null) {
-            $anniversaryDate = Carbon::parse($employee->joining_date);
-            $yearsOfService = $anniversaryDate->diffInYears($currentDate);
-        } else {
-            $anniversaryDate = null; // or false, 0, etc.
-        }
-        // return response()->json(['join'=>$anniversaryDate]);
-
-        //NOTE: If this condition is missing, carbon will parse to current date automatically if the date_of_birth is null
-        if ($employee->date_of_birth != null) {
+        foreach ($employees as $employee) {
             $birthdate = Carbon::parse($employee->date_of_birth);
-        } else {
-            $birthdate = null; // or false, 0, etc.
-        }
-        // return response()->json(['join'=>$birthdate]);
-        $birthDayMessage = null;
-        $anniversaryMessage = null;
-
-         // Check if it's the employee's birthday
-        if ($birthdate !=null && $currentDate->isSameDay($birthdate)) {            
-            $birthDayMessage = "Today is {$firstName} {$lastName}'s birthday!";
-        }
+            // Check if it's the employee's birthday
+            if ($birthdate->format('m-d') === $currentDate->format('m-d')) {
+                $birthdayMessages[] = "Today is {$employee->first_name} {$employee->last_name}'s birthday!";
+            }
         
-        // Check if it's the employee's work anniversary
-        if ($anniversaryDate !=null && $currentDate->isSameDay($anniversaryDate)) {
-            $anniversaryMessage = "Happy Work Anniversary $firstName $lastName!";
+            // Check if it's the employee's anniversary
+            $anniversaryDate = Carbon::parse($employee->joining_date);
+            if ($anniversaryDate->format('m-d') === $currentDate->format('m-d')) {
+                $anniversaryMessages[] = "Happy Anniversary {$employee->first_name} {$employee->last_name}!";
+            }
         }
+
+        // $employee = Employee::where('user_id',$id)->first();
+        // $firstName = $employee->first_name;
+        // $lastName = $employee->last_name;
+
+        // // Fetch the user's work anniversary date
+        // if ($employee->joining_date != null) {
+        //     $anniversaryDate = Carbon::parse($employee->joining_date);
+        //     $yearsOfService = $anniversaryDate->diffInYears($currentDate);
+        // } else {
+        //     $anniversaryDate = null; // or false, 0, etc.
+        // }
+        // // return response()->json(['join'=>$anniversaryDate]);
+
+        // //NOTE: If this condition is missing, carbon will parse to current date automatically if the date_of_birth is null
+        // if ($employee->date_of_birth != null) {
+        //     $birthdate = Carbon::parse($employee->date_of_birth);
+        // } else {
+        //     $birthdate = null; // or false, 0, etc.
+        // }
+        // // return response()->json(['join'=>$birthdate]);
+        // $birthDayMessage = null;
+        // $anniversaryMessage = null;
+
+        //  // Check if it's the employee's birthday
+        // if ($birthdate !=null && $currentDate->isSameDay($birthdate)) {            
+        //     $birthDayMessage = "Today is {$firstName} {$lastName}'s birthday!";
+        // }
+        
+        // // Check if it's the employee's work anniversary
+        // if ($anniversaryDate !=null && $currentDate->isSameDay($anniversaryDate)) {
+        //     $anniversaryMessage = "Happy Work Anniversary $firstName $lastName!";
+        // }
 
         //Already clockin today
         $is_clock_in = false;
@@ -158,24 +164,41 @@ class DashboardApiController extends Controller
 
         $totalClockinHours = array_sum($clockinHours);
         // return response()->json($totalClockinHours);
-
+        
+        //Last Clockout Time
         $lastOfficeOut = Report::where('user_id', $id)
             ->whereDate('login_date', '=', Carbon::now()->format('Y-m-d'))
             ->whereNotNull('office_out')
             ->pluck('office_out')
             ->first();
+
+        //Check if WFH is allowed
+        // return response()->json($currentDate->format('Y-m-d'));
+        $wfhAllowed = false;
+        $wfh = WorkFromHome::where('user_id', $id)
+            ->where('start_date', '<=', $currentDate->format('Y-m-d'))
+            ->where('end_date', '>=', $currentDate->format('Y-m-d'))
+            ->where('status', 'approved')
+            ->get();
+                // return response()->json(isset($requests));
+        if ($wfh->count() > 0)
+            $wfhAllowed = true;
         
         $dashboard_widget = [
             'name' => $username,
             'last_working_hour' => $lastHourOfWeek,
             'total_week_hours' => $totalWorkingHours,
-            'celebration' => ["birthday"=>$birthDayMessage, "anniversary"=> $anniversaryMessage],
+            'celebration' => 
+                ["birthday"=>$birthdayMessages, 
+                "anniversary"=> $anniversaryMessages
+                ],
             'is_clock_in' => $is_clock_in,
             "profile_photo_path" => $user->profile_photo_path ?? null,
             'clockin_hours_today' => $totalClockinHours ?? 0,
             'checkin_type_today' => isset($type->checkinType->type) ? $type->checkinType->type : null,
             'last_clockin_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
-            'monthly_absents' => $totalAbsents, 
+            'monthly_absents' => $totalAbsents,
+            'wfhAllowed' => $wfhAllowed,
         ];
         
         return response()->json(['dashboard_info' => $dashboard_widget]);
