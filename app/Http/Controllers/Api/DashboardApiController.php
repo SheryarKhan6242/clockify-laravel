@@ -26,26 +26,45 @@ class DashboardApiController extends Controller
         // Fetch the total working hours for the current week
         $currentDate = Carbon::now();
         $currentWeek = $currentDate->weekOfYear;
-
         $totalWorkingHours = Report::where('user_id', $id)
             ->where('login_date', '>=', $currentDate->startOfWeek()->toDateString())
             ->where('login_date', '<=', $currentDate->endOfWeek()->toDateString())
             ->sum('total_work_hours');
-
-         // Store the last hour of the week
-        $lastHourOfWeek = Report::where('user_id', $id)
-            ->where('login_date', '>=', $currentDate->startOfWeek()->toDateString())
-            ->where('login_date', '<=', $currentDate->endOfWeek()->toDateString())
+        $workingHours = null;
+        $startDate = null;            
+        // Find the last date on which the user has worked
+        $lastWorkingDate = Report::where('user_id', $id)
+            ->whereDate('login_date', '<', today())
             ->orderBy('login_date', 'desc')
-            ->value('total_work_hours');
+            ->value('login_date');
+        
+        if ($lastWorkingDate) {
+            $startDate = $lastWorkingDate;
+        
+            // Calculate the working hours for the last working date
+            $officeOut = Carbon::parse(Report::where('user_id', $id)
+                ->whereDate('login_date', $lastWorkingDate)
+                ->max('office_out'));
+        
+            $officeIn = Carbon::parse(Report::where('user_id', $id)
+                ->whereDate('login_date', $lastWorkingDate)
+                ->min('office_in'));
+        
+            if ($officeOut && $officeIn) {
+                $workingHours = $officeOut->diffAsCarbonInterval($officeIn);
+            }
+        }
+            
+        if ($workingHours) 
+            $lastWorkingHours = $workingHours->format('%H:%I:%S');
 
          // check current clock in
-         $currentClockIn = Report::where('user_id', $id)
-         ->where('login_date', '=', $currentDate->toDateString())
-         ->where('office_in', '!=', null)
-         ->where('office_out', '=', null)
-         ->orderBy('login_date', 'desc')
-         ->first();
+        $currentClockIn = Report::where('user_id', $id)
+            ->where('login_date', '=', $currentDate->toDateString())
+            ->where('office_in', '!=', null)
+            ->where('office_out', '=', null)
+            ->orderBy('login_date', 'desc')
+            ->first();
         
         // Get current clock in hours
         $currentClockInHours = Report::where('user_id', $id)
@@ -72,39 +91,6 @@ class DashboardApiController extends Controller
                 $anniversaryMessages[] = "Happy Anniversary {$employee->first_name} {$employee->last_name}!";
             }
         }
-
-        // $employee = Employee::where('user_id',$id)->first();
-        // $firstName = $employee->first_name;
-        // $lastName = $employee->last_name;
-
-        // // Fetch the user's work anniversary date
-        // if ($employee->joining_date != null) {
-        //     $anniversaryDate = Carbon::parse($employee->joining_date);
-        //     $yearsOfService = $anniversaryDate->diffInYears($currentDate);
-        // } else {
-        //     $anniversaryDate = null; // or false, 0, etc.
-        // }
-        // // return response()->json(['join'=>$anniversaryDate]);
-
-        // //NOTE: If this condition is missing, carbon will parse to current date automatically if the date_of_birth is null
-        // if ($employee->date_of_birth != null) {
-        //     $birthdate = Carbon::parse($employee->date_of_birth);
-        // } else {
-        //     $birthdate = null; // or false, 0, etc.
-        // }
-        // // return response()->json(['join'=>$birthdate]);
-        // $birthDayMessage = null;
-        // $anniversaryMessage = null;
-
-        //  // Check if it's the employee's birthday
-        // if ($birthdate !=null && $currentDate->isSameDay($birthdate)) {            
-        //     $birthDayMessage = "Today is {$firstName} {$lastName}'s birthday!";
-        // }
-        
-        // // Check if it's the employee's work anniversary
-        // if ($anniversaryDate !=null && $currentDate->isSameDay($anniversaryDate)) {
-        //     $anniversaryMessage = "Happy Work Anniversary $firstName $lastName!";
-        // }
 
         //Already clockin today
         $is_clock_in = false;
@@ -206,7 +192,7 @@ class DashboardApiController extends Controller
         
         $dashboard_widget = [
             'name' => $username,
-            'last_working_hour' => $lastHourOfWeek,
+            'last_working_hour' => isset($lastWorkingHours) ? $lastWorkingHours : 0,
             'total_week_hours' => $totalWorkingHours,
             'widget_collections' => [
                 'celebrations' => 
