@@ -151,7 +151,6 @@ class DashboardApiController extends Controller
         // Get All reports for clockouts with current month
         $reports = Report::where('user_id', $id)
             ->whereMonth('login_date', '=', Carbon::now()->month)
-            ->where('office_out', '!=', null)
             ->get();
 
         // return response()->json($currentDate->format('Y-m-d'));
@@ -161,12 +160,14 @@ class DashboardApiController extends Controller
             // check if report is for current date
             if ($report->login_date == $currentDate->format('Y-m-d')) {
                 $officeIn = Carbon::parse($report->office_in);
-                $officeOut = Carbon::parse($report->office_out);
+                $officeOut = isset($report->office_out) ? Carbon::parse($report->office_out) : $currentDate;
                 $diff = $officeOut->diffInSeconds($officeIn);
                 $clockinHours[] = gmdate('H:i:s',$diff);
+                
             }
         }
-        
+        // echo $clockinHours."<br>";
+        // die();
         // Initialize total duration as zero seconds
         $totalDuration = CarbonInterval::seconds(0); 
 
