@@ -10,9 +10,6 @@ use App\Models\Report;
 use App\Models\Leave;
 use App\Models\WorkFromHome;
 use Carbon\Carbon;
-use DateTime;
-use DatePeriod;
-use DateInterval;
 use Carbon\CarbonInterval;
 
 class DashboardApiController extends Controller
@@ -107,7 +104,8 @@ class DashboardApiController extends Controller
 
         //Get Checkin Type Only when not clocked out
         $type = Report::where('user_id', $id)->where('office_out', null)->with('checkinType')->first();
-
+        //Get Employee's Type and Work Type
+        $employee = Employee::where('user_id',$id)->with('employeeType','workType')->first();
         //Calculate total absents in current month
         $currentDate = Carbon::now(); // current date
         $currentMonth = $currentDate->format('m'); // current month
@@ -171,13 +169,12 @@ class DashboardApiController extends Controller
         }
 
         $totalTime = $totalDuration->format('%H:%I:%S');
-        //Last Clockout Time
-        $lastOfficeOut = Report::where('user_id', $id)
-            ->whereDate('login_date', '=', Carbon::now()->format('Y-m-d'))
+        //Last Clockin Time
+        $lastOfficeIn = Report::where('user_id', $id)
+            ->whereDate('login_date', Carbon::now()->format('Y-m-d'))
             ->whereNotNull('office_out')
-            ->orderBy('id','DESC')
-            ->pluck('office_out')
-            ->first();
+            ->orderBy('office_in', 'desc')
+            ->value('office_in');
 
         //Check if WFH is allowed
         // return response()->json($currentDate->format('Y-m-d'));
@@ -205,8 +202,10 @@ class DashboardApiController extends Controller
             'is_clock_in' => $is_clock_in,
             "profile_photo_path" => $user->profile_photo_path ?? null,
             'clockin_hours_today' => $totalTime  ?? 0,
+            'employee_type' => $employee->employeeType->name,
             'checkin_type_today' => isset($type->checkinType->type) ? $type->checkinType->type : null,
-            'last_clockout_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
+            'working_type' => $employee->workType->type,
+            'last_clockin_today' => isset($lastOfficeIn) ? $lastOfficeIn : null,
             'monthly_absents' => $totalAbsents,
             'wfh_allowed' => $wfhAllowed,
         ];

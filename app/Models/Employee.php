@@ -30,6 +30,10 @@ class Employee extends Model
         return $this->belongsTo(EmployeeType::class, 'emp_type');
     }
 
+    public function workType(){
+        return $this->belongsTo(EmployeeWorkingType::class, 'work_type');
+    }
+
     public function country(){
         return $this->belongsTo(Country::class, 'country_id');
     }
