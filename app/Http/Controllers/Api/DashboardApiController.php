@@ -10,6 +10,10 @@ use App\Models\Report;
 use App\Models\Leave;
 use App\Models\WorkFromHome;
 use Carbon\Carbon;
+use DateTime;
+use DatePeriod;
+use DateInterval;
+use Carbon\CarbonInterval;
 
 class DashboardApiController extends Controller
 {
@@ -158,13 +162,28 @@ class DashboardApiController extends Controller
             if ($report->login_date == $currentDate->format('Y-m-d')) {
                 $officeIn = Carbon::parse($report->office_in);
                 $officeOut = Carbon::parse($report->office_out);
-                $clockinHours[] = $officeOut->diffInHours($officeIn);
+                $diff = $officeOut->diffInSeconds($officeIn);
+                $clockinHours[] = gmdate('H:i:s',$diff);
             }
         }
-
-        $totalClockinHours = array_sum($clockinHours);
-        // return response()->json($totalClockinHours);
         
+        // Initialize total duration as zero seconds
+        $totalDuration = CarbonInterval::seconds(0); 
+
+        foreach ($clockinHours as $timeStr) {
+            $timeComponents = explode(':', $timeStr);
+            $hours = intval($timeComponents[0]);
+            $minutes = intval($timeComponents[1]);
+            $seconds = intval($timeComponents[2]);
+
+            $timeDuration = CarbonInterval::hours($hours)
+                ->minutes($minutes)
+                ->seconds($seconds);
+
+            $totalDuration = $totalDuration->add($timeDuration);
+        }
+
+        $totalTime = $totalDuration->format('%H:%I:%S');
         //Last Clockout Time
         $lastOfficeOut = Report::where('user_id', $id)
             ->whereDate('login_date', '=', Carbon::now()->format('Y-m-d'))
@@ -197,7 +216,7 @@ class DashboardApiController extends Controller
             ],
             'is_clock_in' => $is_clock_in,
             "profile_photo_path" => $user->profile_photo_path ?? null,
-            'clockin_hours_today' => $totalClockinHours ?? 0,
+            'clockin_hours_today' => $totalTime  ?? 0,
             'checkin_type_today' => isset($type->checkinType->type) ? $type->checkinType->type : null,
             'last_clockin_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
             'monthly_absents' => $totalAbsents,
