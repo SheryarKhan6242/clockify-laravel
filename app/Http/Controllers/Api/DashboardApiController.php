@@ -55,14 +55,14 @@ class DashboardApiController extends Controller
         if ($workingHours) 
             $lastWorkingHours = $workingHours->format('%H:%I:%S');
 
-         // check current clock in
+        $currentClockInDate = Carbon::now();
+        // check current clock in
         $currentClockIn = Report::where('user_id', $id)
-            ->where('login_date', '=', $currentDate->toDateString())
-            ->where('office_in', '!=', null)
-            ->where('office_out', '=', null)
-            ->orderBy('login_date', 'desc')
+            ->where('login_date', $currentClockInDate->toDateString())
+            ->where('office_out', null)
+            ->orderBy('id', 'desc')
             ->first();
-        
+
         // Get current clock in hours
         $currentClockInHours = Report::where('user_id', $id)
         ->where('login_date', '=', $currentDate->toDateString())
@@ -111,7 +111,9 @@ class DashboardApiController extends Controller
         $currentMonth = $currentDate->format('m'); // current month
         // First, check if there are any missing records in Reports table for current month
         $reports = Report::where('user_id', $id)->whereMonth('login_date', $currentMonth)->pluck('login_date')->toArray();
-        $datesInMonth = Carbon::parse("{$currentDate->year}-{$currentMonth}-01")->daysUntil($currentDate);
+        $datesInMonth = Carbon::parse("{$currentDate->year}-{$currentMonth}-01")->daysUntil($currentDate)->filter(function ($date) {
+            return !$date->isWeekend();
+        });;
 
         $absentDays = [];
         foreach ($datesInMonth as $date) {
