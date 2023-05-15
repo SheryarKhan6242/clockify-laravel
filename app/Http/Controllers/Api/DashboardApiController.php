@@ -175,6 +175,7 @@ class DashboardApiController extends Controller
         $lastOfficeOut = Report::where('user_id', $id)
             ->whereDate('login_date', '=', Carbon::now()->format('Y-m-d'))
             ->whereNotNull('office_out')
+            ->orderBy('id','DESC')
             ->pluck('office_out')
             ->first();
 
@@ -205,7 +206,7 @@ class DashboardApiController extends Controller
             "profile_photo_path" => $user->profile_photo_path ?? null,
             'clockin_hours_today' => $totalTime  ?? 0,
             'checkin_type_today' => isset($type->checkinType->type) ? $type->checkinType->type : null,
-            'last_clockin_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
+            'last_clockout_today' => isset($lastOfficeOut) ? $lastOfficeOut : null,
             'monthly_absents' => $totalAbsents,
             'wfh_allowed' => $wfhAllowed,
         ];
