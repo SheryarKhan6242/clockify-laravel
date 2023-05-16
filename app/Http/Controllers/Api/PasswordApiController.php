@@ -45,7 +45,7 @@ class PasswordApiController extends Controller
                 $user->save();
 
                 // Send the OTP via email    
-                SendVerifiedOtpEmail::dispatch($user->email, $otp);
+                SendVerifiedOtpEmail::dispatch($user, $otp);
     
                 return response()->json(['success' => true,'status' => 200,'message' => 'OTP sent successfully',]);
             } else {

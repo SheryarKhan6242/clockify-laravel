@@ -17,7 +17,7 @@ class SendVerifiedOtpEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $email;
+    public $user;
     public $otp;
 
     /**
@@ -25,10 +25,10 @@ class SendVerifiedOtpEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($email, $otp)
+    public function __construct($user, $otp)
     {
         //
-        $this->email = $email;
+        $this->user = $user;
         $this->otp = $otp;
     }
 
@@ -39,9 +39,21 @@ class SendVerifiedOtpEmail implements ShouldQueue
      */
     public function handle()
     {
-        $subject = 'Forget Password OTP';
-        $content = 'Your OTP is: ' . $this->otp;
+        $subject = 'Password Reset One-Time Password (OTP)';
+        $content = ' Dear <strong>' . $this->user->name . '</strong>,<br>
+            This email is in response to your request to reset your password. Please find below the One-Time Password (OTP) required to proceed with the password reset process:
+            OTP: <strong>' .$this->otp .'</strong>
+            <br>
+            Please note that this OTP is valid for a limited time only. Use it promptly to reset your password. If you did not initiate this password reset request, please ignore this email and ensure the security of your account.
+            <br>
+            If you need any further assistance or have any questions, please contact our support team immediately.
+            <br>
+            Thank you.
+            <br>
+            Best regards,<br>
+            Management 
+        ';
         
-        Mail::to($this->email)->send(new SendEmail($subject, $content));
+        Mail::to($this->user->email)->send(new SendEmail($subject, $content));
     }
 }
