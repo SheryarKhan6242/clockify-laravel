@@ -81,7 +81,7 @@ class PasswordApiController extends Controller
 
             $accessToken = $user->createToken('authToken')->accessToken;
 
-            return response()->json(['success' => true,'status' => 200,'user' => $user,'access_token' => $accessToken,
+            return response()->json(['success' => true,'status' => 200,'message' => 'Otp Verified Successfully!','user' => $user,'access_token' => $accessToken,
             ]);
         } else {
             return response()->json(['success' => false,'status' => 401,'message' => 'Invalid email, username, or OTP',], 401);
