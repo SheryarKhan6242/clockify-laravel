@@ -53,6 +53,9 @@ class EmployeeApiController extends Controller
         {
             $employee = Employee::find($employee->id);
             $employee->update($request->all());
+            $request->user()->update([
+                'name' => $request->first_name." ".$request->last_name,
+            ]);
             return response()->json(['message' =>'Employee Updated Successfully!']);
         } else {
             return response()->json(['message' =>'Employee does not exist.']);
