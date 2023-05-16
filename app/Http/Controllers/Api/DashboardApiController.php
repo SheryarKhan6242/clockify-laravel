@@ -19,7 +19,7 @@ class DashboardApiController extends Controller
     {
         // Fetch the user's username
         $user = User::find($id)->first();
-        $username = $user->username;
+        $name = $user->name;
         // Fetch the total working hours for the current week
         $currentDate = Carbon::now();
         $currentWeek = $currentDate->weekOfYear;
@@ -191,7 +191,7 @@ class DashboardApiController extends Controller
             $wfhAllowed = true;
         
         $dashboard_widget = [
-            'name' => $username,
+            'name' => $name,
             'last_working_hour' => isset($lastWorkingHours) ? $lastWorkingHours : 0,
             'total_week_hours' => $totalWorkingHours,
             'widget_collections' => [
