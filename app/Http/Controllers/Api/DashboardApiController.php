@@ -10,7 +10,10 @@ use App\Models\Report;
 use App\Models\Leave;
 use App\Models\WorkFromHome;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Carbon\CarbonInterval;
+
+
 
 class DashboardApiController extends Controller
 {
@@ -134,30 +137,29 @@ class DashboardApiController extends Controller
 
         $totalAbsents = count($absentDays);
 
-        // Get All reports for clockouts with current month
+        // // Get All reports for clockouts with current month
         $reports = Report::where('user_id', $id)
         ->whereMonth('login_date', '=', Carbon::now()->month)
         ->get();
     
-        $clockinHours = [];
+        $totalDuration = CarbonInterval::seconds(0);
+        
         foreach ($reports as $report) {
-            // check if report is for the current date
-            if ($report->login_date == $currentDate->format('Y-m-d')) {
+            // check if report is for the current date and has office_in time
+            if ($report->login_date == $currentDate->format('Y-m-d') && $report->office_in !== null) {
                 $officeIn = Carbon::parse($report->office_in);
-                $officeOut = isset($report->office_out) ? Carbon::parse($report->office_out) : $currentDate;
-                $diff = $officeOut->diff($officeIn);
-                $clockinHours[] = $diff;
+                $officeOut = isset($report->office_out) ? Carbon::parse($report->office_out) : Carbon::now();
+        
+                $diffInSeconds = $officeOut->diffInSeconds($officeIn);
+        
+                $timeDuration = CarbonInterval::seconds($diffInSeconds);
+        
+                $totalDuration = $totalDuration->add($timeDuration);
             }
         }
         
-        $totalDuration = CarbonInterval::seconds(0);
+        $totalTime = $totalDuration->cascade()->format('%H:%I:%S');
         
-        foreach ($clockinHours as $timeDuration) {
-            $totalDuration = $totalDuration->cascade()->add($timeDuration);
-        }
-        
-        $totalTime = $totalDuration->format('%H:%I:%S');
-    
 
         //Last Clockin Time
         $lastOfficeIn = Report::where('user_id', $id)
