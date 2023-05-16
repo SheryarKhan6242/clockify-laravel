@@ -17,6 +17,9 @@ class SendVerifiedOtpEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $email;
+    public $otp;
+
     /**
      * Create a new job instance.
      *
@@ -39,6 +42,6 @@ class SendVerifiedOtpEmail implements ShouldQueue
         $subject = 'Forget Password OTP';
         $content = 'Your OTP is: ' . $this->otp;
         
-        Mail::to('k163941@nu.edu.pk')->send(new SendEmail($subject, $content));
+        Mail::to($this->email)->send(new SendEmail($subject, $content));
     }
 }
