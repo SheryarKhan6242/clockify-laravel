@@ -22,8 +22,6 @@ class ReportApiController extends Controller
             $errors = $validator->errors()->toArray();
             // dd($errors);
             return response()->json(['success'=>false,'errors'=>$errors]);
-
-            // return response()->json(['errors'=>$validator->errors()->all()]);
         }
 
         //Fetch report based on user_id

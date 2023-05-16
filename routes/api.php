@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\DashboardApiController;
 use App\Http\Controllers\Api\LeaveTypeApiController;
 use App\Http\Controllers\Api\LeaveRequestApiController;
 use App\Http\Controllers\Api\WorkFromHomeApiController;
+use App\Http\Controllers\Api\PasswordApiController;
 
 
 
@@ -64,4 +65,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboard-widget/{user}', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
     
+    Route::get('request-otp', [PasswordApiController::class, 'requestOtp'])->name('requestOtp');
+    Route::post('verify-otp', [PasswordApiController::class, 'verifyOtp'])->name('verifyOtp')->middleware('formdata');
 });
