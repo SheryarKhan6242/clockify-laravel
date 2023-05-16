@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Laravel\Sanctum\PersonalAccessToken;
 use App\Mail\SendEmail; 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class PasswordApiController extends Controller
 {
@@ -86,6 +89,38 @@ class PasswordApiController extends Controller
         } else {
             return response()->json(['success' => false,'status' => 401,'message' => 'Invalid email, username, or OTP',], 401);
         }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // Validate the request input
+        $validator = \Validator::make($request->all(), [
+            'access_token' => 'required',
+            'new_password' => 'required|min:6',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        if ($validator->fails())
+        {      
+            $errors = $validator->errors()->toArray();
+            return response()->json(['success'=>false,'errors'=>$errors]);
+        }
+        // Find the user_id associated with the access token
+        $token = $request->input('access_token');
+        $accessToken = PersonalAccessToken::where('token',$token)->first();
+      
+        // Check if the access token and user_id are valid
+        if (!isset($accessToken->id)) {
+            // throw ValidationException::withMessages(['access_token' => 'Invalid access token']);
+            return response()->json(['success'=>false,'errors'=>'Invalid access token']);
+        }
+        $user_id = $accessToken->tokenable_id;
+        // Update the user's password
+        $user = User::find($user_id);
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        return response()->json(['success'=>true,'message'=>'Password Changed Successfully!']);
     }
     
     public function generateUniqueOtp()

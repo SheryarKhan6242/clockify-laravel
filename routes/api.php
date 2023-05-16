@@ -64,7 +64,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/dashboard-widget/{user}', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
-    
+     
+});
+
     Route::get('request-otp', [PasswordApiController::class, 'requestOtp'])->name('requestOtp');
     Route::post('verify-otp', [PasswordApiController::class, 'verifyOtp'])->name('verifyOtp')->middleware('formdata');
-});
+    Route::post('update-password', [PasswordApiController::class, 'updatePassword'])->name('updatePassword')->middleware('formdata');
+
