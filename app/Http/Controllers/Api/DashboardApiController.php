@@ -174,8 +174,7 @@ class DashboardApiController extends Controller
         //Last Clockin Time
         $lastOfficeIn = Report::where('user_id', $id)
             ->whereDate('login_date', Carbon::now()->format('Y-m-d'))
-            ->whereNotNull('office_out')
-            ->orderBy('office_in', 'desc')
+            ->orderBy('id', 'desc')
             ->value('office_in');
 
         //Check if WFH is allowed
