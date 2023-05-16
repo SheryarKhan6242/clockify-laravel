@@ -18,7 +18,7 @@ class DashboardApiController extends Controller
     public function dashboardWidget($id)
     {
         // Fetch the user's username
-        $user = User::find($id)->first();
+        $user = User::find($id);
         $name = $user->name;
         // Fetch the total working hours for the current week
         $currentDate = Carbon::now();
