@@ -136,41 +136,29 @@ class DashboardApiController extends Controller
 
         // Get All reports for clockouts with current month
         $reports = Report::where('user_id', $id)
-            ->whereMonth('login_date', '=', Carbon::now()->month)
-            ->get();
-
-        // return response()->json($currentDate->format('Y-m-d'));
-        // Based on current month, calculate dff bw hours in office_in and office_out
+        ->whereMonth('login_date', '=', Carbon::now()->month)
+        ->get();
+    
         $clockinHours = [];
         foreach ($reports as $report) {
-            // check if report is for current date
+            // check if report is for the current date
             if ($report->login_date == $currentDate->format('Y-m-d')) {
                 $officeIn = Carbon::parse($report->office_in);
                 $officeOut = isset($report->office_out) ? Carbon::parse($report->office_out) : $currentDate;
-                $diff = $officeOut->diffInSeconds($officeIn);
-                $clockinHours[] = gmdate('H:i:s',$diff);
-                
+                $diff = $officeOut->diff($officeIn);
+                $clockinHours[] = $diff;
             }
         }
-        // echo $clockinHours."<br>";
-        // die();
-        // Initialize total duration as zero seconds
-        $totalDuration = CarbonInterval::seconds(0); 
-
-        foreach ($clockinHours as $timeStr) {
-            $timeComponents = explode(':', $timeStr);
-            $hours = intval($timeComponents[0]);
-            $minutes = intval($timeComponents[1]);
-            $seconds = intval($timeComponents[2]);
-
-            $timeDuration = CarbonInterval::hours($hours)
-                ->minutes($minutes)
-                ->seconds($seconds);
-
-            $totalDuration = $totalDuration->add($timeDuration);
+        
+        $totalDuration = CarbonInterval::seconds(0);
+        
+        foreach ($clockinHours as $timeDuration) {
+            $totalDuration = $totalDuration->cascade()->add($timeDuration);
         }
-
+        
         $totalTime = $totalDuration->format('%H:%I:%S');
+    
+
         //Last Clockin Time
         $lastOfficeIn = Report::where('user_id', $id)
             ->whereDate('login_date', Carbon::now()->format('Y-m-d'))

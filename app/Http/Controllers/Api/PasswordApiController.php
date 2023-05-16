@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Mail\SendEmail; 
+use App\Jobs\SendVerifiedOtpEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -43,10 +44,8 @@ class PasswordApiController extends Controller
                 $user->otp = $otp;
                 $user->save();
 
-                // Send the OTP via email
-                $subject = 'Testing Application OTP';
-                $content = 'Your OTP is: ' . $otp;    
-                Mail::to($user->email)->send(new SendEmail($subject,$content));
+                // Send the OTP via email    
+                SendVerifiedOtpEmail::dispatch($user->email, $otp);
     
                 return response()->json(['success' => true,'status' => 200,'message' => 'OTP sent successfully',]);
             } else {
