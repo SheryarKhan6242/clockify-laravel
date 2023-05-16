@@ -86,4 +86,15 @@ class LeaveRequestApiController extends Controller
         }
         
     }
+
+    public function getUserLeavesRequests(Request $request)
+    {
+        
+        $leaves = leave::where('user_id',$request->user_id)->get();
+        if($leaves->count() > 0)
+        return response()->json(['success'=>true,'leaves'=>$leaves]);
+        
+        return response()->json(['success'=>false,'message'=>'No leaves request submitted.']);
+    }
+
 }

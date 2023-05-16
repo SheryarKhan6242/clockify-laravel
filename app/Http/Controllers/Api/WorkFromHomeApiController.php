@@ -58,4 +58,13 @@ class WorkFromHomeApiController extends Controller
         }
         
     }
+
+    public function getUserWfhRequests(Request $request)
+    {
+        $requests = WorkFromHome::where('user_id',$request->user_id)->get();
+        if($requests->count() > 0)
+        return response()->json(['success'=>true,'requests'=>$requests]);
+        
+        return response()->json(['success'=>false,'message'=>'No Work From Home request submitted.']);
+    }
 }

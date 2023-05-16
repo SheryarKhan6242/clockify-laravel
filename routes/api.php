@@ -56,10 +56,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('/leave')->group(function () {
+        Route::get('/{user_id}', [LeaveRequestApiController::class, 'getUserLeavesRequests'])->name('getUserLeavesRequests')->middleware('formdata');
         Route::post('/add-request', [LeaveRequestApiController::class, 'addLeaveRequest'])->name('addLeaveRequest')->middleware('formdata');
     });
 
     Route::prefix('/work-from-home')->group(function () {
+        Route::get('/{user_id}', [WorkFromHomeApiController::class, 'getUserWfhRequests'])->name('getUserWfhRequests')->middleware('formdata');
         Route::post('/add-request', [WorkFromHomeApiController::class, 'addWfhRequest'])->name('addWfhRequest')->middleware('formdata');
     });
 
