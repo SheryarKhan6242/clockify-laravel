@@ -18,7 +18,7 @@ class DashboardApiController extends Controller
     public function dashboardWidget($id)
     {
         // Fetch the user's username
-        $user = User::find($id)->first();
+        $user = User::find($id);
         $name = $user->name;
         // Fetch the total working hours for the current week
         $currentDate = Carbon::now();
@@ -174,8 +174,7 @@ class DashboardApiController extends Controller
         //Last Clockin Time
         $lastOfficeIn = Report::where('user_id', $id)
             ->whereDate('login_date', Carbon::now()->format('Y-m-d'))
-            ->whereNotNull('office_out')
-            ->orderBy('office_in', 'desc')
+            ->orderBy('id', 'desc')
             ->value('office_in');
 
         //Check if WFH is allowed
