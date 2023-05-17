@@ -65,4 +65,18 @@ return [
             ],
         ]
     ],
+    [
+        'route'     => '#',
+        'label'     => 'Settings',
+        'name'      => 'Settings',
+        'icon'      => 'feather-icon',
+        'sub-menu'  => [
+            [
+                'route'     => 'template.index',
+                'label'     => 'Email Template',
+                'name'      => 'Email Template',
+                'icon'      => 'feather-icon',
+            ],
+        ]
+    ],
 ];

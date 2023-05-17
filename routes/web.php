@@ -12,6 +12,7 @@ use App\Http\Controllers\AjaxRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\EmployeeWorkingTypeController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\EmailTemplateController;
 
 
 
@@ -123,6 +124,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('emp.update');
         Route::get('/delete/{id}', [EmployeeController::class, 'destroy'])->name('emp.delete');
         Route::get('/load-emp-table', [EmployeeController::class, 'getEmpData'])->name('emp_get_location_data');
+    });
+
+    Route::prefix('/email-template')->group(function () {
+        Route::get('/', [EmailTemplateController::class, 'index'])->name('template.index');
+        Route::get('/create', [EmailTemplateController::class, 'create'])->name('template.create');
+        Route::get('/edit/{id}', [EmailTemplateController::class, 'edit'])->name('template.edit');
+        Route::post('/store', [EmailTemplateController::class, 'store'])->name('template.store');
+        Route::post('/update/{id}', [EmailTemplateController::class, 'update'])->name('template.update');
+        Route::get('/delete/{id}', [EmailTemplateController::class, 'destroy'])->name('template.delete');
+        // Route::get('/load-emp-table', [EmailTemplateController::class, 'getEmpData'])->name('emp_get_location_data');
     });
 
     Route::prefix('/ajax')->group(function () {

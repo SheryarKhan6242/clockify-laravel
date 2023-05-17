@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Leave;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Leave;
+use App\Models\User;
+use App\Jobs\GetEmailTemplates;
+use Carbon\Carbon;
 
 class LeaveRequestApiController extends Controller
 {
@@ -76,9 +78,21 @@ class LeaveRequestApiController extends Controller
                 $path = Storage::disk('public')->put($filepath, $contents);
                 $path = Storage::disk('public')->url($path);
                 $leave->media = $name;
-                // Storage::put($name, $contents);
+                Storage::put($name, $contents);
             }
             $leave->save();
+
+            //Prepare Leave Request queue job for HR and Admin
+            $templateName = 'leave_request';
+            $placeholders = ['[admin]','[username]','[start_date]','[end_date]'];
+            //Fetch the Dynamic Admin name here.
+            $admin = "Admin";
+            //Fetch user
+            $user = User::find($request->user_id);
+            $values = [$admin,$user->name,$request->start_date,$request->end_date];
+            //Dispatch queue job
+            GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
+
             return response()->json(['success'=>true,'message'=>'Leave Request Submitted Successfully!']);
         } catch (\Throwable $th) {
             //throw $th;

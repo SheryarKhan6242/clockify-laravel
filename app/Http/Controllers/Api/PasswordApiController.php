@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Mail\SendEmail; 
-use App\Jobs\SendVerifiedOtpEmail;
+use App\Jobs\GetEmailTemplates;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -37,15 +37,16 @@ class PasswordApiController extends Controller
     
             if ($user) {
                 // Generate a unique OTP
-
                 $otp = $this->generateUniqueOtp();
-
                 // Update the user's OTP in the database
                 $user->otp = $otp;
                 $user->save();
-
-                // Send the OTP via email    
-                SendVerifiedOtpEmail::dispatch($user, $otp);
+                // Prepare OTP email for queue job    
+                $templateName = 'verify_otp';
+                $placeholders = ['[username]','[user_otp]'];
+                $values = [$user->name,$otp];
+                //Dispatch queue job
+                GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
     
                 return response()->json(['success' => true,'status' => 200,'message' => 'OTP sent successfully',]);
             } else {
