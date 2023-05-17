@@ -2,7 +2,7 @@
 @section('content')
 <div class="card">
     <div class="ui-block-title">
-        <h6 class="title font-weight-bold">Edit Template</h6>
+        <h5 class="title font-weight-bold pt-3 ps-4">Edit Template</h5>
     </div>
     <div class="card-body">      
         <div class="row">

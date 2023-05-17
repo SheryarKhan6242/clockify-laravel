@@ -36,7 +36,7 @@ class WorkFromHomeApiController extends Controller
             $home->start_date = Carbon::parse($request->start_date);
             $home->end_date = Carbon::parse($request->end_date);
             $home->reason = $request->reason;
-            $home->status = "pending";
+            $home->status = "Pending";
             $home->approved_by = null;
 
             //Upload image from URL to Laravel storage

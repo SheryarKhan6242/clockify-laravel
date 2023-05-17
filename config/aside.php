@@ -66,6 +66,12 @@ return [
         ]
     ],
     [
+        'route'     => 'wfh.index',
+        'label'     => 'Work From Home',
+        'name'      => 'Work From Home',
+        'icon'      => 'feather-icon',
+    ],
+    [
         'route'     => '#',
         'label'     => 'Settings',
         'name'      => 'Settings',

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Leave;
+use App\Models\User;
+use App\Jobs\GetEmailTemplates;
 
 class LeaveController extends Controller
 {
@@ -159,6 +161,14 @@ class LeaveController extends Controller
         }
 
         $leave->save();
+        //Prepare Leave Request queue job for User
+        $templateName = 'update_leave_status';
+        //Fetch user
+        $user = User::find($leave->user_id);
+        $placeholders = ['[username]','[start_date]','[end_date]','[status]'];
+        $values = [$user->name,$leave->start_date,$leave->end_date,$leave->status];
+        //Dispatch queue job
+        GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
         return response()->json(['type' =>'success']);
     }
 

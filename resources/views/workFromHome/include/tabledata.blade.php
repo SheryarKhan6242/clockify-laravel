@@ -7,25 +7,27 @@
         <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
             <th class="min-w-125px">S.No</th>
             <th class="min-w-125px">EMPLOYEE</th>
-            <th class="min-w-125px">TYPE</th>
-            <th class="min-w-125px">DATES</th>
+            <th class="min-w-125px">START DATE</th>
+            <th class="min-w-125px">END DATE</th>
+            <th class="min-w-125px">REASON</th>
             <th class="min-w-125px">STATUS</th>
-            <th class="text-end min-w-100px">Actions</th>
+            <th class="text-end min-w-100px">ACTIONS</th>
         </tr>
         </thead>
         <tbody class="text-gray-600 fw-bold" id="tbody_render">
             @php
                 $count = 1;
             @endphp
-            @foreach ($leave as $value)
+            @foreach ($workFromHome as $value)
                 <tr>
                     <td>{{$count}}</td>
                     <td>{{$value->userName->name}}</td>
-                    <td>{{$value->leaveType->type}}</td>
                     {{-- <td>{{$value->approval_id}}</td> --}}
-                    <td>{{ Carbon::parse($value->start_date)->format('d-M-Y') }} to {{Carbon::parse($value->end_date)->format('d-M-Y')}}</td>
+                    <td>{{ Carbon::parse($value->start_date)->format('d-M-Y') }}</td>
+                    <td>{{Carbon::parse($value->end_date)->format('d-M-Y')}}</td>
+                    <td>{{$value->reason}}</td>
                     <td>{{$value->status}}</td>
-                    <td>@include('leave.actions', ['leave' => $value]) </td>
+                    <td>@include('workFromHome.actions', ['workFromHome' => $value]) </td>
                     <td>
                     </td>
                     {{-- <td class="text-end">@include('departments.include.action')</td> --}}

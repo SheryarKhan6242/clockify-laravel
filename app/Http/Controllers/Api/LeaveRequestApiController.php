@@ -42,7 +42,7 @@ class LeaveRequestApiController extends Controller
             
             $leave->start_date = Carbon::parse($request->start_date);
             $leave->end_date = Carbon::parse($request->end_date);
-            $leave->status = 'pending';
+            $leave->status = 'Pending';
             $leave->approval_id = null;
 
             //Upload image from URL to Laravel storage
