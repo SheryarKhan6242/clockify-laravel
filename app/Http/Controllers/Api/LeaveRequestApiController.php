@@ -50,7 +50,7 @@ class LeaveRequestApiController extends Controller
                 $filepath = 'uploads/' . $fileName;
                 $path = Storage::disk('public')->put($filepath, file_get_contents($request->file('media')));
                 $path = Storage::disk('public')->url($path);
-                $memberProfile->profile_photo = $fileName;
+                $$leave->media = $fileName;
             }
             $leave->save();
             
