@@ -25,25 +25,56 @@ class ReportApiController extends Controller
         }
 
         //Fetch report based on user_id
+        // $report = Report::where('user_id', $request->user_id);
+        // if($report->get()->count() > 0)
+        // {
+        //     if (!$request->start_date && !$request->end_date && $request->month) {
+        //         // Fetch reports for the given month and year
+        //         $date = Carbon::createFromFormat('Y-m', date('Y') . '-' . $request->month);
+        //         $report->whereYear('login_date', $date->year)
+        //             ->whereMonth('login_date', $date->month);
+        //     } else if (!$request->month && !$request->start_date && !$request->end_date) {
+        //         // Fetch reports for the past 3 months(inclusive first one, therefore subtracting 2)
+        //         $report->where('login_date', '>=', Carbon::now()->subMonths(2));
+        //     } else if ($request->start_date && $request->end_date) {
+        //         // Fetch reports between start_date and end_date
+        //         $report->whereBetween('login_date', [$request->start_date, $request->end_date]);
+        //     }
+    
+        //     $reports = $report->get();
+        //     return response()->json(['success'=>true,'data'=>$reports]);
+        // }
+
         $report = Report::where('user_id', $request->user_id);
-        if($report->get()->count() > 0)
-        {
+
+        if ($report->count() > 0) {
             if (!$request->start_date && !$request->end_date && $request->month) {
                 // Fetch reports for the given month and year
                 $date = Carbon::createFromFormat('Y-m', date('Y') . '-' . $request->month);
                 $report->whereYear('login_date', $date->year)
                     ->whereMonth('login_date', $date->month);
             } else if (!$request->month && !$request->start_date && !$request->end_date) {
-                // Fetch reports for the past 3 months(inclusive first one, therefore subtracting 2)
+                // Fetch reports for the past 3 months (inclusive first one, therefore subtracting 2)
                 $report->where('login_date', '>=', Carbon::now()->subMonths(2));
             } else if ($request->start_date && $request->end_date) {
                 // Fetch reports between start_date and end_date
                 $report->whereBetween('login_date', [$request->start_date, $request->end_date]);
             }
-    
-            $reports = $report->get();
-            return response()->json(['success'=>true,'data'=>$reports]);
+
+            $reports = $report->with('checkinType')->get();
+
+            // Update reports to include the checkin type name
+            $updatedReports = $reports->map(function ($report) {
+                $checkinTypeName = $report->checkinType ? $report->checkinType->type : null;
+                $report->checkin_type = $checkinTypeName;
+                unset($report->checkinType);
+                unset($report->checkin_id);
+                return $report;
+            });
+
+            return response()->json(['success' => true, 'data' => $updatedReports]);
         }
+
         
         return response()->json(['success'=>false,'data'=>[]]);
 

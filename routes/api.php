@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\LeaveTypeApiController;
 use App\Http\Controllers\Api\LeaveRequestApiController;
 use App\Http\Controllers\Api\WorkFromHomeApiController;
 use App\Http\Controllers\Api\PasswordApiController;
+use App\Http\Controllers\Api\DeviceUserApiController;
 
 
 
@@ -63,6 +64,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/work-from-home')->group(function () {
         Route::get('/{user_id}', [WorkFromHomeApiController::class, 'getUserWfhRequests'])->name('getUserWfhRequests')->middleware('formdata');
         Route::post('/add-request', [WorkFromHomeApiController::class, 'addWfhRequest'])->name('addWfhRequest')->middleware('formdata');
+    });
+
+    Route::prefix('/device')->group(function () {
+        Route::post('/{user_id}', [DeviceUserApiController::class, 'storeDeviceId'])->name('storeDeviceId')->middleware('formdata');
     });
 
     Route::get('/dashboard-widget/{user}', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
