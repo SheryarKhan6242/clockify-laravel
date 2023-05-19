@@ -53,17 +53,19 @@ class WorkFromHomeApiController extends Controller
             $home->save();
             return response()->json(['success'=>true,'message'=>'Work From Home Request Submitted Successfully!']);
         } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['success'=>false,'errors'=>$th]);
-        }
-        
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+        } 
     }
 
     public function getUserWfhRequests(Request $request)
     {
         $requests = WorkFromHome::where('user_id',$request->user_id)->get();
         if($requests->count() > 0)
-        return response()->json(['success'=>true,'requests'=>$requests]);
+            return response()->json(['success'=>true,'requests'=>$requests]);
         
         return response()->json(['success'=>false,'message'=>'No Work From Home request submitted.']);
     }

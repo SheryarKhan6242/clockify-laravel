@@ -95,10 +95,12 @@ class LeaveRequestApiController extends Controller
 
             return response()->json(['success'=>true,'message'=>'Leave Request Submitted Successfully!']);
         } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['success'=>false,'errors'=>$th]);
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
         }
-        
     }
 
     public function getUserLeavesRequests(Request $request)

@@ -28,8 +28,16 @@ class DeviceUserApiController extends Controller
         {
             if($user->device_id == null)
             {
-                $user->device_id = $request->device_id;
-                $user->save();
+                try {    
+                    $user->device_id = $request->device_id;
+                    $user->save();
+                } catch (\Throwable $th) {
+                    // Return the error response
+                    if (env('APP_ENV') === 'local') {
+                        return response()->json(['success' => false, 'message' => $th->getMessage()]);
+                    }
+                    return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+                }
             }
             else
             {

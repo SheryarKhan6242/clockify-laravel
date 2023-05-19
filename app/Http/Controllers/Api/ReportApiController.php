@@ -74,9 +74,6 @@ class ReportApiController extends Controller
 
             return response()->json(['success' => true, 'data' => $updatedReports]);
         }
-
-        
         return response()->json(['success'=>false,'data'=>[]]);
-
     }
 }

@@ -114,12 +114,19 @@ class PasswordApiController extends Controller
             // throw ValidationException::withMessages(['access_token' => 'Invalid access token']);
             return response()->json(['success'=>false,'errors'=>'Invalid access token']);
         }
-        $user_id = $accessToken->tokenable_id;
-        // Update the user's password
-        $user = User::find($user_id);
-        $user->password = Hash::make($request->input('new_password'));
-        $user->save();
-
+        try {
+            $user_id = $accessToken->tokenable_id;
+            // Update the user's password
+            $user = User::find($user_id);
+            $user->password = Hash::make($request->input('new_password'));
+            $user->save();
+        } catch (\Throwable $th) {
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+        }
         return response()->json(['success'=>true,'message'=>'Password Changed Successfully!']);
     }
     

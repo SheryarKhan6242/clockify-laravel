@@ -51,12 +51,20 @@ class EmployeeApiController extends Controller
 
         if($employee)
         {
-            $employee = Employee::find($employee->id);
-            $employee->update($request->all());
-            $request->user()->update([
-                'name' => $request->first_name." ".$request->last_name,
-            ]);
-            return response()->json(['message' =>'Employee Updated Successfully!']);
+            try {
+                $employee = Employee::find($employee->id);
+                $employee->update($request->all());
+                $request->user()->update([
+                    'name' => $request->first_name." ".$request->last_name,
+                ]);
+                return response()->json(['message' =>'Employee Updated Successfully!']);
+            } catch (\Throwable $th) {
+                // Return the error response
+                if (env('APP_ENV') === 'local') {
+                    return response()->json(['success' => false, 'message' => $th->getMessage()]);
+                }
+                return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+            }
         } else {
             return response()->json(['message' =>'Employee does not exist.']);
         }
