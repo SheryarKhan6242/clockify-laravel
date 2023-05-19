@@ -9,7 +9,6 @@
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-
     <!-- Scripts -->
     {{-- @vite([
         'resources/js/app.js',
@@ -40,9 +39,12 @@
     @stack('header-css')
     @stack('header-css')
     @stack('header-scripts')
+    @livewireStyles
+
 </head>
 
 <body>
+    @livewireScripts
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->

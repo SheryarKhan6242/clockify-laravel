@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Mail\SendEmail; 
-use App\Jobs\SendVerifiedOtpEmail;
+use App\Jobs\GetEmailTemplates;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -37,15 +37,16 @@ class PasswordApiController extends Controller
     
             if ($user) {
                 // Generate a unique OTP
-
                 $otp = $this->generateUniqueOtp();
-
                 // Update the user's OTP in the database
                 $user->otp = $otp;
                 $user->save();
-
-                // Send the OTP via email    
-                SendVerifiedOtpEmail::dispatch($user->email, $otp);
+                // Prepare OTP email for queue job    
+                $templateName = 'verify_otp';
+                $placeholders = ['[username]','[user_otp]'];
+                $values = [$user->name,$otp];
+                //Dispatch queue job
+                GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
     
                 return response()->json(['success' => true,'status' => 200,'message' => 'OTP sent successfully',]);
             } else {
@@ -113,12 +114,19 @@ class PasswordApiController extends Controller
             // throw ValidationException::withMessages(['access_token' => 'Invalid access token']);
             return response()->json(['success'=>false,'errors'=>'Invalid access token']);
         }
-        $user_id = $accessToken->tokenable_id;
-        // Update the user's password
-        $user = User::find($user_id);
-        $user->password = Hash::make($request->input('new_password'));
-        $user->save();
-
+        try {
+            $user_id = $accessToken->tokenable_id;
+            // Update the user's password
+            $user = User::find($user_id);
+            $user->password = Hash::make($request->input('new_password'));
+            $user->save();
+        } catch (\Throwable $th) {
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+        }
         return response()->json(['success'=>true,'message'=>'Password Changed Successfully!']);
     }
     

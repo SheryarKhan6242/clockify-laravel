@@ -11,4 +11,8 @@ class WorkFromHome extends Model
     use HasFactory;
     protected $table = 'work_from_home';
 
+    public function userName()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

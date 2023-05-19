@@ -12,9 +12,8 @@ use App\Http\Controllers\AjaxRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\EmployeeWorkingTypeController;
 use App\Http\Controllers\LeaveController;
-
-
-
+use App\Http\Controllers\EmailTemplateController;
+use App\Http\Controllers\WorkFromHomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,6 +122,27 @@ Route::middleware('auth')->group(function () {
         Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('emp.update');
         Route::get('/delete/{id}', [EmployeeController::class, 'destroy'])->name('emp.delete');
         Route::get('/load-emp-table', [EmployeeController::class, 'getEmpData'])->name('emp_get_location_data');
+    });
+
+    Route::prefix('/email-template')->group(function () {
+        Route::get('/', [EmailTemplateController::class, 'index'])->name('template.index');
+        Route::get('/create', [EmailTemplateController::class, 'create'])->name('template.create');
+        Route::get('/edit/{id}', [EmailTemplateController::class, 'edit'])->name('template.edit');
+        Route::post('/store', [EmailTemplateController::class, 'store'])->name('template.store');
+        Route::post('/update/{id}', [EmailTemplateController::class, 'update'])->name('template.update');
+        Route::get('/delete/{id}', [EmailTemplateController::class, 'destroy'])->name('template.delete');
+        // Route::get('/load-emp-table', [EmailTemplateController::class, 'getEmpData'])->name('emp_get_location_data');
+    });
+
+    Route::prefix('/work-from-home')->group(function () {
+        Route::get('/', [WorkFromHomeController::class, 'index'])->name('wfh.index');
+        Route::get('/create', [WorkFromHomeController::class, 'create'])->name('wfh.create');
+        Route::get('/edit/{id}', [WorkFromHomeController::class, 'edit'])->name('wfh.edit');
+        Route::post('/store', [WorkFromHomeController::class, 'store'])->name('wfh.store');
+        Route::post('/update/{id}', [WorkFromHomeController::class, 'update'])->name('wfh.update');
+        Route::get('/delete/{id}', [WorkFromHomeController::class, 'destroy'])->name('wfh.delete');
+        Route::get('/load-table', [WorkFromHomeController::class, 'getWfhData'])->name('wfh_data');
+        Route::post('/update-status', [WorkFromHomeController::class, 'updateWfhStatus'])->name('wfh.updateWfhStatus');
     });
 
     Route::prefix('/ajax')->group(function () {

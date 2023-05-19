@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Leave;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Leave;
+use App\Models\User;
+use App\Jobs\GetEmailTemplates;
+use Carbon\Carbon;
 
 class LeaveRequestApiController extends Controller
 {
@@ -40,7 +42,7 @@ class LeaveRequestApiController extends Controller
             
             $leave->start_date = Carbon::parse($request->start_date);
             $leave->end_date = Carbon::parse($request->end_date);
-            $leave->status = 'pending';
+            $leave->status = 'Pending';
             $leave->approval_id = null;
 
             //Upload image from URL to Laravel storage
@@ -53,12 +55,36 @@ class LeaveRequestApiController extends Controller
                 $$leave->media = $fileName;
             }
             $leave->save();
-            
+
+            //Prepare Leave Request queue job for HR and Admin
+            $templateName = 'leave_request';
+            $placeholders = ['[admin]','[username]','[start_date]','[end_date]'];
+            //Fetch the Dynamic Admin name here.
+            $admin = "Admin";
+            //Fetch user
+            $user = User::find($request->user_id);
+            $values = [$admin,$user->name,$request->start_date,$request->end_date];
+            //Dispatch queue job
+            GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
+
             return response()->json(['success'=>true,'message'=>'Leave Request Submitted Successfully!']);
         } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['success'=>false,'errors'=>$th]);
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
         }
-        
     }
+
+    public function getUserLeavesRequests(Request $request)
+    {
+        
+        $leaves = leave::where('user_id',$request->user_id)->get();
+        if($leaves->count() > 0)
+        return response()->json(['success'=>true,'leaves'=>$leaves]);
+        
+        return response()->json(['success'=>false,'message'=>'No leaves request submitted.']);
+    }
+
 }

@@ -30,18 +30,26 @@ class ClockController extends Controller
         }
         // dd($request->all());
         // Insert Clockin data for Reports
-        $report = new Report();
-        $report->user_id = $request->user_id;
-        $report->office_in = Carbon::now()->format('H:i:m');
-        $report->login_date = Carbon::now()->format('Y-m-d');
-        $report->shift_id = $request->shift_id;
-        $report->wfh_reason =  $request->wfh_reason ?? null;
-        $report->clockin_location = $request->clockin_location;
-        $report->login_user_ip = $request->login_user_ip;
-        $report->checkin_id = $request->checkin_id;
-        $report->save();
-        // Return the entire payload as a JSON response
-        return response()->json($report);
+        try {
+            $report = new Report();
+            $report->user_id = $request->user_id;
+            $report->office_in = Carbon::now()->format('H:i:m');
+            $report->login_date = Carbon::now()->format('Y-m-d');
+            $report->shift_id = $request->shift_id;
+            $report->wfh_reason =  $request->wfh_reason ?? null;
+            $report->clockin_location = $request->clockin_location;
+            $report->login_user_ip = $request->login_user_ip;
+            $report->checkin_id = $request->checkin_id;
+            $report->save();
+            // Return the entire payload as a JSON response
+            return response()->json($report);
+        } catch (\Throwable $th) {
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+        }
     }
 
     public function clockout(Request $request)
@@ -60,16 +68,24 @@ class ClockController extends Controller
         $report = Report::where('user_id',$request->user_id)->where('login_date',$request->login_date)->orderBy('id','DESC')->first();
         if($report)
         {
-            $checkInTime = $report->office_in;
-            $checkOutTime = Carbon::now()->format('H:i:m');
-            //Calculate working hours
-            // $workHours = $checkInTime - $checkOutTime;
-            $end = Carbon::parse($checkOutTime);
-            $workHours = $end->diffInSeconds($checkInTime);
-            //Calculate working hours
-            $report->total_work_hours = gmdate('H:i:s', $workHours);
-            $report->office_out = $checkOutTime;
-            $report->save();
+            try {
+                $checkInTime = $report->office_in;
+                $checkOutTime = Carbon::now()->format('H:i:m');
+                //Calculate working hours
+                // $workHours = $checkInTime - $checkOutTime;
+                $end = Carbon::parse($checkOutTime);
+                $workHours = $end->diffInSeconds($checkInTime);
+                //Calculate working hours
+                $report->total_work_hours = gmdate('H:i:s', $workHours);
+                $report->office_out = $checkOutTime;
+                $report->save();
+            } catch (\Throwable $th) {
+                // Return the error response
+                if (env('APP_ENV') === 'local') {
+                    return response()->json(['success' => false, 'message' => $th->getMessage()]);
+                }
+                return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+            }
             // Return the entire payload as a JSON response
             return response()->json(['date'=> $report]);
         } else {

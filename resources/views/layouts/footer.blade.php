@@ -44,6 +44,8 @@
 <script src="{{ asset('assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
 <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+
 <script>
     // $(".selectjs2").select2({
         

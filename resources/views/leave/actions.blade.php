@@ -1,15 +1,19 @@
 <div class="btn-group float-end" role="group" aria-label="Basic example">
     <div>
-        <a class="px-1" id="leave_edit" onclick ="getLeaveById({{$id}})" href="#" data-bs-placement="bottom" title="View"><i class="fas fa-eye fa-lg" data-bs-toggle="tooltip" title="View"></i></a>
+        <a class="px-1" onclick ="getLeaveById({{$leave->id}})" href="#" data-bs-placement="bottom" title="View"><i class="fas fa-eye fa-lg" data-bs-toggle="tooltip" title="View"></i></a>
     </div>
+    @if ($leave->status == 'Pending')
+        <div>
+            <a class="px-1" onclick ="updateLeaveStatus({{$leave->id}},1)" href="#" data-bs-placement="bottom" title="Approve"><i class="fas fa-check-square fa-lg" data-bs-toggle="tooltip" title="Approve"></i></a>
+        </div>
+    @endif
+    @if ($leave->status == 'Pending')
+        <div>
+            <a class="px-1" onclick ="updateLeaveStatus({{$leave->id}},0)" href="#" data-bs-placement="bottom" title="Reject"><i class="fas fa-window-close fa-lg" data-bs-toggle="tooltip" title="Reject"></i></a>
+        </div>
+    @endif
     <div>
-        <a class="px-1" id="leave_edit" onclick ="updateLeaveStatus({{$id}},1)" href="#" data-bs-placement="bottom" title="Approve"><i class="fas fa-check-square fa-lg" data-bs-toggle="tooltip" title="Approve"></i></a>
-    </div>
-    <div>
-        <a class="px-1" id="leave_edit" onclick ="updateLeaveStatus({{$id}},0)" href="#" data-bs-placement="bottom" title="Reject"><i class="fas fa-window-close fa-lg" data-bs-toggle="tooltip" title="Reject"></i></a>
-    </div>
-    <div>
-        <a class="px-1" id="leave_edit" onclick ="deleteLeave({{$id}})" href="#" data-bs-placement="bottom" title="Reject"><i class="fas fa-trash-alt fa-lg" data-bs-toggle="tooltip" title="Delete"></i></a>
+        <a class="px-1" onclick ="deleteLeave({{$leave->id}})" href="#" data-bs-placement="bottom" title="Reject"><i class="fas fa-trash-alt fa-lg" data-bs-toggle="tooltip" title="Delete"></i></a>
     </div>
 </div>
 

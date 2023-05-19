@@ -25,7 +25,7 @@
                     {{-- <td>{{$value->approval_id}}</td> --}}
                     <td>{{ Carbon::parse($value->start_date)->format('d-M-Y') }} to {{Carbon::parse($value->end_date)->format('d-M-Y')}}</td>
                     <td>{{$value->status}}</td>
-                    <td>@include('leave.actions', ['id' => $value->id]) </td>
+                    <td>@include('leave.actions', ['leave' => $value]) </td>
                     <td>
                     </td>
                     {{-- <td class="text-end">@include('departments.include.action')</td> --}}
