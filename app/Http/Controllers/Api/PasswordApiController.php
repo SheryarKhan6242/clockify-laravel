@@ -84,7 +84,7 @@ class PasswordApiController extends Controller
             $user->otp = null;
             $user->save();
 
-            $accessToken = $user->createToken('authToken')->accessToken;
+            $accessToken = $user->createToken('authToken')->plainTextToken;
 
             return response()->json(['success' => true,'status' => 200,'message' => 'Otp Verified Successfully!','access_token' => $accessToken,
             ]);
@@ -97,7 +97,7 @@ class PasswordApiController extends Controller
     {
         // Validate the request input
         $validator = \Validator::make($request->all(), [
-            'access_token' => 'required',
+            'user_id' => 'required|integer',
             'new_password' => 'required|min:6',
             'confirm_password' => 'required|same:new_password',
         ]);
@@ -108,16 +108,16 @@ class PasswordApiController extends Controller
             return response()->json(['success'=>false,'errors'=>$errors]);
         }
         // Find the user_id associated with the access token
-        $token = $request->input('access_token');
-        $accessToken = PersonalAccessToken::where('token',$token)->first();
+        // $token = $request->input('access_token');
+        // $accessToken = PersonalAccessToken::where('token',$token)->first();
       
         // Check if the access token and user_id are valid
-        if (!isset($accessToken->id)) {
-            // throw ValidationException::withMessages(['access_token' => 'Invalid access token']);
-            return response()->json(['success'=>false,'errors'=>'Invalid access token']);
-        }
+        // if (!isset($accessToken->id)) {
+        //     // throw ValidationException::withMessages(['access_token' => 'Invalid access token']);
+        //     return response()->json(['success'=>false,'errors'=>'Invalid access token']);
+        // }
         try {
-            $user_id = $accessToken->tokenable_id;
+            $user_id = $request->user_id;
             // Update the user's password
             $user = User::find($user_id);
             $user->password = Hash::make($request->input('new_password'));
