@@ -70,29 +70,27 @@ class ReportApiController extends Controller
             // });
 
             // return response()->json(['success' => true, 'data' => $updatedReports]);
-
-
+            
             // $reports = $report->with('checkinType')->get();
-
+            // $reports = $report->with('checkinType')->get();
             // // Group reports by login date
             // $groupedReports = $reports->groupBy('login_date');
-            
+
             // // Format the grouped reports
             // $updatedReports = $groupedReports->flatMap(function ($group) {
             //     $firstReport = $group->first();
-            //     $checkinType = $firstReport->checkinType;
-            //     $checkinTypeName = $checkinType ? $checkinType->type : null;
-            
+            //     $checkinTypeName = $firstReport->checkinType ? $firstReport->checkinType->type : null;
             //     $formattedReports = $group->slice(1)->map(function ($report) {
             //         return [
             //             'id' => $report->id,
             //             'office_in' => $report->office_in,
             //             'office_out' => $report->office_out,
             //             'total_work_hours' => $report->total_work_hours,
-            //             'checkin_type' => $report->checkin_type,
+            //             'checkin_type' => $report->checkinType ? $report->checkinType->type : null,
             //         ];
             //     });
-            
+                
+
             //     return [
             //         'id' => $firstReport->id,
             //         'user_id' => $firstReport->user_id,
@@ -108,25 +106,19 @@ class ReportApiController extends Controller
             //         'login_user_ip' => $firstReport->login_user_ip,
             //         'created_at' => $firstReport->created_at,
             //         'updated_at' => $firstReport->updated_at,
-            //         'checkin_type' => [
-            //             'id' => $checkinType->id,
-            //             'type' => $checkinType->type,
-            //             'created_at' => $checkinType->created_at,
-            //             'updated_at' => $checkinType->updated_at,
-            //         ],
+            //         'checkin_type' => $checkinTypeName,
             //         'other_reports' => $formattedReports->values(),
             //     ];
             // });
-            
+
             // return response()->json(['success' => true, 'data' => $updatedReports]);
-            
-            // $reports = $report->with('checkinType')->get();
+
             $reports = $report->with('checkinType')->get();
             // Group reports by login date
             $groupedReports = $reports->groupBy('login_date');
-
+            
             // Format the grouped reports
-            $updatedReports = $groupedReports->flatMap(function ($group) {
+            $updatedReports = $groupedReports->map(function ($group) {
                 $firstReport = $group->first();
                 $checkinTypeName = $firstReport->checkinType ? $firstReport->checkinType->type : null;
                 $formattedReports = $group->slice(1)->map(function ($report) {
@@ -138,8 +130,7 @@ class ReportApiController extends Controller
                         'checkin_type' => $report->checkinType ? $report->checkinType->type : null,
                     ];
                 });
-                
-
+            
                 return [
                     'id' => $firstReport->id,
                     'user_id' => $firstReport->user_id,
@@ -158,12 +149,12 @@ class ReportApiController extends Controller
                     'checkin_type' => $checkinTypeName,
                     'other_reports' => $formattedReports->values(),
                 ];
-            });
-
+            })->values();
+            
             return response()->json(['success' => true, 'data' => $updatedReports]);
+            
 
-        }
-        
+        }        
     }
         return response()->json(['success'=>false,'data'=>[], 'message' => 'Report for this User does not exist!']);
     }
