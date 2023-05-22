@@ -5,6 +5,7 @@
 @php
  use App\Models\Country;
  use App\Models\MaritalStatus;
+ use App\Models\Employee;
  use App\Models\EmployeeType;
  use App\Models\Department;
  use App\Models\Shift;
@@ -112,6 +113,20 @@
                 </div> --}}
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="row g-9">
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Reporting To</span>
+                        </label>
+                        {{ aire()->select(Employee::all()->pluck('first_name', 'id')->prepend('Select Your Lead',''), 'first_name')->id('first_name')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">Is Lead</label>
+                        <label class="form-check form-switch form-check-custom form-check-solid">
+                            {{ aire()->checkbox('is_lead', '')->class('form-check-input')->id('is_lead') }}
+                        </label>
+                    </div>
+                </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
@@ -289,42 +304,32 @@
                         {{ aire()->select(BankAccountType::all()->pluck('type', 'id')->prepend('Select Account Type',''), 'account_type')->id('account_type')->class('form-control form-control-solid selectjs2') }}
                     </div>
                     <div class="col-md-6 fv-row">
-                        <label class="fs-6 fw-bold">Is Lead</label>
-                        <label class="form-check form-switch form-check-custom form-check-solid">
-                            {{ aire()->checkbox('is_lead', '')->class('form-check-input')->id('is_lead') }}
-                        </label>
-                    </div>
-                </div>
-                <div class="row g-9">
-                    <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Account Holder Name</span>
+                            <span>Account Holder</span>
                         </label>
                         {{ aire()->input('acc_holder')->placeholder('Enter Account Holder Name')->id('acc_holder')->class('form-control form-control-solid')->required() }}
                     </div>
+                </div>
+                <div class="row g-9">
                     <div class="col-md-6 fv-row">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Account Number</span>
-                            </label>
-                            {{ aire()->input('acc_no')->placeholder('Enter Account Number')->id('acc_no')->class('form-control form-control-solid')->required() }}
-                        </div>
+                        <label class="fs-6 fw-bold">
+                            <span>Account Number</span>
+                        </label>
+                        {{ aire()->input('acc_no')->placeholder('Enter Account Number')->id('acc_no')->class('form-control form-control-solid')->required() }}
+                    </div>
+                    <div class="col-md-6 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span>Branch Name</span>
+                        </label>
+                        {{ aire()->input('branch_name')->placeholder('Enter Branch Name')->id('branch_name')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
                 <div class="row g-9">
                     <div class="col-md-6 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Branch Name</span>
+                            <span>Branch Location</span>
                         </label>
-                        {{ aire()->input('branch_name')->placeholder('Enter Branch Name')->id('branch_name')->class('form-control form-control-solid')->required() }}
-                    </div>
-                    <div class="col-md-6 fv-row">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Branch Location</span>
-                            </label>
-                            {{ aire()->input('branch_location')->placeholder('Enter Branch Location')->id('branch_location')->class('form-control form-control-solid')->required() }}
-                        </div>
+                        {{ aire()->input('branch_location')->placeholder('Enter Branch Location')->id('branch_location')->class('form-control form-control-solid')->required() }}
                     </div>
                 </div>
                 <div class="emp-leaves row g-9 pb-4"></div>
@@ -658,6 +663,14 @@ function storeEmp(){
         var value = $(this).val();
         leaveTypeValues.push(value);
     });
+
+    //FINANCIAL INFO
+    var acc_holder   = $("#acc_holder ").val();
+    var account_type = $("#account_type").val();
+    var acc_no = $("#acc_no").val();
+    var branch_name = $("#branch_name").val();
+    var branch_location = $("#branch_location").val();
+
     
     //   make the ajax request
     $.ajax({
@@ -693,6 +706,11 @@ function storeEmp(){
             weekdays: weekdays,
             leaveTypeValues: leaveTypeValues,
             nolValues: nolValues,
+            account_holder: acc_holder,
+            account_no: acc_no,
+            account_type: account_type,
+            branch_name: branch_name,
+            branch_location: branch_location
         },
         dataType: 'json',
         success: function(result) {

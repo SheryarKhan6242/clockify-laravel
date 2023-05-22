@@ -16,9 +16,14 @@ class EmployeeApiController extends Controller
     public function getProfile(Request $request)
     {
         $employee = Employee::where('user_id',$request->id)->first();
+        //Store Employee Bank payload in a separate payload and unset the key. Return the payload as json_decode
+        $bank_payload = $employee->bank_payload;
+        unset($employee->bank_payload);
+        $employee['bank_payload'] = json_decode($bank_payload);
         if($employee)
+            // return response()->json(['key' => json_decode($employee->bank_payload)]);
             return response()->json(['employee'=>$employee]);
-        
+
         return response()->json(['message'=>'Employee does not exist.']); 
     }
 

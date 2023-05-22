@@ -89,16 +89,18 @@ class EmployeeController extends Controller
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
 
+        //User Info
         $user = new User();
         $user->name = $request->first_name.$request->last_name;
-        
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make(Str::random(10));
+        //User Info
         $user->save();
-
+        //Register User as an Employee
         $user->assignRole(Role::findByName('employee'));
 
+        //Personal and Office Info
         $employee = new Employee();
         $employee->user_id = $user->id;
         $employee->first_name = $request->first_name;
@@ -125,6 +127,7 @@ class EmployeeController extends Controller
         $employee->designation = $request->designation;
         $employee->salary = $request->salary;
         $employee->is_lead = isset($request->is_lead) && $request->is_lead == true ? 1 : 0;
+        //Personal and Office Info
 
         //Add No of working hours based on Part Time Work Type OR Add Weekdays on selecting Hyrid Work Type
         if(isset($request->per_day_hours) && $request->per_day_hours !=null)
@@ -144,7 +147,7 @@ class EmployeeController extends Controller
         }
 
 
-        //Add Employee leaves based on Employee Type Selected
+        //Store Leaves Info (leaves Payload)
         if(isset($request->leaveTypeValues) && count($request->leaveTypeValues) > 0 ){
             for ($i = 0; $i < count($request->leaveTypeValues); $i++) {
                 $result[] = [
@@ -154,7 +157,16 @@ class EmployeeController extends Controller
             }
             $employee->leaves_payload = json_encode($result);
         }
+        //Store Leaves Info (leaves Payload)
 
+        //Store Financial Info(Bank Payload)
+        $bankPayload['acc_type']        = isset($request->account_type) ? $request->account_type : '';
+        $bankPayload['account_holder']  = isset($request->account_holder) ? $request->account_holder : '';
+        $bankPayload['acc_no']          = isset($request->account_no) ? $request->account_no : '';
+        $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : '';
+        $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : '';
+        $employee->bank_payload         = json_encode($bankPayload);
+        //Store Financial Info(Bank Payload)
         $employee->save();
         return response()->json(['type' =>'success']);
     }

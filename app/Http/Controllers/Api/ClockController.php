@@ -59,7 +59,7 @@ class ClockController extends Controller
     {
         $validator = \Validator::make($request->all(), [
             'user_id' => 'required|integer',
-            'login_date' => 'required|date_format:d-m-Y'
+            'login_date' => 'required|date_format:Y-m-d'
         ]);
 
         if ($validator->fails()) {
@@ -72,7 +72,7 @@ class ClockController extends Controller
             return response()->json(['success' => false, 'message' => 'User does not exist!']);
 
         // Get Current Check in time from reports for the following user and the date 
-        $report = Report::where('user_id',$request->user_id)->where('login_date',Carbon::parse($request->login_date)->format('Y-m-d'))->orderBy('id','DESC')->first();
+        $report = Report::where('user_id',$request->user_id)->where('login_date',$request->login_date)->orderBy('id','DESC')->first();
         if($report)
         {
             try {
