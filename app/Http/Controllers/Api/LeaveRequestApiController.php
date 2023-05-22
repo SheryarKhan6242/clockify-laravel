@@ -51,39 +51,13 @@ class LeaveRequestApiController extends Controller
             $leave->approval_id = null;
 
             //Upload image from URL to Laravel storage
-            // if ($request->hasFile('avatar')) {
-            //     $avatar = $request->file('avatar');
-            //     $fileName = time() . '_' . $avatar->getClientOriginalName();
-            //     $filepath = 'uploads/' . $fileName;
-            //     $path = Storage::disk('public')->put($filepath, file_get_contents($request->file('avatar')));
-            //     $path = Storage::disk('public')->url($path);
-            //     $memberProfile->profile_photo = $fileName;
-            // }
-            if(isset($request->media))
-            {
-                // $imageData = file_get_contents($request->media);
-                // $imageData = file_get_contents($request->media, false, stream_context_create([
-                //     'http' => [
-                //         'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-                //     ],
-                // ]));
-                
-                // // return response()->json($imageData);
-                // $fileName = time() . '_image';
-                // Storage::put($fileName, $imageData);
-                // $filepath = 'uploads/' . $fileName;
-                // $path = Storage::disk('public')->put($filepath, $imageData);
-                // $path = Storage::disk('public')->url($path);
-                // $leave->media = $fileName;
-
-                //USING URL AS AN IMAGE
-                $contents = file_get_contents($request->media);
-                $name = substr($request->media, strrpos($request->media, '/') + 1);
-                $filepath = 'uploads/' . $name;
-                $path = Storage::disk('public')->put($filepath, $contents);
+            if ($request->hasFile('media')) {
+                $avatar = $request->file('media');
+                $fileName = time() . '_' . $avatar->getClientOriginalName();
+                $filepath = 'uploads/' . $fileName;
+                $path = Storage::disk('public')->put($filepath, file_get_contents($request->file('media')));
                 $path = Storage::disk('public')->url($path);
-                $leave->media = $name;
-                Storage::put($name, $contents);
+                $$leave->media = $fileName;
             }
             $leave->save();
 

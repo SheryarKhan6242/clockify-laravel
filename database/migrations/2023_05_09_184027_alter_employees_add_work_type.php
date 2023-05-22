@@ -15,7 +15,7 @@ return new class extends Migration
     {
         //
         Schema::table('employees', function (Blueprint $table) {
-            $table->bigInteger('work_type')->unsigned()->after('emp_type');
+            $table->bigInteger('work_type')->nullable()->unsigned()->after('emp_type');
             $table->foreign('work_type')->references('id')->on('employee_working_types');
         });
 
