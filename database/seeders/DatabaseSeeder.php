@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MaritalStatusSeeder::class);
         $this->call(CheckinTypeSeeder::class);
         $this->call(RoleSeeder::class);
-        $this->call(BankAccountType::class);
+        $this->call(BankAccountTypeSeeder::class);
     }
 }
