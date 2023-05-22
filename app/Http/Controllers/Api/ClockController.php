@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\Report;
+use App\Models\User;
 use Carbon\Carbon;
 
 class ClockController extends Controller
@@ -33,7 +35,7 @@ class ClockController extends Controller
         try {
             $report = new Report();
             $report->user_id = $request->user_id;
-            $report->office_in = Carbon::now()->format('H:i:m');
+            $report->office_in = Carbon::now()->format('H:i:s');
             $report->login_date = Carbon::now()->format('Y-m-d');
             $report->shift_id = $request->shift_id;
             $report->wfh_reason =  $request->wfh_reason ?? null;
@@ -48,6 +50,7 @@ class ClockController extends Controller
             if (env('APP_ENV') === 'local') {
                 return response()->json(['success' => false, 'message' => $th->getMessage()]);
             }
+            Log::error($th);
             return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
         }
     }
@@ -55,8 +58,8 @@ class ClockController extends Controller
     public function clockout(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'user_id' => ['required'],
-            'login_date' => ['required']
+            'user_id' => 'required|integer',
+            'login_date' => 'required|date_format:d-m-Y'
         ]);
 
         if ($validator->fails()) {
@@ -64,13 +67,17 @@ class ClockController extends Controller
             return response()->json(['errors' => $errors], 400);
         }
 
+        $user = User::find($request->user_id);
+        if(!$user)
+            return response()->json(['success' => false, 'message' => 'User does not exist!']);
+
         // Get Current Check in time from reports for the following user and the date 
-        $report = Report::where('user_id',$request->user_id)->where('login_date',$request->login_date)->orderBy('id','DESC')->first();
+        $report = Report::where('user_id',$request->user_id)->where('login_date',Carbon::parse($request->login_date)->format('Y-m-d'))->orderBy('id','DESC')->first();
         if($report)
         {
             try {
                 $checkInTime = $report->office_in;
-                $checkOutTime = Carbon::now()->format('H:i:m');
+                $checkOutTime = Carbon::now()->format('H:i:s');
                 //Calculate working hours
                 // $workHours = $checkInTime - $checkOutTime;
                 $end = Carbon::parse($checkOutTime);
@@ -84,12 +91,13 @@ class ClockController extends Controller
                 if (env('APP_ENV') === 'local') {
                     return response()->json(['success' => false, 'message' => $th->getMessage()]);
                 }
+                Log::error($th);
                 return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
             }
             // Return the entire payload as a JSON response
             return response()->json(['date'=> $report]);
         } else {
-            return response()->json(['message'=>'Report for the following user_id or login_date does not exist']);
+            return response()->json(['success' => false, 'message'=>'Login_date does not exist!']);
         }
     }
 }

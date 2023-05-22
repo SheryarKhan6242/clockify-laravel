@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -52,7 +53,8 @@ class PasswordApiController extends Controller
             } else {
                 return response()->json(['success' => false,'status' => 401,'message' => 'Invalid email or username',], 401);
             }
-        } catch (\Exception $e) {    
+        } catch (\Exception $e) {
+            Log::error($th);    
             return response()->json(['success' => false,'status' => 500,'message' => 'An error occurred while requesting OTP. Please try again later.',], 500);
         }
     }
@@ -78,7 +80,7 @@ class PasswordApiController extends Controller
             ->first();
 
         if ($user) {
-            Auth::guard('web')->login($user, true);            
+            // Auth::guard('web')->login($user, true);            
             $user->otp = null;
             $user->save();
 
@@ -87,7 +89,7 @@ class PasswordApiController extends Controller
             return response()->json(['success' => true,'status' => 200,'message' => 'Otp Verified Successfully!','access_token' => $accessToken,
             ]);
         } else {
-            return response()->json(['success' => false,'status' => 401,'message' => 'Invalid email, username, or OTP',], 401);
+            return response()->json(['success' => false,'status' => 401,'message' => 'Invalid Email/Username or OTP',], 401);
         }
     }
 
@@ -125,6 +127,7 @@ class PasswordApiController extends Controller
             if (env('APP_ENV') === 'local') {
                 return response()->json(['success' => false, 'message' => $th->getMessage()]);
             }
+            Log::error($th);
             return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
         }
         return response()->json(['success'=>true,'message'=>'Password Changed Successfully!']);

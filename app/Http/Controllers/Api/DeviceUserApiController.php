@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -36,6 +37,7 @@ class DeviceUserApiController extends Controller
                     if (env('APP_ENV') === 'local') {
                         return response()->json(['success' => false, 'message' => $th->getMessage()]);
                     }
+                    Log::error($th);
                     return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
                 }
             }

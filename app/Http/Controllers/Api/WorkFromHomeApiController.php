@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Models\WorkFromHome;
 use Carbon\Carbon;
 
@@ -28,6 +29,10 @@ class WorkFromHomeApiController extends Controller
             return response()->json(['success'=>false,'errors'=>$errors]);
 
         }
+
+        $user = User::find($request->user_id);
+        if(!$user)
+            return response()->json(['success' => false, 'message' => 'User does not exist!']);
 
         try {
             $home = new WorkFromHome();
@@ -57,6 +62,7 @@ class WorkFromHomeApiController extends Controller
             if (env('APP_ENV') === 'local') {
                 return response()->json(['success' => false, 'message' => $th->getMessage()]);
             }
+            Log::error($th);
             return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
         } 
     }

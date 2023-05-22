@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\EmployeeWorkingType;
@@ -37,7 +38,6 @@ class EmployeeApiController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'father_name' => 'required',
-
         ]);
         
         if ($validator->fails())
@@ -45,7 +45,6 @@ class EmployeeApiController extends Controller
             $errors = $validator->errors()->toArray();
             // dd($errors);
             return response()->json(['errors' => $errors]);
-            // return response()->json(['errors'=>$validator->errors()->all()]);
         }
         $employee = Employee::where('user_id',$request->user_id)->first();
 
@@ -63,6 +62,7 @@ class EmployeeApiController extends Controller
                 if (env('APP_ENV') === 'local') {
                     return response()->json(['success' => false, 'message' => $th->getMessage()]);
                 }
+                Log::error($th);
                 return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
             }
         } else {

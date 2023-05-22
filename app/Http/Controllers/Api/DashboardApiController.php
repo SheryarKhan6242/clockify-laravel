@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Employee;
@@ -22,6 +23,8 @@ class DashboardApiController extends Controller
     {
         // Fetch the user's username
         $user = User::find($id);
+        if(!$user)
+            return response()->json(['success' =>false, 'message' => 'User Does not exist!']);
         $name = $user->name;
         // Fetch the total working hours for the current week
         $currentDate = Carbon::now();
@@ -37,7 +40,7 @@ class DashboardApiController extends Controller
             ->whereDate('login_date', '<', today())
             ->orderBy('login_date', 'desc')
             ->value('login_date');
-        
+                
         if ($lastWorkingDate) {
             $startDate = $lastWorkingDate;
         
@@ -49,7 +52,7 @@ class DashboardApiController extends Controller
             $officeIn = Carbon::parse(Report::where('user_id', $id)
                 ->whereDate('login_date', $lastWorkingDate)
                 ->min('office_in'));
-        
+                    
             if ($officeOut && $officeIn) {
                 $workingHours = $officeOut->diffAsCarbonInterval($officeIn);
             }

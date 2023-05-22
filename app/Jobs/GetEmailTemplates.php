@@ -9,6 +9,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Mail\SendEmail; 
 use App\Models\EmailTemplate;
 
@@ -45,9 +47,23 @@ class GetEmailTemplates implements ShouldQueue
     {
         //Get Email Content and send email
         $template = EmailTemplate::where('name', $this->templateName)->first();
-        $subject = $template->subject;
-        $emailBody = $template->body;
-        $emailBody = str_replace($this->placeholders, $this->values, $emailBody);
-        Mail::to($this->user->email)->send(new SendEmail($subject, $emailBody));
+        
+        try {
+            if($template)
+            {
+                $subject = $template->subject;
+                $emailBody = $template->body;
+                $emailBody = str_replace($this->placeholders, $this->values, $emailBody);
+                Mail::to($this->user->email)->send(new SendEmail($subject, $emailBody));
+            }
+
+        } catch (\Throwable $th) {
+            // Return the error response
+            if (env('APP_ENV') === 'local') {
+                return response()->json(['success' => false, 'message' => $th->getMessage()]);
+            }
+            Log::error($th);
+            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+        } 
     }
 }

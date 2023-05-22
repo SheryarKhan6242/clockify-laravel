@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\TimeAdjustment;
 use App\Models\Report;
 
@@ -47,6 +48,7 @@ class TimeAdjustmentApiController extends Controller
             if (env('APP_ENV') === 'local') {
                 return response()->json(['success' => false, 'message' => $th->getMessage()]);
             }
+            Log::error($th);
             return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
         }        
     }

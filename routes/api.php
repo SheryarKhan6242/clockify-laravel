@@ -56,12 +56,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('/leave')->group(function () {
-        Route::get('/{user_id}', [LeaveRequestApiController::class, 'getUserLeavesRequests'])->name('getUserLeavesRequests')->middleware('formdata');
+        Route::get('/{user_id}', [LeaveRequestApiController::class, 'getUserLeavesRequests'])->name('getUserLeavesRequests');
         Route::post('/add-request', [LeaveRequestApiController::class, 'addLeaveRequest'])->name('addLeaveRequest')->middleware('formdata');
     });
 
     Route::prefix('/work-from-home')->group(function () {
-        Route::get('/{user_id}', [WorkFromHomeApiController::class, 'getUserWfhRequests'])->name('getUserWfhRequests')->middleware('formdata');
+        Route::get('/{user_id}', [WorkFromHomeApiController::class, 'getUserWfhRequests'])->name('getUserWfhRequests');
         Route::post('/add-request', [WorkFromHomeApiController::class, 'addWfhRequest'])->name('addWfhRequest')->middleware('formdata');
     });
 
@@ -70,12 +70,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('/time-adjustment')->group(function () {
-        Route::get('/{user_id}', [TimeAdjustmentApiController::class, 'getTimeAdjustmentRequests'])->name('getTimeAdjustmentRequests')->middleware('formdata');
+        Route::get('/{user_id}', [TimeAdjustmentApiController::class, 'getTimeAdjustmentRequests'])->name('getTimeAdjustmentRequests');
         Route::post('/add-request', [TimeAdjustmentApiController::class, 'addTimeAdjustmentRequest'])->name('addTimeAdjustmentRequest')->middleware('formdata');
     });
 
     Route::prefix('/allowance')->group(function () {
-        Route::get('/{user_id}/{checkin_id}', [AllowanceApiController::class, 'getUserAllowance'])->name('getUserAllowance')->middleware('formdata');
+        Route::get('/{user_id}/{checkin_id}', [AllowanceApiController::class, 'getUserAllowance'])->name('getUserAllowance');
         Route::post('/add-request', [AllowanceApiController::class, 'addAllowanceRequest'])->name('addAllowanceRequest')->middleware('formdata');
     });
 
@@ -83,7 +83,7 @@ Route::middleware('auth:sanctum')->group(function () {
      
 });
 
-    Route::get('request-otp', [PasswordApiController::class, 'requestOtp'])->name('requestOtp');
+    Route::post('request-otp', [PasswordApiController::class, 'requestOtp'])->name('requestOtp')->middleware('formdata');
     Route::post('verify-otp', [PasswordApiController::class, 'verifyOtp'])->name('verifyOtp')->middleware('formdata');
     Route::post('update-password', [PasswordApiController::class, 'updatePassword'])->name('updatePassword')->middleware('formdata');
 

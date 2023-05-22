@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
 use App\Models\AllowanceType;
@@ -66,11 +67,12 @@ class AllowanceApiController extends Controller
                 return response()->json(['success' => true, 'message' => 'Sunday Allowance Submitted Successfully!']);
         
             } catch (\Throwable $th) {
-            // Return the error response
-            if (env('APP_ENV') === 'local') {
-                return response()->json(['success' => false, 'message' => $th->getMessage()]);
-            }
-            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+                // Return the error response
+                if (env('APP_ENV') === 'local') {
+                    return response()->json(['success' => false, 'message' => $th->getMessage()]);
+                }
+                Log::error($th);
+                return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
             }
         } else if($allowanceType->type == 'Medical' 
             || $allowanceType->type == 'Medical'
@@ -120,6 +122,7 @@ class AllowanceApiController extends Controller
                 if (env('APP_ENV') === 'local') {
                     return response()->json(['success' => false, 'message' => $th->getMessage()]);
                 }
+                Log::error($th);
                 return response()->json(['success' => false, 'message' => 'Error Submitting' . $allowanceType->type . ' Allowance!']);
             }
 
