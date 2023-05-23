@@ -33,6 +33,10 @@ class AllowanceApiController extends Controller
         // dd($request->all());
 
         $allowanceType = AllowanceType::find($request->allowance_id);
+        //If Allowance Type doesn't have that type in DB
+        if(!$allowanceType)
+            return response()->json(['success' => false, 'message' => 'Allowance type does not exist!']);
+            
         if($allowanceType->type == 'sunday' || $allowanceType->type == 'Sunday')
         {
             //Add necessary validation for Sunday Allowance
