@@ -17,7 +17,7 @@ class FormDataMiddleware
     public function handle(Request $request, Closure $next)
     {
         // return response()->json($request->header('Content-Type'));
-        if ($request->header('Content-Type') == 'application/json' || $request->header('Content-Type') == '' ) {
+        if ($request->header('Content-Type') == 'application/json') {
             return response()->json(['error' => 'Request must be sent as form-data.'], 400);
         }
         return $next($request);
