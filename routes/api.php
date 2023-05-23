@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\PasswordApiController;
 use App\Http\Controllers\Api\DeviceUserApiController;
 use App\Http\Controllers\Api\TimeAdjustmentApiController;
 use App\Http\Controllers\Api\AllowanceApiController;
+use App\Http\Controllers\Api\AllowanceTypeApiController;
 
 
 /*
@@ -79,9 +80,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/add-request', [AllowanceApiController::class, 'addAllowanceRequest'])->name('addAllowanceRequest')->middleware('formdata');
     });
 
+    Route::prefix('/allowance-type')->group(function () {
+        Route::get('/', [AllowanceTypeApiController::class, 'getAllowanceType'])->name('getAllowanceType');
+    });
+
     Route::get('/dashboard-widget/{user}', [DashboardApiController::class, 'dashboardWidget'])->name('dashboardWidget');
     Route::post('update-password', [PasswordApiController::class, 'updatePassword'])->name('updatePassword')->middleware('formdata');
-
 
 });
 
