@@ -89,7 +89,7 @@ class PasswordApiController extends Controller
             return response()->json(['success' => true,'status' => 200,'message' => 'Otp Verified Successfully!','user_id' => $user->id,'access_token' => $accessToken,
             ]);
         } else {
-            return response()->json(['success' => false,'status' => 401,'message' => 'Invalid Email/Username or OTP',], 401);
+            return response()->json(['success' => false,'status' => 200,'message' => 'Invalid Email/Username or OTP']);
         }
     }
 
