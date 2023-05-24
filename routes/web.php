@@ -14,6 +14,10 @@ use App\Http\Controllers\EmployeeWorkingTypeController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\WorkFromHomeController;
+use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\EventController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,6 +99,33 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [ShiftController::class, 'store'])->name('shift.store');
         Route::get('/delete/{id}', [ShiftController::class, 'destroy'])->name('shift.delete');
         Route::get('/load-shift-table', [ShiftController::class, 'get_shift_data'])->name('shift.get_shift_data');
+    });
+
+    Route::prefix('/notice')->group(function () {
+        Route::get('/', [NoticeController::class, 'index'])->name('notice.index');
+        Route::get('/edit/{id}', [NoticeController::class, 'edit'])->name('notice.edit');
+        Route::post('/update/{id}', [NoticeController::class, 'update'])->name('notice.update');
+        Route::post('/store', [NoticeController::class, 'store'])->name('notice.store');
+        Route::get('/delete/{id}', [NoticeController::class, 'destroy'])->name('notice.delete');
+        Route::get('/load-notice-table', [NoticeController::class, 'get_notice_data'])->name('notice.get_notice_data');
+    });
+
+    Route::prefix('/holiday')->group(function () {
+        Route::get('/', [HolidayController::class, 'index'])->name('holiday.index');
+        Route::get('/edit/{id}', [HolidayController::class, 'edit'])->name('holiday.edit');
+        Route::post('/update/{id}', [HolidayController::class, 'update'])->name('holiday.update');
+        Route::post('/store', [HolidayController::class, 'store'])->name('holiday.store');
+        Route::get('/delete/{id}', [HolidayController::class, 'destroy'])->name('holiday.delete');
+        Route::get('/load-holiday-table', [HolidayController::class, 'get_holiday_data'])->name('holiday.get_holiday_data');
+    });
+
+    Route::prefix('/event')->group(function () {
+        Route::get('/', [EventController::class, 'index'])->name('event.index');
+        Route::get('/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
+        Route::post('/update/{id}', [EventController::class, 'update'])->name('event.update');
+        Route::post('/store', [EventController::class, 'store'])->name('event.store');
+        Route::get('/delete/{id}', [EventController::class, 'destroy'])->name('event.delete');
+        Route::get('/load-event-table', [EventController::class, 'get_event_data'])->name('event.get_event_data');
     });
 
     Route::prefix('/location')->group(function () {

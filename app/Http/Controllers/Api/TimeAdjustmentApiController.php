@@ -14,6 +14,7 @@ class TimeAdjustmentApiController extends Controller
     //
     public function addTimeAdjustmentRequest(Request $request)
     {
+        dd($request->office_in);
         $validator = \Validator::make($request->all(),[
             'user_id' => 'required|integer',
             'adj_date' => 'required|date_format:Y-m-d',
@@ -22,6 +23,8 @@ class TimeAdjustmentApiController extends Controller
             'adj_reason' => 'required|min:8',
             'checkin_id' => 'required|integer'
         ]);
+
+        
 
         if ($validator->fails())
         {      

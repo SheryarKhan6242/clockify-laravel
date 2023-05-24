@@ -27,31 +27,23 @@ class DeviceUserApiController extends Controller
         $user = User::where('id',$request->user_id)->where('status', 1)->first();
         if($user)
         {
-            if($user->device_id == null)
-            {
-                try {    
-                    $user->device_id = $request->device_id;
-                    $user->save();
-                } catch (\Throwable $th) {
-                    // Return the error response
-                    if (env('APP_ENV') === 'local') {
-                        return response()->json(['success' => false, 'message' => $th->getMessage()]);
-                    }
-                    Log::error($th);
-                    return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
-                }
-            }
-            else
-            {
-                return response()->json(['success' => false, 'message' => 'Device Id Already Exist!']);
-            }
-            
-            return response()->json(['success' => true, 'message' => 'Device Id Added Successfully!']);
+            try {    
+                $user->device_id = $request->device_id;
+                $user->save();
 
-        } else 
+                return response()->json(['success' => true, 'message' => 'Device Id Added Successfully!']);
+            } catch (\Throwable $th) {
+                // Return the error response
+                if (env('APP_ENV') === 'local') {
+                    return response()->json(['success' => false, 'message' => $th->getMessage()]);
+                }
+                Log::error($th);
+                return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
+            }
+        } 
+        else 
         {
             return response()->json(['success' => false, 'message' => 'User Does Not Exist!' ]);
         }
-
     }
 }

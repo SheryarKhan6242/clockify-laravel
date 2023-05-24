@@ -10,6 +10,9 @@ use App\Models\Employee;
 use App\Models\Report;
 use App\Models\Leave;
 use App\Models\WorkFromHome;
+use App\Models\Notice;
+use App\Models\Holiday;
+use App\Models\Event;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonInterval;
@@ -181,6 +184,24 @@ class DashboardApiController extends Controller
                 // return response()->json(isset($requests));
         if ($wfh->count() > 0)
             $wfhAllowed = true;
+
+        //GET ALL NOTICES
+        $notices = Notice::pluck('description')->toArray();;
+        
+        //GET ALL HOLIDAYS.
+        $today = Carbon::now()->format('Y-m-d');
+        $holidays = Holiday::where('start_date', '<=', $today)
+            ->where('end_date', '>=', $today)
+            ->orWhereDate('start_date', $today)
+            ->orWhereDate('end_date', $today)
+            ->pluck('description')
+            ->toArray();
+
+        //GET ALL EVENTS
+        $events = Event::where('event_date', '>=', Carbon::now()->format('Y-m-d'))
+            ->pluck('description')
+            ->toArray();
+
         
         $dashboard_widget = [
             'name' => $name,
@@ -189,9 +210,12 @@ class DashboardApiController extends Controller
             'widget_collections' => [
                 'celebrations' => 
                     [
-                        "birthday"=>$birthdayMessages, 
-                        "anniversary"=> $anniversaryMessages
+                        "birthday" => $birthdayMessages, 
+                        "anniversary" => $anniversaryMessages
                     ],
+                'notices'   => $notices,
+                'events'    =>  $events,
+                'holidays'  => $holidays    
             ],
             'is_clock_in' => $is_clock_in,
             "profile_photo_path" => $user->profile_photo_path ?? null,

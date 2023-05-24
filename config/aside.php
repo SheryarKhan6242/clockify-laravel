@@ -72,6 +72,24 @@ return [
         'icon'      => 'feather-icon',
     ],
     [
+        'route'     => 'notice.index',
+        'label'     => 'Notices',
+        'name'      => 'Notices',
+        'icon'      => 'feather-icon',
+    ],
+    [
+        'route'     => 'holiday.index',
+        'label'     => 'Holidays',
+        'name'      => 'Holidays',
+        'icon'      => 'feather-icon',
+    ],
+    [
+        'route'     => 'event.index',
+        'label'     => 'Events',
+        'name'      => 'Events',
+        'icon'      => 'feather-icon',
+    ],
+    [
         'route'     => '#',
         'label'     => 'Settings',
         'name'      => 'Settings',
