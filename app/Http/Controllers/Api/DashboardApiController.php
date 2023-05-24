@@ -112,9 +112,11 @@ class DashboardApiController extends Controller
         }
 
         //Get Checkin Type Only when not clocked out
-        $type = Report::where('user_id', $id)->where('office_out', null)->with('checkinType')->first();
+        $type = Report::where('user_id', $id)->where('office_out', null)->orderBy('id','desc')->first();
         //Get Employee's Type and Work Type
         $employee = Employee::where('user_id',$id)->with('employeeType','workType')->first();
+        if(!$employee)
+            return response()->json(['successs' => false, 'message' => 'Employee does not exist!']);
         //Calculate total absents in current month
         $currentDate = Carbon::now(); // current date
         $currentMonth = $currentDate->format('m'); // current month
@@ -155,11 +157,8 @@ class DashboardApiController extends Controller
             if ($report->login_date == $currentDate->format('Y-m-d') && $report->office_in !== null) {
                 $officeIn = Carbon::parse($report->office_in);
                 $officeOut = isset($report->office_out) ? Carbon::parse($report->office_out) : Carbon::now();
-        
                 $diffInSeconds = $officeOut->diffInSeconds($officeIn);
-        
                 $timeDuration = CarbonInterval::seconds($diffInSeconds);
-        
                 $totalDuration = $totalDuration->add($timeDuration);
             }
         }
@@ -186,7 +185,7 @@ class DashboardApiController extends Controller
             $wfhAllowed = true;
 
         //GET ALL NOTICES
-        $notices = Notice::pluck('description')->toArray();;
+        $notices = Notice::pluck('description')->toArray();
         
         //GET ALL HOLIDAYS.
         $today = Carbon::now()->format('Y-m-d');
