@@ -189,12 +189,11 @@ class DashboardApiController extends Controller
         
         //GET ALL HOLIDAYS.
         $today = Carbon::now()->format('Y-m-d');
-        $holidays = Holiday::where('start_date', '<=', $today)
-            ->where('end_date', '>=', $today)
-            ->orWhereDate('start_date', $today)
-            ->orWhereDate('end_date', $today)
+        $holidays = Holiday::whereDate('end_date', '>=', $today)
             ->pluck('description')
             ->toArray();
+
+        dd($holidays);
 
         //GET ALL EVENTS
         $events = Event::where('event_date', '>=', Carbon::now()->format('Y-m-d'))
