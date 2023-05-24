@@ -193,8 +193,6 @@ class DashboardApiController extends Controller
             ->pluck('description')
             ->toArray();
 
-        dd($holidays);
-
         //GET ALL EVENTS
         $events = Event::where('event_date', '>=', Carbon::now()->format('Y-m-d'))
             ->pluck('description')
