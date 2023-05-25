@@ -73,7 +73,7 @@ class EmailTemplateController extends Controller
         //
         $data = [];
         $data['template'] = EmailTemplate::find($id);
-        return view('EmailTemplate.edit', $data);
+        return view('emailTemplate.edit', $data);
     }
 
     /**
