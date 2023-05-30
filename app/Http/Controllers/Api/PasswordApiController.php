@@ -54,7 +54,7 @@ class PasswordApiController extends Controller
                 return response()->json(['success' => false,'status' => 401,'message' => 'Invalid email or username',], 401);
             }
         } catch (\Exception $e) {
-            Log::error($th);    
+            Log::error($e);    
             return response()->json(['success' => false,'status' => 500,'message' => 'An error occurred while requesting OTP. Please try again later.',], 500);
         }
     }
