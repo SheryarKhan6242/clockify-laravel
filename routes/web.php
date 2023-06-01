@@ -17,6 +17,7 @@ use App\Http\Controllers\WorkFromHomeController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReportController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -182,6 +183,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/store-emp-type-leave', [ AjaxRequestController::class, 'storeEmpTypeLeaves' ])->name('store_emp_type_leaves');
         Route::get('/get-emp-type-leave/{id}', [ AjaxRequestController::class, 'getEmpTypeLeaves' ])->name('get_emp_type_leaves');
     });
+
+    Route::prefix('/report')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('report.index');
+        // Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('leave.edit');
+        // Route::post('/update/{id}', [ReportController::class, 'update'])->name('leave.update');
+        // Route::post('/store', [ReportController::class, 'store'])->name('leave.store');
+        // Route::get('/delete/{id}', [ReportController::class, 'destroy'])->name('leave.delete');
+        // Route::post('/update-leave-status', [ReportController::class, 'updateLeaveStatus'])->name('leaveType.updateLeaveStatus');
+        Route::get('/load-table', [ReportController::class, 'getReportData'])->name('report.get_report_data');
+    });
+
 
 });
 

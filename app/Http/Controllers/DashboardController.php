@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Report;
+use App\Services\LeaveService;
+use App\Services\WfhService;
+use App\Services\TimeAdjustmentService;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -14,11 +19,50 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        //
-        $data['totalEmployees'] = Employee::all()->count();
-        $data['activeEmployees'] = Employee::where('status',1)->count();
-        $data['nonActiveEmployees'] = $data['totalEmployees'] - $data['activeEmployees'];
+        //Get total no of Clockins today(Total presents). Getting disctinct user_ids on current day since clockins can be multiple,
+        $data['totalPresents'] = Report::whereDate('login_date', Carbon::now()->format('Y-m-d'))
+            ->groupBy('user_id')
+            ->pluck('user_id')
+            ->toArray();
         
+        //TOTAL ACTIVE ACTIVE EMPLOYEES
+        $data['totalEmployees'] = Employee::where('status', 1)
+            ->pluck('user_id')
+            ->toArray();
+
+        $data['totalAbsents'] = count($data['totalEmployees']) - count($data['totalPresents']);
+
+        //EMPLOYEE DAILY REPORTS
+        $data['reports'] = Report::join('employees', 'reports.user_id', '=', 'employees.user_id')
+        ->whereDate('login_date', Carbon::now()->format('Y-m-d'))
+        ->select('reports.*', 'employees.id as employee_id','employees.first_name as employee_fname','employees.last_name as employee_lname', 'employees.designation as employee_designation')
+        ->get();
+
+        //KARACHI ACTIVE EMPLOYEES
+        // 108(PAK ) 46828(HYD) 46821(KHI)
+        $data['khi'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46821)->count();
+        //HYDERABAD ACTIVE EMPLOYEES
+        $data['hyd'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46828)->count();
+        //OTHER CITIES ACTIVE EMPLOYEES
+        $data['khiPercentage'] = ($data['khi'] / count($data['totalEmployees'])) * 100;
+        $data['hydPercentage'] = ($data['hyd'] / count($data['totalEmployees'])) * 100;
+        $data['other'] = (100 - $data['khiPercentage'] - $data['hydPercentage']);
+
+        //EMPLOYEE REQUESTS
+        //PENDING LEAVES
+        $leaveService = new LeaveService();
+        $data['annualLeavesRequest'] = $leaveService->leaveRequests(1);
+        $data['sickLeavesRequest'] = $leaveService->leaveRequests(2);
+
+        //PENDING WFH
+        $wfhService = new WfhService();
+        $data['wfhRequest'] = $wfhService->wfhRequests();
+        // dd($data['sickLeavesRequest']->count());
+
+        //PENDING TIMEADJUSTMENT
+        $timeAdjService = new TimeAdjustmentService();
+        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests();
+        // dd($data['sickLeavesRequest']->count());
         return view('dashboard',$data);
     }
 

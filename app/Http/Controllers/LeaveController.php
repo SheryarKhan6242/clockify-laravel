@@ -14,11 +14,19 @@ class LeaveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $data['leave'] = Leave::paginate(5);
-        return view('leave.index',$data);
+        // $data['leave'] = Leave::paginate(5);
+        // return view('leave.index',$data);
+        $data = [];
+
+        if ($request->has('leaveType') && $request->leaveType === 'annual') {
+            $data['leave'] = $this->getLeaveDataFromService();
+        } else {
+            $data['leave'] = Leave::paginate(5);
+        }
+        return view('leave.index', $data);
     }
 
     public function get_leave_data(Request $request)

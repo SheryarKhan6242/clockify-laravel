@@ -62,7 +62,7 @@ Dashboard
                 <div class="d-flex align-items-center">
                     <div>
                         <div class="d-inline-flex align-items-center">
-                            <h2 class="text-dark mb-1 font-weight-medium">{{isset($totalEmployees) && $totalEmployees > 0 ? $totalEmployees : 0 }}</h2>
+                            <h2 class="text-dark mb-1 font-weight-medium">5</h2>
                             <span
                                 class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                         </div>
@@ -82,7 +82,7 @@ Dashboard
                 <div class="d-flex align-items-center">
                     <div>
                         <div class="d-inline-flex align-items-center">
-                            <h2 class="text-dark mb-1 font-weight-medium">{{isset($activeEmployees) && $activeEmployees > 0 ? $activeEmployees : 0 }}</h2>
+                            <h2 class="text-dark mb-1 font-weight-medium">2</h2>
                             <span
                                 class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                         </div>
@@ -102,7 +102,7 @@ Dashboard
                 <div class="d-flex align-items-center">
                     <div>
                         <div class="d-inline-flex align-items-center">
-                            <h2 class="text-dark mb-1 font-weight-medium">{{isset($nonActiveEmployees) && $nonActiveEmployees > 0 ? $nonActiveEmployees : 0 }}</h2>
+                            <h2 class="text-dark mb-1 font-weight-medium">1</h2>
                             <span
                                 class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                         </div>
@@ -116,13 +116,13 @@ Dashboard
             </div>
         </div>
     </div>
-    {{-- <div class="col-sm-6 col-lg-3">
+     <div class="col-sm-6 col-lg-3">
         <div class="card ">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
                         <div class="d-inline-flex align-items-center">
-                            <h2 class="text-dark mb-1 font-weight-medium">{{isset($totalEmployees) && $totalEmployees > 0 ? $totalEmployees : 0 }}</h2>
+                            <h2 class="text-dark mb-1 font-weight-medium">1</h2>
                             <span
                                 class="badge bg-primary font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">+18.33%</span>
                         </div>
@@ -135,7 +135,7 @@ Dashboard
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div> 
 </div>
 <!-- *************************************************************** -->
 <!-- End First Cards -->
@@ -147,49 +147,39 @@ Dashboard
     <div class="col-lg-4 col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Total Sales</h4>
-                <div id="campaign-v2" class="mt-2" style="height:283px; width:100%;"></div>
-                <ul class="list-style-none mb-0">
-                    <li>
-                        <i class="fas fa-circle text-primary font-10 me-2"></i>
-                        <span class="text-muted">Direct Sales</span>
-                        <span class="text-dark float-end font-weight-medium">$2346</span>
-                    </li>
-                    <li class="mt-3">
-                        <i class="fas fa-circle text-danger font-10 me-2"></i>
-                        <span class="text-muted">Referral Sales</span>
-                        <span class="text-dark float-end font-weight-medium">$2108</span>
-                    </li>
-                    <li class="mt-3">
-                        <i class="fas fa-circle text-cyan font-10 me-2"></i>
-                        <span class="text-muted">Affiliate Sales</span>
-                        <span class="text-dark float-end font-weight-medium">$1204</span>
-                    </li>
-                </ul>
+                <h4 class="card-title">Time Status</h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div id="campaign-v2" class="mt-2" style="height:283px; width:100%;"></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <ul class="list-style-none mb-0">
+                            <li>
+                                <i class="fas fa-circle text-cyan font-10 me-2"></i>
+                                <span class="text-muted">Present</span>
+                                <span class="text-dark float-end font-weight-medium">{{isset($totalPresents) && count($totalPresents) > 0 ? count($totalPresents) : 0}}</span>
+                            </li>
+                            <li class="mt-3">
+                                <i class="fas fa-circle text-danger font-10 me-2"></i>
+                                <span class="text-muted">Absent</span>
+                                <span class="text-dark float-end font-weight-medium">{{isset($totalAbsents) && $totalAbsents > 0 ? $totalAbsents : 0}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-lg-4 col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Net Income</h4>
-                <div class="net-income mt-4 position-relative" style="height:294px;"></div>
-                <ul class="list-inline text-center mt-5 mb-2">
-                    <li class="list-inline-item text-muted fst-italic">Sales for this month</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title mb-4">Earning by Location</h4>
+                <h4 class="card-title mb-4">Location</h4>
                 <div class="" style="height:180px">
                     <div id="visitbylocate" style="height:100%"></div>
                 </div>
                 <div class="row mb-3 align-items-center mt-1 mt-5">
                     <div class="col-4 text-end">
-                        <span class="text-muted font-14">India</span>
+                        <span class="text-muted font-14">Karachi</span>
                     </div>
                     <div class="col-5">
                         <div class="progress" style="height: 5px;">
@@ -198,10 +188,24 @@ Dashboard
                         </div>
                     </div>
                     <div class="col-3 text-end">
-                        <span class="mb-0 font-14 text-dark font-weight-medium">28%</span>
+                        <span class="mb-0 font-14 text-dark font-weight-medium">{{ $khiPercentage }}%</span>
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
+                    <div class="col-4 text-end">
+                        <span class="text-muted font-14">Hydrabad</span>
+                    </div>
+                    <div class="col-5">
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-cyan" role="progressbar" style="width: 60%"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="col-3 text-end">
+                        <span class="mb-0 font-14 text-dark font-weight-medium">{{ $hydPercentage }}%</span>
+                    </div>
+                </div>
+                {{-- <div class="row mb-3 align-items-center">
                     <div class="col-4 text-end">
                         <span class="text-muted font-14">UK</span>
                     </div>
@@ -214,24 +218,10 @@ Dashboard
                     <div class="col-3 text-end">
                         <span class="mb-0 font-14 text-dark font-weight-medium">21%</span>
                     </div>
-                </div>
-                <div class="row mb-3 align-items-center">
-                    <div class="col-4 text-end">
-                        <span class="text-muted font-14">USA</span>
-                    </div>
-                    <div class="col-5">
-                        <div class="progress" style="height: 5px;">
-                            <div class="progress-bar bg-cyan" role="progressbar" style="width: 60%"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="col-3 text-end">
-                        <span class="mb-0 font-14 text-dark font-weight-medium">18%</span>
-                    </div>
-                </div>
+                </div> --}}
                 <div class="row align-items-center">
                     <div class="col-4 text-end">
-                        <span class="text-muted font-14">China</span>
+                        <span class="text-muted font-14">Others</span>
                     </div>
                     <div class="col-5">
                         <div class="progress" style="height: 5px;">
@@ -240,12 +230,77 @@ Dashboard
                         </div>
                     </div>
                     <div class="col-3 text-end">
-                        <span class="mb-0 font-14 text-dark font-weight-medium">12%</span>
+                        <span class="mb-0 font-14 text-dark font-weight-medium">{{ $other }}%</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {{-- <div class="col-lg-4 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Employee Working Hours   </h4>
+                <div class="net-income mt-4 position-relative" style="height:294px;"></div>
+                <ul class="list-inline text-center mt-5 mb-2">
+                    <li class="list-inline-item text-muted fst-italic">Sales for this month</li>
+                </ul>
+            </div>
+        </div>
+    </div> --}}
+    <div class="col-lg-4 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Employee Working Hours</h4>
+                <div class="net-income mt-4 position-relative" style="height:294px;"></div>
+                <ul class="list-inline text-center mt-5 mb-2">
+                <li class="list-inline-item text-muted fst-italic">Top 5 employees with most working hours</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Requests</h5>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ isset($wfhRequest) && $wfhRequest->count() > 0 ? $wfhRequest->count() : 0 }}</h5>
+                                <a href="#" class="card-text">Work From Home</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ isset($wfhRequest) && $annualLeavesRequest->count() > 0 ? $annualLeavesRequest->count() : 0 }}</h5>
+                                <a href="{{ route('leave.index', ['leaveType' => 'annual']) }}" class="card-text">Annual Leave</a>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ isset($sickLeavesRequest) && $sickLeavesRequest->count() > 0 ? $sickLeavesRequest->count() : 0 }}</h5>
+                                <a href="{{ route('leave.index', ['leaveType' => 'sick']) }}" class="card-text">Sick Leave</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ isset($timeAdjRequest) && $timeAdjRequest->count() > 0 ? $timeAdjRequest->count() : 0 }}</h5>
+                                <a href="#" class="card-text">Time Adjustment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>      
 </div>
 <!-- *************************************************************** -->
 <!-- End Sales Charts Section -->
@@ -253,7 +308,7 @@ Dashboard
 <!-- *************************************************************** -->
 <!-- Start Location and Earnings Charts Section -->
 <!-- *************************************************************** -->
-<div class="row">
+{{-- <div class="row">
     <div class="col-md-6 col-lg-8">
         <div class="card">
             <div class="card-body">
@@ -336,19 +391,21 @@ Dashboard
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- *************************************************************** -->
 <!-- End Location and Earnings Charts Section -->
 <!-- *************************************************************** -->
 <!-- *************************************************************** -->
 <!-- Start Top Leader Table -->
 <!-- *************************************************************** -->
+
+
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-4">
-                    <h4 class="card-title">Top Leaders</h4>
+                    <h4 class="card-title">Employee Details</h4>
                     <div class="ms-auto">
                         <div class="dropdown sub-dropdown">
                             <button class="btn btn-link text-muted dropdown-toggle" type="button"
@@ -368,22 +425,20 @@ Dashboard
                     <table class="table no-wrap v-middle mb-0">
                         <thead>
                             <tr class="border-0">
-                                <th class="border-0 font-14 font-weight-medium text-muted">Team Lead
-                                </th>
-                                <th class="border-0 font-14 font-weight-medium text-muted px-2">Project
-                                </th>
-                                <th class="border-0 font-14 font-weight-medium text-muted">Team</th>
-                                <th class="border-0 font-14 font-weight-medium text-muted text-center">
-                                    Status
-                                </th>
-                                <th class="border-0 font-14 font-weight-medium text-muted text-center">
-                                    Weeks
-                                </th>
-                                <th class="border-0 font-14 font-weight-medium text-muted">Budget</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted">EMPLOYEE ID</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted px-2">EMPLOYEE</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted">CLOCK IN</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted text-center">CLOCK OUT</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted text-center">WORKING HOURS</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted">WEEKLY HOURS</th>
+                                <th class="border-0 font-14 font-weight-medium text-muted">LOCATION</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($reports as $report)
+                            {{-- {{$employee->reportsForCurrentDate()->first()}} --}}
                             <tr>
+                                <td class="border-top-0 text-muted px-2 py-4 font-14">{{ $report->employee_id }}</td>
                                 <td class="border-top-0 px-2 py-4">
                                     <div class="d-flex no-block align-items-center">
                                         <div class="me-3"><img
@@ -391,15 +446,13 @@ Dashboard
                                                 alt="user" class="rounded-circle" width="45"
                                                 height="45" /></div>
                                         <div class="">
-                                            <h5 class="text-dark mb-0 font-16 font-weight-medium">Hanna
-                                                Gover</h5>
-                                            <span class="text-muted font-14">hgover@gmail.com</span>
+                                            <h5 class="text-dark mb-0 font-16 font-weight-medium">{{ $report->employee_fname }} {{ $report->employee_lname }}</h5>
+                                            <span class="text-muted font-14">{{ $report->employee_designation }}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="border-top-0 text-muted px-2 py-4 font-14">Elite Admin</td>
-                                <td class="border-top-0 px-2 py-4">
-                                    <div class="popover-icon">
+                                {{-- <td class="border-top-0 px-2 py-4"> --}}
+                                    {{-- <div class="popover-icon">
                                         <a class="btn btn-primary rounded-circle btn-circle font-12"
                                             href="javascript:void(0)">DS</a>
                                         <a class="btn btn-danger rounded-circle btn-circle font-12 popover-item"
@@ -408,20 +461,23 @@ Dashboard
                                             href="javascript:void(0)">RP</a>
                                         <a class="btn btn-success text-white rounded-circle btn-circle font-20"
                                             href="javascript:void(0)">+</a>
-                                    </div>
-                                </td>
-                                <td class="border-top-0 text-center px-2 py-4"><i
-                                        class="fa fa-circle text-primary font-12"
-                                        data-bs-toggle="tooltip" data-placement="top"
-                                        title="In Testing"></i></td>
-                                <td
-                                    class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
-                                    35
-                                </td>
-                                <td class="font-weight-medium text-dark border-top-0 px-2 py-4">$96K
-                                </td>
+                                    </div> --}}
+                                {{-- </td> --}}
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">{{ $report->office_in }}</td>
+                                {{-- <td>{{ $employee->reportsForCurrentDate->first()->office_in }}</td> --}}
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">{{ $report->office_out }}</td>
+
+                                {{-- <td>{{ $employee->reportsForCurrentDate ? $employee->reportsForCurrentDate->first()->office_in : '' }}</td> --}}
+                                {{-- <td class="border-top-0 text-center px-2 py-4">
+                                    <i class="fa fa-circle text-primary font-12" data-bs-toggle="tooltip" data-placement="top" title="In Testing"></i>
+                                </td> --}}
+                                {{-- <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">{{$employee->reportsForCurrentDate()?->office_out}}</td> --}}
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">{{ $report->total_work_hours }}</td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">{{ $report->total_work_hours }}</td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">{{ $report->clockin_location }}</td>
                             </tr>
-                            <tr>
+                            @endforeach
+                            {{-- <tr>
                                 <td class="px-2 py-4">
                                     <div class="d-flex no-block align-items-center">
                                         <div class="me-3"><img
@@ -523,7 +579,7 @@ Dashboard
                                     23</td>
                                 <td class="border-bottom-0 font-weight-medium text-dark px-2 py-4">$80K
                                 </td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

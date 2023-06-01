@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\DeviceUserApiController;
 use App\Http\Controllers\Api\TimeAdjustmentApiController;
 use App\Http\Controllers\Api\AllowanceApiController;
 use App\Http\Controllers\Api\AllowanceTypeApiController;
-
+use App\Http\Controllers\Api\SundayAllowanceApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +78,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/allowance')->group(function () {
         Route::get('/{user_id}/{checkin_id}', [AllowanceApiController::class, 'getUserAllowance'])->name('getUserAllowance');
         Route::post('/add-request', [AllowanceApiController::class, 'addAllowanceRequest'])->name('addAllowanceRequest')->middleware('formdata');
+    });
+
+    Route::prefix('/sunday-allowance')->group(function () {
+        Route::get('/{user_id}', [SundayAllowanceApiController::class, 'getAllowanceRecord'])->name('getAllowanceRecord')->middleware('formdata');
+        Route::post('/add-request', [SundayAllowanceApiController::class, 'addRequest'])->name('addRequest')->middleware('formdata');
     });
 
     Route::prefix('/allowance-type')->group(function () {

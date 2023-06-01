@@ -2,24 +2,6 @@
 
 return [
     [
-        'route'     => 'department.index',
-        'label'     => 'Departments',
-        'name'      => 'departments',
-        'icon'      => 'feather-icon',
-    ],
-    [
-        'route'     => 'shift.index',
-        'label'     => 'Shifts',
-        'name'      => 'shifts',
-        'icon'      => 'feather-icon',
-    ],
-    [
-        'route'     => 'location.index',
-        'label'     => 'Locations',
-        'name'      => 'locations',
-        'icon'      => 'feather-icon',
-    ],
-    [
         'route'     => '#',
         'label'     => 'Employees',
         'name'      => 'employees',
@@ -44,6 +26,30 @@ return [
                 'icon'      => 'feather-icon',
             ],
         ]
+    ],
+    [
+        'route'     => 'report.index',
+        'label'     => 'Departments',
+        'name'      => 'departments',
+        'icon'      => 'feather-icon',
+    ],
+    [
+        'route'     => 'department.index',
+        'label'     => 'Departments',
+        'name'      => 'departments',
+        'icon'      => 'feather-icon',
+    ],
+    [
+        'route'     => 'shift.index',
+        'label'     => 'Shifts',
+        'name'      => 'shifts',
+        'icon'      => 'feather-icon',
+    ],
+    [
+        'route'     => 'location.index',
+        'label'     => 'Locations',
+        'name'      => 'locations',
+        'icon'      => 'feather-icon',
     ],
     [
         'route'     => '#',
