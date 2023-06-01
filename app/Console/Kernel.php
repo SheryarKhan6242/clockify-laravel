@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
                 $report->total_work_hours = gmdate('H:i:s',$officeIn->diffInSeconds($report->office_out));
                 $report->save();
             }
-        })->dailyAt('23:55');
+        })->dailyAt('11:59');
         
     }
 
