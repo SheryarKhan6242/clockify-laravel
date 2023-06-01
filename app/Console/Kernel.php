@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\Report;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +17,19 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $reports = Report::whereDate('login_date', Carbon::today()->format('Y-m-d'))
+                ->whereNull('office_out')
+                ->get();
+    
+            foreach ($reports as $report) {
+                $officeIn = Carbon::parse($report->office_in);
+                $report->office_out = Carbon::now()->format('H:i:s');
+                $report->total_work_hours = gmdate('H:i:s',$officeIn->diffInSeconds($report->office_out));
+                $report->save();
+            }
+        })->dailyAt('23:55');
+        
     }
 
     /**
