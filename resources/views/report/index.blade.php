@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('title')
-    Work From Home
+    Reports
 @endsection
+@php
+    use App\Models\CheckinType;
+@endphp
 @section('bread_crumb')
 <!-- Bread crumb and right sidebar toggle -->
 <!-- ============================================================== -->
@@ -11,7 +14,7 @@
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item"><a href="">Requests</a>
+                        <li class="breadcrumb-item"><a href="">Reports</a>
                         </li>
                     </ol>
                 </nav>
@@ -51,23 +54,11 @@
                     </svg>
                 </span>
                 <!--end::Svg Icon-->
-                <input type="text" name="searchTerm" id="searchTerm" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Requests" autocomplete="off">
+                <input type="text" name="searchTerm" id="searchTerm" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Reports" autocomplete="off">
             </div>
             <!--end::Search-->
         </div>
-            {{-- <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                <!--begin::Add user-->
-                <a href="#add_wfh_modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_wfh_modal">
-                <span class="svg-icon svg-icon-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"></rect>
-                        <rect fill="#000000" opacity="0.5" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000)" x="4" y="11" width="16" height="2" rx="1"></rect>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->Add Leaves</a>
-            </div> --}}
-    {{-- <div class="card-body pt-0"> --}}
-        @include('workFromHome.include.tabledata')              
+        @include('report.include.tabledata')              
 <!--end::Content-->
 @endsection
 
@@ -80,12 +71,12 @@
 @endpush
 
 @push('modals')
-{{-- View WFH Modal --}}
-<div class="modal fade" id="view_wfh_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+{{-- View Report Modal --}}
+<div class="modal fade" id="view_report_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="fw-bolder">WFH Request</h2>
+                <h4 class="fw-bolder">Report</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
@@ -98,35 +89,40 @@
                     </div>
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Start Date</span>
+                            <span class="required">Login Date</span>
                         </label>
-                        {{ aire()->date('start_date')->id('start_date')->class('form-control form-control-solid')->readOnly() }}
+                        {{ aire()->date('login_date')->id('login_date')->class('form-control form-control-solid')->readOnly() }}
                     </div>
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">End Date</span>
+                            <span class="required">Clock In</span>
                         </label>
-                        {{ aire()->date('end_date')->id('end_date')->class('form-control form-control-solid')->readOnly() }}
-                    </div>
-                
-                    <div class="col-md-12 fv-row">
-                        <label class="fs-6 fw-bold">
-                            <span class="required">Reason</span>
-                        </label>
-                        {{ aire()->input('reason')->id('reason')->class('form-control form-control-solid')->readOnly() }}
+                        {{ aire()->time('office_in')->id('office_in')->class('form-control form-control-solid')->readOnly() }}
                     </div>
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Status</span>
+                            <span class="required">Clock Out</span>
                         </label>
-                        {{ aire()->input('status')->id('status')->class('form-control form-control-solid')->readOnly() }}
+                        {{ aire()->time('office_out')->id('office_out')->class('form-control form-control-solid')->readOnly() }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Checkin Type</span>
+                        </label>
+                        {{ aire()->select(CheckinType::all()->pluck('type', 'id'), 'checkin_type')->id('checkin_type')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Working Hours</span>
+                        </label>
+                        {{ aire()->time('total_work_hours')->id('total_work_hours')->class('form-control form-control-solid')->readOnly() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{{-- View WFH Modal --}}
+{{-- View Report Modal --}}
 
 <div class="modal fade" id="success_message" tabindex="-1"  aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -144,139 +140,42 @@
 <script>
 
 //AJAX FOR SEARCHING AND GET PAGINATION DATA
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 $(document).ready(function(){
 
-$('#searchTerm').on('keyup',function(){
-    search_item = $(this).val();
-    var page =  $('#hidden_page').val();
-    fetch_data(page,search_item);
-})
+    $('#searchTerm').on('keyup',function(){
+        search_item = $(this).val();
+        var page =  $('#hidden_page').val();
+        fetch_data(page,search_item);
+    })
 
-$(document).on('click', '.pagination a', function(event){
-    event.preventDefault(); 
-    var page = $(this).attr('href').split('page=')[1];
-    var search_item = $('#searchTerm').val();
-    fetch_data(page,search_item);
-});
+    $(document).on('click', '.pagination a', function(event){
+        event.preventDefault(); 
+        var page = $(this).attr('href').split('page=')[1];
+        var search_item = $('#searchTerm').val();
+        fetch_data(page,search_item);
+    });
 
-function fetch_data(page,search_item)
-{
-    if(search_item === undefined){
-        search_item = "";
+    function fetch_data(page,search_item)
+    {
+        if(search_item === undefined){
+            search_item = "";
+        }
+
+        $.ajax({
+            url:"{{url('/report/load-table?page=')}}"+page+"&search_item="+search_item,
+            success:function(data){
+                $('#table').html(data);
+            }
+        });
     }
-
-    $.ajax({
-        url:"{{url('/work-from-home/load-table?page=')}}"+page+"&search_item="+search_item,
-        success:function(data){
-            $('#table').html(data);
-        }
-    });
-}
-
 });
 
-$.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-//Store Leave Type data via ajax
-function storeLeaveType(){
-  // get the form values
-    var type = $("#type").val();
-//   make the ajax request
-    $.ajax({
-        url: '{{ route("leaveType.store") }}',
-        type: 'POST',
-        data: {
-            type: type
-        },
-        dataType: 'json',
-        success: function(result) {
-        // success handling
-        //Server side validation
-            if(result.errors)
-            {
-                jQuery.each(result.errors, function(fieldName, errorMsg){
-                    var field = $('[name="'+fieldName+'"]');
-                    field.addClass('is-invalid');
-                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
-                });
-                // Remove the error message and is-invalid class when the user corrects the input
-                $('input, select').on('input', function() {
-                    var field = $(this);
-                    field.removeClass('is-invalid');
-                    field.next('.invalid-feedback').remove();
-                });
-            }
-            else
-            {
-                //Show Success message on saving leave type and hide form modal
-                $('#add_wfh_modal').hide() 
-                $('.show_message').append('Leave Type Added Successfully')
-                    $('#success_message').modal('show');
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 2000);
-                // jQuery('.alert-danger').hide();
-                // $('#open').hide();
-                // $('#add_guest').modal('hide');
-                // //User Already Reigstered
-                // if (result.type == 'danger') {
-                //     $('#alert-div').find('h4').text('User Already Registered');
-                //     $('#alert-div').find('span').text(result.message);
-                //     $('#alert-div').show();
-                    
-                // } else {
-                //     //Success bookinng
-                // }                
-            }
-        }
-    });
-}
-
-//UPDATE LEAVE Leave VIA AJAX
-function updateLeave(id){
-  // get the form values
-    var type = $("#edit_type").val();
-//   make the ajax request
-    $.ajax({
-        url:  "{{url('/leave-type/update')}}/"+id,
-        type: 'POST',
-        data: {
-            type: type
-        },
-        dataType: 'json',
-        success: function(result) {
-        // success handling
-        //Server side validation
-            if(result.errors)
-            {
-                jQuery.each(result.errors, function(fieldName, errorMsg){
-                    var field = $('[name="'+fieldName+'"]');
-                    field.addClass('is-invalid');
-                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
-                });
-                // Remove the error message and is-invalid class when the user corrects the input
-                $('input, select').on('input', function() {
-                    var field = $(this);
-                    field.removeClass('is-invalid');
-                    field.next('.invalid-feedback').remove();
-                });
-            }
-            else
-            {
-                //Show Success message on saving leave type and hide form modal
-                $('#edit_leave_type_modal').hide() 
-                $('.show_message').append('leave Type Updated Successfully')
-                    $('#success_message').modal('show');
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 2000);             
-            }
-        }
-    });
-}
 
     $(".btnClosePopup").click(function () {
         $("#add_wfh_modal").modal("hide");

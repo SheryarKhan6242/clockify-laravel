@@ -186,7 +186,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('/report')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('report.index');
-        // Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('leave.edit');
+        Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('report.edit');
         // Route::post('/update/{id}', [ReportController::class, 'update'])->name('leave.update');
         // Route::post('/store', [ReportController::class, 'store'])->name('leave.store');
         // Route::get('/delete/{id}', [ReportController::class, 'destroy'])->name('leave.delete');

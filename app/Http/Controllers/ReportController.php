@@ -87,7 +87,7 @@ class ReportController extends Controller
         //
     }
 
-    /**
+    /**dd
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -95,25 +95,26 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        $workFromHome = WorkFromHome::with('userName')->find($id);
+        $report = Report::with('userName')->find($id);
         // dd($workFromHome);
-        if($workFromHome) {
+        if($report) {
             $response = [
                 'success' => true,
-                'workFromHome' => [
-                    'id' => $workFromHome->id,
-                    'name' => $workFromHome->userName->name,
-                    'start_date' => $workFromHome->start_date,
-                    'end_date' => $workFromHome->end_date,
-                    'reason' => $workFromHome->reason,
-                    'status' => $workFromHome->status
-                    // add other columns as needed
+                'report' => [
+                    'id' => $report->id,
+                    'name' => $report->userName->name,
+                    'login_date' => $report->login_date,
+                    'office_in' => $report->office_in,
+                    'office_out' => $report->office_out,
+                    'checkin_type' => $report->checkin_id,
+                    'total_work_hours' => $report->total_work_hours
                 ],
             ];
+            // dd($response);
             return response()->json($response);
         }
     }
-
+    
     /**
      * Update the specified resource in storage.
      *

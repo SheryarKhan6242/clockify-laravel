@@ -29,7 +29,7 @@ return [
     ],
     [
         'route'     => 'report.index',
-        'label'     => 'Departments',
+        'label'     => 'Reports',
         'name'      => 'departments',
         'icon'      => 'feather-icon',
     ],
