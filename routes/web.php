@@ -187,11 +187,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/report')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('report.index');
         Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('report.edit');
-        // Route::post('/update/{id}', [ReportController::class, 'update'])->name('leave.update');
-        // Route::post('/store', [ReportController::class, 'store'])->name('leave.store');
-        // Route::get('/delete/{id}', [ReportController::class, 'destroy'])->name('leave.delete');
-        // Route::post('/update-leave-status', [ReportController::class, 'updateLeaveStatus'])->name('leaveType.updateLeaveStatus');
-        Route::get('/load-table', [ReportController::class, 'getReportData'])->name('report.get_report_data');
+        Route::post('/update/{id}', [ReportController::class, 'update'])->name('report.update');
+        Route::post('/generate/{id}', [ReportController::class, 'getReports'])->name('report.getReports');
+        Route::get('/load-table', [ReportController::class, 'searchReport'])->name('report.search_report');
     });
 
 

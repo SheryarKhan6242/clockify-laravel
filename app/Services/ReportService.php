@@ -22,8 +22,15 @@ class ReportService
         return null; 
     }
 
+    //Generate a report via month filter, present/absent days,by user(WEB)
+    public function generateReport($month,$attendance,$userId)
+    {
+        
+    }
+
     // Your service methods and logic
 
+    //Fetches reports for API
     public function fetchReports($request)
     {
         $report = Report::where('user_id', $request->user_id);
@@ -147,7 +154,6 @@ class ReportService
 
         return $summary;
     }
-
 
     public function getApprovedLeaves($userId,$startDate,$endDate)
     {
