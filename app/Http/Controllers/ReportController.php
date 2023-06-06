@@ -14,7 +14,7 @@ class ReportController extends Controller
     public function index()
     {
         //
-        $data['reports'] = Report::paginate(5);
+        $data['reports'] = Report::paginate(15);
 
         $currentMonth = Carbon::now()->month; // Get the current month (1-12)
         $currentYear = Carbon::now()->year; // Get the current year
@@ -32,7 +32,7 @@ class ReportController extends Controller
 
     public function searchReport(Request $request)
     {
-        $reports = Report::paginate(5);
+        $reports = Report::paginate(15);
 
         if($request->ajax())
         {
@@ -40,7 +40,7 @@ class ReportController extends Controller
                 ->when($request->search_item, function($q)use($request){
                     $q->where('reason','LIKE','%'.$request->search_item.'%');
                 })
-                ->paginate(5);
+                ->paginate(15);
 
             //Need to add search for employee name as well. Map the ID on to the name.
             // $workFromHome = WorkFromHome::query()
@@ -74,22 +74,24 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // $validator = \Validator::make($request->all(), [
-        //     'type' => 'required'
-        // ]);
-        
-        // if ($validator->fails())
-        // {      
-        //     $errors = $validator->errors()->toArray();
-        //     // dd($errors);
-        //     return response()->json(['errors' => $errors]);
-        //     // return response()->json(['errors'=>$validator->errors()->all()]);
-        // }
-        // $leaveType = new Leave();
-        // $leaveType->type = $request->type;
-        // $leaveType->save();
-        // return response()->json(['type' =>'success']);
+        $report = new Report();
+        $report->user_id = $request->user_id;
+        $report->login_date = $request->login_date;
+        $report->office_in = Carbon::parse($request->office_in)->format('H:i:s');
+        $report->office_out = Carbon::parse($request->office_out)->format('H:i:s');
+        $report->checkin_id = $request->checkin_id;
+        //Calculate working hours
+        $end = Carbon::parse($report->office_out);
+        $workHours = $end->diffInSeconds($report->office_in);
+        $report->total_work_hours = gmdate('H:i:s', $workHours);
+        //Calculate working hours
+        $report->wfh_reason = isset($request->wfh_reason) ? $request->wfh_reason : null;
+        $report->shift_id = $request->shift_id;
+        $report->clockin_location = 'Karachi';
+        $report->login_user_ip = '192.168.0.1';
+
+        $report->save();
+        return response()->json(['type' =>'success']);
     }
 
     /**
@@ -123,10 +125,11 @@ class ReportController extends Controller
                     'office_in' => $report->office_in,
                     'office_out' => $report->office_out,
                     'checkin_type' => $report->checkin_id,
+                    'shift_id' => $report->shift_id,
                     'total_work_hours' => $report->total_work_hours
                 ],
             ];
-            // dd($response);
+            // dd($response);   
             return response()->json($response);
         }
     }

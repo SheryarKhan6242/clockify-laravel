@@ -15,13 +15,13 @@ class EventController extends Controller
     public function index()
     {
         //
-        $data['events'] = Event::paginate(5);
+        $data['events'] = Event::paginate(15);
         return view('event.index',$data);
     }
 
     public function get_event_data(Request $request)
     {
-        $events = Event::paginate(5);
+        $events = Event::paginate(15);
 
         if($request->ajax())
         {
@@ -30,7 +30,7 @@ class EventController extends Controller
                             $q->where('name','LIKE','%'.$request->search_item.'%')
                                 ->orwhere('description','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('event.include.tableData', compact('events'))->render();
         }

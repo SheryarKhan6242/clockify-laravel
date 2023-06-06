@@ -19,13 +19,13 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $data['employees'] = Employee::paginate(5);
+        $data['employees'] = Employee::paginate(15);
         return view('employee.index',$data);
     }
 
     public function getEmpData(Request $request)
     {
-        $employees = Employee::paginate(5);
+        $employees = Employee::paginate(15);
 
         if($request->ajax())
         {
@@ -34,7 +34,7 @@ class EmployeeController extends Controller
                             $q->where('first_name','LIKE','%'.$request->search_item.'%')
                             ->orWhere('last_name','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('employee.include.tabledata', compact('employees'))->render();
         }

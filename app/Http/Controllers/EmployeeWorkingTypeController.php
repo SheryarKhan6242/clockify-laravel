@@ -10,13 +10,13 @@ class EmployeeWorkingTypeController extends Controller
     public function index()
     {
         //
-        $data['workType'] = EmployeeWorkingType::paginate(5);
+        $data['workType'] = EmployeeWorkingType::paginate(15);
         return view('empWorkType.index',$data);
     }
 
     public function get_leave_type_data(Request $request)
     {
-        $workType = EmployeeWorkingType::paginate(5);
+        $workType = EmployeeWorkingType::paginate(15);
 
         if($request->ajax())
         {
@@ -24,7 +24,7 @@ class EmployeeWorkingTypeController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('type','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('empWorkType.include.tableData', compact('workType'))->render();
         }

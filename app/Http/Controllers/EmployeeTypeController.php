@@ -15,13 +15,13 @@ class EmployeeTypeController extends Controller
     public function index()
     {
         //
-        $data['empTypes'] = EmployeeType::paginate(5);
+        $data['empTypes'] = EmployeeType::paginate(15);
         return view('empType.index',$data);
     }
 
     public function getEmpTypeData(Request $request)
     {
-        $empTypes = EmployeeType::paginate(5);
+        $empTypes = EmployeeType::paginate(15);
 
         if($request->ajax())
         {
@@ -29,7 +29,7 @@ class EmployeeTypeController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('name','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('empType.include.tabledata', compact('empTypes'))->render();
         }

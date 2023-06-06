@@ -29,11 +29,13 @@ class CreateSuperAdmin extends Command
     public function handle()
     {
         $name = $this->ask('Enter the name of the super admin user');
+        $username = $this->ask('Enter the username of the super admin user');
         $email = $this->ask('Enter the email of the super admin user');
         $password = $this->secret('Enter the password of the super admin user');
 
         $user = User::create([
             'name' => $name,
+            'username' => $username,
             'email' => $email,
             'password' => Hash::make($password),
             'is_admin' => true,

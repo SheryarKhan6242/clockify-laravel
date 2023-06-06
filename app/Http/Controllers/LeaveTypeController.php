@@ -15,13 +15,13 @@ class LeaveTypeController extends Controller
     public function index()
     {
         //
-        $data['leaveType'] = LeaveType::paginate(5);
+        $data['leaveType'] = LeaveType::paginate(15);
         return view('leaveType.index',$data);
     }
 
     public function get_leave_type_data(Request $request)
     {
-        $leaveType = LeaveType::paginate(5);
+        $leaveType = LeaveType::paginate(15);
 
         if($request->ajax())
         {
@@ -29,7 +29,7 @@ class LeaveTypeController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('type','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('leaveType.include.tableData', compact('leaveType'))->render();
         }

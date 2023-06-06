@@ -71,9 +71,31 @@ class WorkFromHomeApiController extends Controller
     public function getUserWfhRequests(Request $request)
     {
         $requests = WorkFromHome::where('user_id',$request->user_id)->get();
-        if($requests->count() > 0)
-            return response()->json(['success'=>true,'requests'=>$requests]);
-        
+        // $path = asset('/storage/uploads/'.$fileName)
+        if($requests->count() > 0){        
+            $response = [];
+            foreach ($requests as $request) {
+                $path = null;
+                if(isset($request->attach_file) && $request->attach_file !=null)
+                    $path = asset('/storage/uploads/'.$request->attach_file);
+
+                $payload = [
+                    'id' => $request->id,
+                    'user_id' => $request->user_id,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'reason' => $request->reason,
+                    'status' => $request->status,
+                    'approved_by' => $request->approved_by,
+                    'attach_file' => $path,
+                    'created_at' => $request->created_at,
+                    'updated_at' => $request->updated_at,
+                ];
+                $response[] = $payload;
+            }
+            // dd($payload);
+            return response()->json(['success'=>true,'requests'=>$response]);
+        }
         return response()->json(['success'=>false,'message'=>'No Work From Home request submitted.']);
     }
 }

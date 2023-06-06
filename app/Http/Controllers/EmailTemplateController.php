@@ -17,7 +17,7 @@ class EmailTemplateController extends Controller
     public function index()
     {
         //
-        $data['templates'] = EmailTemplate::paginate(5);
+        $data['templates'] = EmailTemplate::paginate(15);
         return view('emailTemplate.index',$data);
 
     }

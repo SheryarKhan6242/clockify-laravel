@@ -22,16 +22,18 @@ class LeaveController extends Controller
         $data = [];
 
         if ($request->has('leaveType') && $request->leaveType === 'annual') {
-            $data['leave'] = $this->getLeaveDataFromService();
+            $data['leave'] = Leave::where('leave_type_id',1)->paginate(15);
+        } elseif($request->has('leaveType') && $request->leaveType === 'sick') {
+            $data['leave'] = Leave::where('leave_type_id',2)->paginate(15);
         } else {
-            $data['leave'] = Leave::paginate(5);
+            $data['leave'] = Leave::paginate(15);
         }
         return view('leave.index', $data);
     }
 
     public function get_leave_data(Request $request)
     {
-        $leave = Leave::paginate(5);
+        $leave = Leave::paginate(15);
 
         if($request->ajax())
         {
@@ -39,7 +41,7 @@ class LeaveController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('type','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('leave.include.tableData', compact('leave'))->render();
         }
@@ -161,7 +163,7 @@ class LeaveController extends Controller
             $leave->status = 'Approved';
             $leave->approval_id = auth()->user()->id;
         } else if ($request->status == 0) {
-            $leave->status = 'Rejected';
+            $leave->status = 'Declined';
             $leave->approval_id = auth()->user()->id;
         } else {
             $leave->status = 'Pending';

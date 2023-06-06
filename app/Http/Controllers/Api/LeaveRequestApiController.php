@@ -88,7 +88,32 @@ class LeaveRequestApiController extends Controller
         
         $leaves = leave::where('user_id',$request->user_id)->get();
         if($leaves->count() > 0)
-        return response()->json(['success'=>true,'leaves'=>$leaves]);
+        {
+            $response = [];
+            foreach ($leaves as $leave) {
+                $path = null;
+                if(isset($leave->media) && $leave->media !=null)
+                    $path = asset('/storage/uploads/'.$leave->media);
+
+                $payload = [
+                    'id' => $leave->id,
+                    'user_id' => $leave->user_id,
+                    'leave_type_id' => $leave->leave_type_id,
+                    'subject' => $leave->subject,
+                    'description' => $leave->description,
+                    'start_date' => $leave->start_date,
+                    'end_date' => $leave->end_date,
+                    'status' => $leave->status,
+                    'approval_id' => $leave->approval_id,
+                    'media' => $path,
+                    'created_at' => $leave->created_at,
+                    'updated_at' => $leave->updated_at,
+                ];
+                $response[] = $payload;
+            }
+            // dd($payload);
+            return response()->json(['success'=>true,'leaves'=>$leaves]);
+        }
         
         return response()->json(['success'=>false,'message'=>'No leaves request submitted.']);
     }

@@ -28,7 +28,7 @@
                         {{-- <td><label class="label label-light-danger label-inline label-lg">Absent</label></td> --}}
                         {{-- <td><label class="label label-light-success label-inline label-lg">Present</label></td> --}}
                         <td>{{ Carbon::parse($date)->format('l') }}</td>
-                        <td>{{  Carbon::parse($date)->format('M j, Y') }}</td>
+                        <td>{{ Carbon::parse($date)->format('M j, Y') }}</td>
                         <td>{{ $report->office_in ?? '-' }}</td>
                         <td>{{ $report->office_out ?? '-' }}</td>
                         <td>{{ $report->checkinType->type ?? '-' }}</td>
@@ -44,8 +44,10 @@
                         @endif
                         @if ($report)
                             <td>@include('report.actions', ['id' => $report->id])</td>
+                        @elseif(!$report && !Carbon::parse($date)->isWeekend())
+                        {{-- If Absent, Allow admin to add report --}}
+                            <td>@include('report.actions', ['add_report' => 1,'login_date' => Carbon::parse($date)->format('Y-m-d')])</td>
                         @endif
-                        {{-- <td class="text-end">@include('departments.include.action')</td> --}}
                     </tr>
                     @php
                         $count += 1;

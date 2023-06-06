@@ -12,13 +12,13 @@ class WorkFromHomeController extends Controller
     public function index()
     {
         //
-        $data['workFromHome'] = WorkFromHome::paginate(5);
+        $data['workFromHome'] = WorkFromHome::paginate(15);
         return view('workFromHome.index',$data);
     }
 
     public function getWfhData(Request $request)
     {
-        $workFromHome = WorkFromHome::paginate(5);
+        $workFromHome = WorkFromHome::paginate(15);
 
         if($request->ajax())
         {
@@ -26,7 +26,7 @@ class WorkFromHomeController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('reason','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             //Need to add search for employee name as well. Map the ID on to the name.
             // $workFromHome = WorkFromHome::query()
@@ -150,7 +150,7 @@ class WorkFromHomeController extends Controller
             $workFromHome->status = 'Approved';
             $workFromHome->approved_by = auth()->user()->id;
         } else if ($request->status == 0) {
-            $workFromHome->status = 'Rejected';
+            $workFromHome->status = 'Declined';
             $workFromHome->approved_by = auth()->user()->id;
         } else {
             $workFromHome->status = 'Pending';

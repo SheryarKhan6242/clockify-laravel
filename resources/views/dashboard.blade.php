@@ -55,7 +55,7 @@ Dashboard
 <!-- *************************************************************** -->
 <!-- Start First Cards -->
 <!-- *************************************************************** -->
-<div class="row">
+{{-- <div class="row">
     <div class="col-sm-6 col-lg-3">
         <div class="card border-end">
             <div class="card-body">
@@ -136,7 +136,7 @@ Dashboard
             </div>
         </div>
     </div> 
-</div>
+</div> --}}
 <!-- *************************************************************** -->
 <!-- End First Cards -->
 <!-- *************************************************************** -->
@@ -267,7 +267,7 @@ Dashboard
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{ isset($wfhRequest) && $wfhRequest->count() > 0 ? $wfhRequest->count() : 0 }}</h5>
-                                <a href="#" class="card-text">Work From Home</a>
+                                <a href="{{ route('wfh.index') }}" class="card-text">Work From Home</a>
                             </div>
                         </div>
                     </div>

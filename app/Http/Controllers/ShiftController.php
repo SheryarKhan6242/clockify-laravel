@@ -15,13 +15,13 @@ class ShiftController extends Controller
     public function index()
     {
         //
-        $data['shifts'] = Shift::paginate(5);
+        $data['shifts'] = Shift::paginate(15);
         return view('shift.index',$data);
     }
 
     public function get_shift_data(Request $request)
     {
-        $shifts = Shift::paginate(5);
+        $shifts = Shift::paginate(15);
 
         if($request->ajax())
         {
@@ -29,7 +29,7 @@ class ShiftController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('name','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('shift.include.tableData', compact('shifts'))->render();
         }

@@ -18,6 +18,11 @@ use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleManagementController;
+use App\Http\Controllers\PermissionManagementController;
+
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -188,10 +193,41 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('report.index');
         Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('report.edit');
         Route::post('/update/{id}', [ReportController::class, 'update'])->name('report.update');
+        Route::post('/store', [ReportController::class, 'store'])->name('report.store');
         Route::post('/generate/{id}', [ReportController::class, 'getReports'])->name('report.getReports');
         Route::get('/load-table', [ReportController::class, 'searchReport'])->name('report.search_report');
     });
 
+    Route::prefix('/users')->group(function () {
+        Route::get('/', [ UserController::class, 'index' ])->name('listUsers');
+        Route::get('/create', [ UserController::class, 'create' ])->name('createUser');
+        Route::get('/edit/{id}', [ UserController::class, 'edit' ])->name('editUser');
+        Route::post('/update/{id}', [ UserController::class, 'update' ])->name('updateUser');
+        Route::post('/store', [ UserController::class, 'store' ])->name('storeUser');
+        Route::get('/delete/{id}', [ UserController::class, 'destroy' ])->name('deleteUser');
+        // Route::post('/addMembershipGrades', [ TeeManagementController::class, 'store' ])->name('addMembershipGrades');
+    });
+
+    Route::prefix('/permissions-management')->group(function () {
+        Route::get('/', [ PermissionManagementController::class, 'index' ])->name('permissions-management.index');
+        Route::get('/load-permissions-table', [PermissionManagementController::class, 'get_permissions_data'])->name('member.get.permissions.data');
+        Route::post('/', [ PermissionManagementController::class, 'store' ])->name('permissions-management.store');
+        Route::get('/create', [ PermissionManagementController::class, 'create' ])->name('permissions-management.create');
+        Route::get('/{permission}/edit', [ PermissionManagementController::class, 'edit' ])->name('permissions-management.edit');
+        Route::post('/{permission}', [ PermissionManagementController::class, 'update' ])->name('permissions-management.update');
+        Route::get('/{permission}/delete', [ PermissionManagementController::class, 'destroy' ])->name('permissions-management.destroy');
+    });
+
+  
+    Route::prefix('/roles-management')->group(function () {
+        Route::get('/', [ RoleManagementController::class, 'index' ])->name('roles-management.index');
+        Route::get('/load-role-table', [RoleManagementController::class, 'get_role_data'])->name('member.get.role.data');
+        Route::post('/', [ RoleManagementController::class, 'store' ])->name('roles-management.store');
+        Route::get('/create', [ RoleManagementController::class, 'create' ])->name('roles-management.create');
+        Route::get('/{role}/edit', [ RoleManagementController::class, 'edit' ])->name('roles-management.edit');
+        Route::post('/{role}', [ RoleManagementController::class, 'update' ])->name('roles-management.update');
+        Route::get('/{role}/delete', [ RoleManagementController::class, 'destroy' ])->name('roles-management.destroy');
+    });
 
 });
 

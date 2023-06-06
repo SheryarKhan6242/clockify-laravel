@@ -5,6 +5,7 @@
 @php
     use App\Models\CheckinType;
     use App\Models\Employee;
+    use App\Models\Shift;
 @endphp
 @section('bread_crumb')
 <!-- Bread crumb and right sidebar toggle -->
@@ -98,6 +99,64 @@
 @endpush
 
 @push('modals')
+
+{{-- Add Report Modal --}}
+<div class="modal fade" id="add_report_modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-bolder">Add Report</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="row">
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Employee Name</span>
+                        </label>
+                        {{ aire()->input('name')->id('add_name')->class('form-control form-control-solid') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Login Date</span>
+                        </label>
+                        {{ aire()->date('login_date')->id('add_login_date')->class('form-control form-control-solid') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Clock In</span>
+                        </label>
+                        {{ aire()->time('office_in')->id('add_office_in')->class('form-control form-control-solid') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Clock Out</span>
+                        </label>
+                        {{ aire()->time('office_out')->id('add_office_out')->class('form-control form-control-solid') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Checkin Type</span>
+                        </label>
+                        {{ aire()->select(CheckinType::all()->pluck('type', 'id'), 'checkin_type')->id('add_checkin_type')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
+                            <span class="required">Shift</span>
+                        </label>
+                        {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift', ''),'add_shift_id')->id('add_shift_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="text-center pt-15 show_update">
+                        <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
+                        <a href="#" id="add_report" onclick="addReport()" class="btn btn-rounded btn-success btn-change">Add Report</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Add Report Modal --}}
+
 {{-- View Report Modal --}}
 <div class="modal fade" id="view_report_modal" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -140,6 +199,12 @@
                     </div>
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
+                            <span class="required">Shift</span>
+                        </label>
+                        {{ aire()->select(Shift::all()->pluck('name', 'id'),'shift_id')->id('shift_id')->class('form-control form-control-solid selectjs2') }}
+                    </div>
+                    <div class="col-md-12 fv-row">
+                        <label class="fs-6 fw-bold">
                             <span class="required">Working Hours</span>
                         </label>
                         {{ aire()->time('total_work_hours')->id('total_work_hours')->class('form-control form-control-solid')->readOnly() }}
@@ -165,13 +230,13 @@
                         <label class="fs-6 fw-bold">
                             <span class="required">Employee Name</span>
                         </label>
-                        {{ aire()->input('edit_name')->id('edit_name')->class('form-control form-control-solid') }}
-                    </div>
+                        {{ aire()->input('edit_name')->id('edit_name')->class('form-control form-control-solid')->readOnly() }}
+                    </div>  
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
                             <span class="required">Login Date</span>
                         </label>
-                        {{ aire()->date('edit_login_date')->id('edit_login_date')->class('form-control form-control-solid') }}
+                        {{ aire()->date('edit_login_date')->id('edit_login_date')->class('form-control form-control-solid')->readOnly() }}
                     </div>
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
@@ -193,9 +258,9 @@
                     </div>
                     <div class="col-md-12 fv-row">
                         <label class="fs-6 fw-bold">
-                            <span class="required">Working Hours</span>
+                            <span class="required">Shift</span>
                         </label>
-                        {{ aire()->time('edit_total_work_hours')->id('edit_total_work_hours')->class('form-control form-control-solid') }}
+                        {{ aire()->select(Shift::all()->pluck('name', 'id'),'edit_shift_id')->id('edit_shift_id')->class('form-control form-control-solid selectjs2') }}
                     </div>
                     <div class="text-center pt-15 show_update">
                         <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
@@ -260,13 +325,69 @@ $(document).ready(function(){
     }
 });
 
+function addReport() {
+    // alert("Ok")
+    // Get the Report values
+    var user_id = $('#emp_name').val();
+    var login_date = $('#add_login_date').val();
+    var office_in = $('#add_office_in').val();
+    var office_out = $('#add_office_out').val();
+    var checkin_id = $('#add_checkin_type').val();
+    var shift_id = $('#add_shift_id').val();
+
+    // Create the data object to be sent in the AJAX request
+    var data = {
+        user_id: user_id,
+        login_date: login_date,
+        office_in: office_in,
+        office_out: office_out,
+        checkin_id: checkin_id,
+        shift_id: shift_id
+    };
+
+    $.ajax({
+        url: '{{ route("report.store") }}',
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        success: function(response) {
+            console.log(response);
+            // success handling
+            if(response.errors)
+            {
+                jQuery.each(response.errors, function(fieldName, errorMsg){
+                    var field = $('[name="'+fieldName+'"]');
+                    field.addClass('is-invalid');
+                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
+                });
+                // Remove the error message and is-invalid class when the user corrects the input
+                $('input, select').on('input', function() {
+                    var field = $(this);
+                    field.removeClass('is-invalid');
+                    field.next('.invalid-feedback').remove();
+                });
+            }
+            else
+            {
+                //Show Success message on saving Report and hide form modal
+                $('#add_report_modal').hide() 
+                $('.show_message').append('Report Updated Successfully')
+                $('#success_message').modal('show');
+                setTimeout(function(){
+                    window.location.reload();
+                }, 2000);
+            }
+        }
+    });
+}
+
 function updateReport(id) {
     // Get the updated values from the edit modal inputs
     var updatedLoginDate = $('#edit_login_date').val();
     var updatedOfficeIn = $('#edit_office_in').val();
     var updatedOfficeOut = $('#edit_office_out').val();
     var updatedCheckinType = $('#edit_checkin_type').val();
-    var updatedTotalWorkHours = $('#edit_total_work_hours').val();
+    var updatedShiftId = $('#edit_shift_id').val();
 
     // Create the data object to be sent in the AJAX request
     var data = {
@@ -274,7 +395,7 @@ function updateReport(id) {
         office_in: updatedOfficeIn,
         office_out: updatedOfficeOut,
         checkin_id: updatedCheckinType,
-        total_work_hours: updatedTotalWorkHours
+        shift_id: updatedShiftId
     };
 
     $.ajax({
@@ -366,6 +487,8 @@ function generateReport(event){
         success: function(response) {
             $('.reports-data').html('');
             $('.reports-data').append(response.html);
+            // console.log(response.html)
+
         }
     });
 

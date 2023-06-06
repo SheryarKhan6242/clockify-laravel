@@ -15,13 +15,13 @@ class HolidayController extends Controller
     public function index()
     {
         //
-        $data['holidays'] = Holiday::paginate(5);
+        $data['holidays'] = Holiday::paginate(15);
         return view('holiday.index',$data);
     }
 
     public function get_holiday_data(Request $request)
     {
-        $holidays = Holiday::paginate(5);
+        $holidays = Holiday::paginate(15);
 
         if($request->ajax())
         {
@@ -30,7 +30,7 @@ class HolidayController extends Controller
                             $q->where('name','LIKE','%'.$request->search_item.'%')
                                 ->orwhere('description','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('holiday.include.tableData', compact('holidays'))->render();
         }

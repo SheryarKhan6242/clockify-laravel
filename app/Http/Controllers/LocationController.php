@@ -15,13 +15,13 @@ class LocationController extends Controller
     public function index()
     {
         //
-        $data['locations'] = Location::paginate(5);
+        $data['locations'] = Location::paginate(15);
         return view('location.index',$data);
     }
 
     public function get_location_data(Request $request)
     {
-        $locations = Location::paginate(5);
+        $locations = Location::paginate(15);
 
         if($request->ajax())
         {
@@ -29,7 +29,7 @@ class LocationController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('name','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('location.include.tableData', compact('locations'))->render();
         }

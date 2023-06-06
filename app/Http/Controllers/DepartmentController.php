@@ -15,13 +15,13 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        $data['departments'] = Department::paginate(5);
+        $data['departments'] = Department::paginate(15);
         return view('department.index',$data);
     }
 
     public function get_department_data(Request $request)
     {
-        $departments = Department::paginate(5);
+        $departments = Department::paginate(15);
 
         if($request->ajax())
         {
@@ -29,7 +29,7 @@ class DepartmentController extends Controller
                         ->when($request->search_item, function($q)use($request){
                             $q->where('name','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('department.include.tableData', compact('departments'))->render();
         }

@@ -15,13 +15,13 @@ class NoticeController extends Controller
     public function index()
     {
         //
-        $data['notices'] = Notice::paginate(5);
+        $data['notices'] = Notice::paginate(15);
         return view('notice.index',$data);
     }
 
     public function get_notice_data(Request $request)
     {
-        $notices = Notice::paginate(5);
+        $notices = Notice::paginate(15);
 
         if($request->ajax())
         {
@@ -30,7 +30,7 @@ class NoticeController extends Controller
                             $q->where('name','LIKE','%'.$request->search_item.'%')
                                 ->orwhere('description','LIKE','%'.$request->search_item.'%');
                         })
-                        ->paginate(5);
+                        ->paginate(15);
 
             return view('event.include.tableData', compact('notices'))->render();
         }

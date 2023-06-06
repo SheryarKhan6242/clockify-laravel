@@ -109,4 +109,41 @@ return [
             ],
         ]
     ],
+    [
+        'route'     => '#',
+        'label'     => 'Users Management',
+        'name'      => 'users.management',
+        'icon'      => 'feather-icon',
+        'permission' => 'users.index',
+        'sub-menu'  => [
+            [
+                'route'     => 'createUser',
+                'label'     => 'Create User',
+                'name'      => 'user.add',
+                'icon'      => 'feather-icon',
+                'permission' => 'users.create',
+            ],
+            [
+                'route'     => 'listUsers',
+                'label'     => 'View Users',
+                'name'      => 'list.users',
+                'icon'      => 'feather-icon',
+                'permission' => 'users.index',
+            ],
+            [
+                'route'     => 'permissions-management.index',
+                'label'     => 'Permissions',
+                'name'      => 'permissions.manage',
+                'icon'      => 'feather-icon',
+                'permission' => 'permissions.index',
+            ],
+            [
+                'route'     => 'roles-management.index',
+                'label'     => 'Roles',
+                'name'      => 'roles.manage',
+                'icon'      => 'feather-icon',
+                'permission' => 'roles.index',
+            ]
+        ]
+    ],
 ];
