@@ -160,9 +160,9 @@ class EmployeeController extends Controller
         //Store Leaves Info (leaves Payload)
 
         //Store Financial Info(Bank Payload)
-        $bankPayload['acc_type']        = isset($request->account_type) ? $request->account_type : '';
-        $bankPayload['account_holder']  = isset($request->account_holder) ? $request->account_holder : '';
-        $bankPayload['acc_no']          = isset($request->account_no) ? $request->account_no : '';
+        $bankPayload['acc_type']        = isset($request->acc_type) ? $request->acc_type : '';
+        $bankPayload['acc_holder']      = isset($request->acc_holder) ? $request->acc_holder : '';
+        $bankPayload['acc_no']          = isset($request->acc_no) ? $request->acc_no : '';
         $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : '';
         $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : '';
         $employee->bank_payload         = json_encode($bankPayload);
@@ -234,6 +234,7 @@ class EmployeeController extends Controller
             return response()->json(['errors' => $errors]);
             // return response()->json(['errors'=>$validator->errors()->all()]);
         }
+        dd($request->all());
         $employee = Employee::find($id);
         $employee->user_id = auth()->user()->id;
         $employee->first_name = $request->first_name;
@@ -282,7 +283,16 @@ class EmployeeController extends Controller
         {
             $payload['per_day_hours'] = $request->per_day_hours;
             $employee->work_time_schedule = json_encode($payload);
-        } 
+        }
+        
+        //Update Financial Info(Bank Payload)
+        $bankPayload['acc_type']        = isset($request->acc_type) ? $request->acc_type : '';
+        $bankPayload['acc_holder']      = isset($request->acc_holder) ? $request->acc_holder : '';
+        $bankPayload['acc_no']          = isset($request->acc_no) ? $request->acc_no : '';
+        $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : '';
+        $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : '';
+        $employee->bank_payload         = json_encode($bankPayload);
+        //Update Financial Info(Bank Payload)
 
         $employee->save();
         return response()->json(['type' =>'success']);

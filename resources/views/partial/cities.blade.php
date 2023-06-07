@@ -1,4 +1,9 @@
-<select class="form-control form-control-solid" id="city_id" name="city_id">
+@if(isset($edit_city_id) && $edit_city_id)
+	<?php $id = "edit_city_id"; ?>
+@else
+	<?php $id = "city_id"; ?>
+@endif
+<select class="form-control form-control-solid" id={{$id}} name={{$id}}>
 	<option value="" >Select your city</option>
 	@foreach($cities as $city)
 		@if($city->id == $city_id)

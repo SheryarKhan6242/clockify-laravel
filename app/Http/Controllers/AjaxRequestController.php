@@ -27,6 +27,8 @@ class AjaxRequestController extends Controller
         $cities = City::where('country_id', $request->country_id)->get();
         $this->viewData['cities'] = $cities;
         $this->viewData['city_id'] = isset($request->city_id) ?  $request->city_id : 0;
+        //While fetching city_id value in edit form, since add form and edit both has city_id
+        $this->viewData['edit_city_id'] = 1;
          
         return view('partial.cities', $this->viewData);
     }

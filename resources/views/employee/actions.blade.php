@@ -46,6 +46,19 @@ function getEmpById(id){
                 $('#edit_joining_date').val(response.employees.joining_date);
                 $('#edit_salary').val(response.employees.salary);
                 $('#edit_is_lead').val(response.employees.is_lead);
+                $('#edit_reporting_to').val(response.employees.lead_reporting_to);
+                $('#edit_is_lead').prop('checked', response.employees.is_lead == 1);
+
+                // Parse Bank Payload array from JSON string
+                if(response.employees.bank_payload != undefined && response.employees.bank_payload != ''){
+                    var payload = JSON.parse(response.employees.bank_payload);
+                    console.log(payload.acc_type);
+                    $('#edit_acc_type').val(payload.acc_type)
+                    $('#edit_acc_holder').val(payload.acc_holder)
+                    $('#edit_acc_no').val(payload.acc_no)
+                    $('#edit_branch_name').val(payload.branch_name)
+                    $('#edit_branch_location').val(payload.branch_location)
+                }
 
                 // Parse weekdays array from JSON string
                 if(response.employees.work_time_schedule != undefined && response.employees.work_time_schedule != ''){
@@ -77,7 +90,7 @@ function getEmpById(id){
                     // console.log(country_id);
                     url = '/cities-selected'
                     if (location.hostname == 'localhost')
-                        url = '/employee_attendance_management/public/ajax/cities-selected'
+                        url = '/clockify-laravel/public/ajax/cities-selected'
                     // for(var i = 0; i < country_ids.length; i++){
                     //     let country_id = country_ids[i].value
                         // let city_id = city_ids[i].value
