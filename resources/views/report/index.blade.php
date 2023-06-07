@@ -58,7 +58,7 @@
             </div> --}}
         <div class="row">
             <div class="col-md-3">
-                <select class="form-control form-control-solid selectjs2 text-gray-900" name="month" id="month">
+                <select class="form-control form-control-solid selectjs2 text-gray-900 select2js" name="month" id="month">
                     <option value="" selected="">Select Month</option>
                     @foreach ($months as $value => $name)
                         <option value="{{ $value }}">{{ $name }}</option>
@@ -67,7 +67,7 @@
                 <span id="monthError" class="invalid-feedback">Please select a month.</span>
             </div>
             <div class="col-md-3">
-                <select class="form-control form-control-solid selectjs2 text-gray-900" data-aire-component="select"
+                <select class="form-control form-control-solid selectjs2 text-gray-900 select2js" data-aire-component="select"
                     name="filter_attendance" id="filter_attendance" data-aire-for="filter_attendance">
                     <option value="3" selected="">All</option>
                     <option value="1">Present</option>
@@ -79,10 +79,10 @@
                 {{-- {{ aire()->select(Employee::all()->pluck('first_name', 'id')->prepend('Select Employee',''), 'first_name')->id('first_name')->class('form-control form-control-solid selectjs2') }} --}}
                 {{ aire()->select(
                         Employee::whereHas('user', function ($query) {
-                            $query->where('status', true);
+                            $query->where('status', true)->orderBy('username');
                         })->get()->pluck('full_name', 'id')->prepend('Select Employee', ''),
                         'emp_name',
-                    )->id('emp_name')->class('form-control form-control-solid selectjs2') }}
+                    )->id('emp_name')->class('form-control select2js') }}
                 <span id="userError" class="invalid-feedback">Please select an employee.</span>
             </div>
             <div class="col-md-2">

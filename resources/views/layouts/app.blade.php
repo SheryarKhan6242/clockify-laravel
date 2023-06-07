@@ -27,6 +27,22 @@
         {
             background: linear-gradient(to right,#27E1EC,#2BCED8,#2AC0C9,#27B9C2,#27B9C2);
         }
+        .select2-container
+        {   
+            width: -webkit-fill-available !important;
+        }
+        .select2-container .select2-selection--single
+        {
+            height: 39px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered
+        {
+            line-height: 39px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow
+        {
+            top: 7px;
+        }
         /* .select2-container .select2-selection--single .select2-selection__rendered {
             padding-left: 0px !important;
         }
@@ -101,6 +117,14 @@
         </script>
     <!--end::Root-->
     <!--end::Main-->
+
+    <script>
+        
+        $(".select2js").select2({
+            
+        });
+
+    </script>
 @yield('footer')
 @stack('footer-scripts')
 </body>
