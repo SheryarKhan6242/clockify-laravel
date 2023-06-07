@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class CreateSuperAdmin extends Command
 {
@@ -38,10 +39,14 @@ class CreateSuperAdmin extends Command
             'username' => $username,
             'email' => $email,
             'password' => Hash::make($password),
-            'is_admin' => true,
         ]);
 
-        $this->info('Super admin user created successfully!');
+        if ( $user )
+        {
+            $user->assignRole(Role::findByName('super-admin'));
+
+            return $this->info('Super Admin `('.$user->email.')` created successfully!');
+        }
 
         return 0;
     }
