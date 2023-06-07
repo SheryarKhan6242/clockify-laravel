@@ -11,6 +11,10 @@ class Employee extends Model
     protected $guarded = [];  
     use HasFactory;
 
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function gender(){
         return $this->belongsTo(Gender::class, 'gen_id');
     }

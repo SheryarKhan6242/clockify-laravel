@@ -55,7 +55,8 @@
                             <!--begin::Search-->
                             <div class="d-flex align-items-center position-relative my-1">
                                 <!--begin::Svg Icon | path: icons/duotone/General/Search.svg-->
-                                <span class="svg-icon svg-icon-1 position-absolute ms-6 position-relative" style="left: 42.5%; top: 20%;">
+                                <span class="svg-icon svg-icon-1 position-absolute ms-6 position-relative"
+                                    style="left: 42.5%; top: 20%;">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -134,22 +135,24 @@
                                 {{ aire()->checkbox('is_lead', '')->class('form-check-input')->id('is_lead') }}
                             </label>
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">First Name*</span>
+                                Username<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                First Name<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('first_name')->placeholder('First Name')->id('first_name')->class('form-control form-control-solid')->required() }}
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Last Name*</span>
+                                Last Name<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('last_name')->placeholder('Last Name')->id('last_name')->class('form-control form-control-solid')->required() }}
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
                                 <span class="required">Father Name</span>
@@ -158,30 +161,7 @@
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">DOB*</span>
-                            </label>
-                            {{ aire()->date('dob')->placeholder('DOB')->id('dob')->class('form-control form-control-solid')->required() }}
-                        </div>
-                    </div>
-                    <div class="row g-9">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Username*</span>
-                            </label>
-                            {{ aire()->input('username')->placeholder('Username')->id('username')->class('form-control form-control-solid')->required() }}
-                        </div>
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Work Type*</span>
-                            </label>
-                            {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type', ''),'work_type')->id('work_type')->class('form-control form-control-solid selectjs2') }}
-                        </div>
-                    </div>
-                    <div class="work-type-add"></div>
-                    <div class="row g-9">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Email Address*</span>
+                                Email Address<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('email')->placeholder('Email Address')->id('email')->class('form-control form-control-solid')->required() }}
                         </div>
@@ -191,64 +171,18 @@
                             </label>
                             {{ aire()->input('personal_email')->placeholder('Personal Email')->id('personal_email')->class('form-control form-control-solid')->required() }}
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Gender*</span>
-                            </label>
-                            {{ aire()->select(Gender::all()->pluck('name', 'id')->prepend('Select Gender', ''),'gen_id')->id('gen_id')->class('form-control form-control-solid selectjs2') }}
-                        </div>
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Marital Status*</span>
-                            </label>
-                            {{ aire()->select(MaritalStatus::all()->pluck('status', 'id')->prepend('Select Marital status', ''),'marital_status')->id('marital_status')->class('form-control form-control-solid selectjs2') }}
-                        </div>
-                    </div>
-                    <div class="row g-9">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Employee Type*</span>
-                            </label>
-                            {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee type', ''),'emp_type')->id('emp_type')->class('form-control form-control-solid selectjs2') }}
-                        </div>
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Shift*</span>
-                            </label>
-                            {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift', ''),'shift_id')->id('shift_id')->class('form-control form-control-solid selectjs2') }}
-                        </div>
-                    </div>
-                    <div class="row g-9">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Country*</span>
-                            </label>
-                            {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country', ''),'country_id')->id('country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange', 'cities(this)') }}
-                        </div>
-                        <div class="col-md-6 fv-row city-call-back">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">City*</span>
-                            </label>
-                            {{ aire()->select(['' => 'Select your city'], 'city_id', '')->id('city_id')->class('form-control form-control-solid')->value(old('city') ?? '') }}
-                        </div>
-                    </div>
-                    <div class="row g-9">
-                        <div class="col-md-6 fv-row">
-                            <label class="fs-6 fw-bold">
-                                <span class="required">Mobile No*</span>
+                                Mobile No<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('mobile_no')->placeholder('Mobile No')->id('mobile_no')->class('form-control form-control-solid')->required() }}
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Emergency No*</span>
+                                Emergency No<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('emergency_no')->placeholder('Emergency No')->id('emergency_no')->class('form-control form-control-solid')->required() }}
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
                                 <span class="required">Alternative No</span>
@@ -257,45 +191,88 @@
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
+                                Country<span class="required">*</span>
+                            </label>
+                            {{ aire()->select(Country::all()->pluck('name', 'id')->prepend('Select your country', ''),'country_id')->id('country_id')->class('form-control form-control-solid selectjs2')->value(old('country_id') ?? '')->setAttribute('onChange', 'cities(this)') }}
+                        </div>
+                        <div class="col-md-6 fv-row city-call-back">
+                            <label class="fs-6 fw-bold">
+                                City<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->select(['' => 'Select your city'], 'city_id', '')->id('city_id')->class('form-control form-control-solid')->value(old('city') ?? '') }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                Gender<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->select(Gender::all()->pluck('name', 'id')->prepend('Select Gender', ''),'gen_id')->id('gen_id')->class('form-control form-control-solid selectjs2') }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
                                 <span class="required">CNIC</span>
                             </label>
                             {{ aire()->input('cnic')->placeholder('CNIC')->id('cnic')->class('form-control form-control-solid')->required() }}
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Permanent Address*</span>
+                                DOB<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->date('dob')->placeholder('DOB')->id('dob')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                Permanent Address<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('permanent_address')->placeholder('Permanent Address')->id('permanent_address')->class('form-control form-control-solid')->required() }}
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Temporary Address</span>
+                                <span class="required">Residential Address</span>
                             </label>
-                            {{ aire()->input('temporary_address')->placeholder('Temporary Address')->id('temporary_address')->class('form-control form-control-solid')->required() }}
+                            {{ aire()->input('temporary_address')->placeholder('Residential Address')->id('temporary_address')->class('form-control form-control-solid')->required() }}
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Department*</span>
+                                Marital Status<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->select(MaritalStatus::all()->pluck('status', 'id')->prepend('Select Marital status', ''),'marital_status')->id('marital_status')->class('form-control form-control-solid selectjs2') }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                Joining Date<span class="text-danger">*</span>
+                            </label>
+                            {{ aire()->date('joining_date')->placeholder('Joining Date')->id('joining_date')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                Department<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department', ''),'dep_id')->id('dep_id')->class('form-control form-control-solid selectjs2') }}
                         </div>
+
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Designation*</span>
+                                Designation<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('designation')->placeholder('Designation')->id('designation')->class('form-control form-control-solid')->required() }}
                         </div>
-                    </div>
-                    <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span>Joining Date*</span>
+                                Employee Type<span class="required text-danger">*</span>
                             </label>
-                            {{ aire()->date('joining_date')->placeholder('Joining Date')->id('joining_date')->class('form-control form-control-solid')->required() }}
+                            {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee type', ''),'emp_type')->id('emp_type')->class('form-control form-control-solid selectjs2') }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                Shift<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->select(Shift::all()->pluck('name', 'id')->prepend('Select Employee shift', ''),'shift_id')->id('shift_id')->class('form-control form-control-solid selectjs2') }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                Work Type<span class="required text-danger">*</span>
+                            </label>
+                            {{ aire()->select(EmployeeWorkingType::all()->pluck('type', 'id')->prepend('Select Working Type', ''),'work_type')->id('work_type')->class('form-control form-control-solid selectjs2') }}
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
@@ -304,6 +281,7 @@
                             {{ aire()->input('salary')->placeholder('Salary')->id('salary')->class('form-control form-control-solid')->required() }}
                         </div>
                     </div>
+                    <div class="work-type-add"></div>
                     <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
@@ -362,45 +340,43 @@
                 </div>
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                     <div class="row g-9">
-                        <div class="row g-9">
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-6 fw-bold">
-                                    <span class="required">Reporting To</span>
-                                </label>
-                                {{ aire()->select(Employee::all()->pluck('first_name', 'id')->prepend('Select Your Lead', ''),'edit_reporting_to')->id('edit_reporting_to')->class('form-control form-control-solid selectjs2') }}
-                            </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-6 fw-bold">Is Lead</label>
-                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                    {{ aire()->checkbox('edit_is_lead', '')->class('form-check-input')->id('edit_is_lead') }}
-                                </label>
-                            </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-6 fw-bold">
-                                    <span class="required">First Name*</span>
-                                </label>
-                                {{ aire()->input('edit_first_name')->id('edit_first_name')->class('form-control form-control-solid')->required() }}
-                            </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-6 fw-bold">
-                                    <span class="required">Last Name*</span>
-                                </label>
-                                {{ aire()->input('edit_last_name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
-                            </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">Reporting To</span>
+                            </label>
+                            {{ aire()->select(Employee::all()->pluck('first_name', 'id')->prepend('Select Your Lead', ''),'edit_reporting_to')->id('edit_reporting_to')->class('form-control form-control-solid selectjs2') }}
                         </div>
-                        <div class="row g-9">
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-6 fw-bold">
-                                    <span class="required">Father Name</span>
-                                </label>
-                                {{ aire()->input('edit_father_name')->id('edit_father_name')->class('form-control form-control-solid')->required() }}
-                            </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="fs-6 fw-bold">
-                                    <span class="required">DOB*</span>
-                                </label>
-                                {{ aire()->date('edit_dob')->id('edit_dob')->class('form-control form-control-solid')->required() }}
-                            </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">Is Lead</label>
+                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                {{ aire()->checkbox('edit_is_lead', '')->class('form-check-input')->id('edit_is_lead') }}
+                            </label>
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">First Name*</span>
+                            </label>
+                            {{ aire()->input('edit_first_name')->id('edit_first_name')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">Last Name*</span>
+                            </label>
+                            {{ aire()->input('edit_last_name')->id('edit_last_name')->class('form-control form-control-solid')->required() }}
+                        </div>
+                    </div>
+                    <div class="row g-9">
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">Father Name</span>
+                            </label>
+                            {{ aire()->input('edit_father_name')->id('edit_father_name')->class('form-control form-control-solid')->required() }}
+                        </div>
+                        <div class="col-md-6 fv-row">
+                            <label class="fs-6 fw-bold">
+                                <span class="required">DOB*</span>
+                            </label>
+                            {{ aire()->date('edit_dob')->id('edit_dob')->class('form-control form-control-solid')->required() }}
                         </div>
                     </div>
                     <div class="row g-9">
@@ -506,7 +482,7 @@
                     <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Permanent Address*</span>
+                                Permanent Address<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('edit_permanent_address')->placeholder('Permanent Address')->id('edit_permanent_address')->class('form-control form-control-solid')->required() }}
                         </div>
@@ -520,13 +496,13 @@
                     <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Department*</span>
+                                Department <span class="required text-danger">*</span>
                             </label>
                             {{ aire()->select(Department::all()->pluck('name', 'id')->prepend('Select Employee department', ''),'edit_dep_id')->id('edit_dep_id')->class('form-control form-control-solid selectjs2') }}
                         </div>
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span class="required">Designation*</span>
+                                Designation<span class="required text-danger">*</span>
                             </label>
                             {{ aire()->input('edit_designation')->placeholder('Designation')->id('edit_designation')->class('form-control form-control-solid')->required() }}
                         </div>
@@ -534,7 +510,7 @@
                     <div class="row g-9">
                         <div class="col-md-6 fv-row">
                             <label class="fs-6 fw-bold">
-                                <span>Joining Date*</span>
+                                Joining Date<span class="text-danger">*</span>
                             </label>
                             {{ aire()->date('edit_joining_date')->placeholder('Joining Date')->id('edit_joining_date')->class('form-control form-control-solid')->required() }}
                         </div>
@@ -1049,7 +1025,7 @@
                                     <option value="">
                                         Select Leave type
                                     </option>
-                                    <option value="1" ${leave_type == 1 ? ' selected' : ''}>
+                                    <option value="1" ${leave_type == "1" ? ' selected' : ''}>
                                         Annual
                                     </option>
                                     <option value="2" ${leave_type == 2 ? ' selected' : ''}>

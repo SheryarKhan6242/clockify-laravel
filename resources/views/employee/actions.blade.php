@@ -90,7 +90,7 @@ function getEmpById(id){
                     // console.log(country_id);
                     url = '/cities-selected'
                     if (location.hostname == 'localhost')
-                        url = '/clockify-laravel/public/ajax/cities-selected'
+                        url = '/employee_attendance_management/public/ajax/cities-selected'
                     // for(var i = 0; i < country_ids.length; i++){
                     //     let country_id = country_ids[i].value
                         // let city_id = city_ids[i].value
