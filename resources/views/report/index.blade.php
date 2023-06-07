@@ -39,62 +39,52 @@
     <!-- ============================================================== -->
 @endsection
 @section('content')
-    {{-- <div class="card"> --}}
-    {{-- <div class="card-header border-0 pt-6"> --}}
-    <!--begin::Card title-->
-    <div class="card-title">
-        <!--begin::Search-->
-        {{-- <div class="d-flex align-items-center position-relative my-1">
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <rect x="0" y="0" width="24" height="24"></rect>
-                            <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
-                            <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero"></path>
-                        </g>
-                    </svg>
-                </span>
-                <input type="text" name="searchTerm" id="searchTerm" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Reports" autocomplete="off">
-            </div> --}}
-        <div class="row">
-            <div class="col-md-3">
-                <select class="form-control form-control-solid selectjs2 text-gray-900 select2js" name="month" id="month">
-                    <option value="" selected="">Select Month</option>
-                    @foreach ($months as $value => $name)
-                        <option value="{{ $value }}">{{ $name }}</option>
-                    @endforeach
-                </select>
-                <span id="monthError" class="invalid-feedback">Please select a month.</span>
-            </div>
-            <div class="col-md-3">
-                <select class="form-control form-control-solid selectjs2 text-gray-900 select2js" data-aire-component="select"
-                    name="filter_attendance" id="filter_attendance" data-aire-for="filter_attendance">
-                    <option value="3" selected="">All</option>
-                    <option value="1">Present</option>
-                    <option value="0">Absent</option>
-                </select>
-                <span id="attendanceError" class="invalid-feedback">Please select an attendance status.</span>
-            </div>
-            <div class="col-md-3">
-                {{-- {{ aire()->select(Employee::all()->pluck('first_name', 'id')->prepend('Select Employee',''), 'first_name')->id('first_name')->class('form-control form-control-solid selectjs2') }} --}}
-                {{ aire()->select(
-                        Employee::whereHas('user', function ($query) {
-                            $query->where('status', true)->orderBy('username');
-                        })->get()->pluck('full_name', 'id')->prepend('Select Employee', ''),
-                        'emp_name',
-                    )->id('emp_name')->class('form-control select2js') }}
-                <span id="userError" class="invalid-feedback">Please select an employee.</span>
-            </div>
-            <div class="col-md-2">
-                <a type="button" id="GenerateReportsBtn" onclick="generateReport(this)"
-                    class="btn btn-primary mr-2">Generate Report</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select class="form-control form-control-solid selectjs2 text-gray-900 select2js" name="month"
+                                id="month">
+                                <option value="" selected="">Select Month</option>
+                                @foreach ($months as $value => $name)
+                                    <option value="{{ $value }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            <span id="monthError" class="invalid-feedback">Please select a month.</span>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control form-control-solid selectjs2 text-gray-900 select2js"
+                                data-aire-component="select" name="filter_attendance" id="filter_attendance"
+                                data-aire-for="filter_attendance">
+                                <option value="3" selected="">All</option>
+                                <option value="1">Present</option>
+                                <option value="0">Absent</option>
+                            </select>
+                            <span id="attendanceError" class="invalid-feedback">Please select an attendance status.</span>
+                        </div>
+                        <div class="col-md-3">
+                            {{-- {{ aire()->select(Employee::all()->pluck('first_name', 'id')->prepend('Select Employee',''), 'first_name')->id('first_name')->class('form-control form-control-solid selectjs2') }} --}}
+                            {{ aire()->select(
+                                    Employee::whereHas('user', function ($query) {
+                                        $query->where('status', true)->orderBy('username');
+                                    })->get()->pluck('full_name', 'id')->prepend('Select Employee', ''),
+                                    'emp_name',
+                                )->id('emp_name')->class('form-control select2js') }}
+                            <span id="userError" class="invalid-feedback">Please select an employee.</span>
+                        </div>
+                        <div class="col-md-2">
+                            <a type="button" id="GenerateReportsBtn" onclick="generateReport(this)"
+                                class="btn btn-primary mr-2">Generate Report</a>
+                        </div>
+                    </div>
+                    <div class="reports-data"></div>
+                    <!--end::Search-->
+                </div>
             </div>
         </div>
-        <div class="reports-data"></div>
-        <!--end::Search-->
     </div>
-    {{-- @include('report.include.tabledata')               --}}
-    <!--end::Content-->
 @endsection
 
 @section('footer')
@@ -472,10 +462,6 @@
 
                 if (!isValid)
                     return;
-
-                console.log('Month:', month);
-                console.log('Attendance Status:', attendance_status);
-                console.log('User ID:', user_id);
 
                 $.ajax({
                     url: "{{ url('/report/generate') }}/" + user_id,

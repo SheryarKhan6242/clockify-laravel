@@ -54,16 +54,6 @@
                 @endphp
                 @endforeach
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5">
-                    @if(isset($leave))
-                        {!! $leave->links('layouts.pagination') !!}
-                    @endif
-                </td>
-            </tr>
-        </tfoot>
     </table>
-    <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
 </div>
 @endif
