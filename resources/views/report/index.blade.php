@@ -77,6 +77,12 @@
                         <div class="col-md-2">
                             <a type="button" id="GenerateReportsBtn" onclick="generateReport(this)"
                                 class="btn btn-primary mr-2">Generate Report</a>
+                               
+                        </div>
+                        <div class="col-md-1">
+                            <div class="spinner-grow d-none" id="loader" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
                     </div>
                     <div class="reports-data"></div>
@@ -461,8 +467,11 @@
                 }
 
                 if (!isValid)
+                {
                     return;
-
+                }
+                
+                $('#loader').removeClass('d-none');
                 $.ajax({
                     url: "{{ url('/report/generate') }}/" + user_id,
                     method: 'POST',
@@ -473,6 +482,7 @@
                     },
                     success: function(response) {
                         $('.reports-data').html('');
+                        $('#loader').addClass('d-none');
                         $('.reports-data').append(response.html);
                         // console.log(response.html)
 
