@@ -85,6 +85,7 @@ class WorkFromHomeApiController extends Controller
                     'start_date' => $request->start_date,
                     'end_date' => $request->end_date,
                     'reason' => $request->reason,
+                    'rejected_reason' => $request->rejected_reason,
                     'status' => $request->status,
                     'approved_by' => $request->approved_by,
                     'attach_file' => $path,
