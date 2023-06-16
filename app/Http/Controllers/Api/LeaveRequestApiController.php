@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Services\LeaveService;
 use App\Models\Leave;
 use App\Models\User;
 use App\Jobs\GetEmailTemplates;
@@ -90,6 +91,10 @@ class LeaveRequestApiController extends Controller
         if($leaves->count() > 0)
         {
             $response = [];
+            //Fetch User Availed Annual Sick and Casual Leaves
+            $service = new LeaveService();
+            $leavesData = $service->getAvailableLeaves($request->user_id);
+
             foreach ($leaves as $leave) {
                 $path = null;
                 if(isset($leave->media) && $leave->media !=null)
@@ -103,16 +108,25 @@ class LeaveRequestApiController extends Controller
                     'description' => $leave->description,
                     'start_date' => $leave->start_date,
                     'end_date' => $leave->end_date,
+                    'reason' => $leave->reason,
                     'status' => $leave->status,
                     'approval_id' => $leave->approval_id,
                     'media' => $path,
+                    'availed_annual' => $leavesData['availed_annual'],
+                    'remaining_annual' => $leavesData['remaining_annual'],
+                    'availed_sick' => $leavesData['availed_sick'],
+                    'remaining_sick' => $leavesData['remaining_sick'],
+                    'availed_casual' => $leavesData['availed_casual'],
+                    'remaining_casual' => $leavesData['remaining_casual'],
+                    'availed_half_day' => $leavesData['availed_half_day'],
+                    'remaining_half_day' => $leavesData['remaining_half_day'],
                     'created_at' => $leave->created_at,
                     'updated_at' => $leave->updated_at,
                 ];
                 $response[] = $payload;
             }
             // dd($payload);
-            return response()->json(['success'=>true,'leaves'=>$leaves]);
+            return response()->json(['success'=>true,'leaves'=>$response]);
         }
         
         return response()->json(['success'=>false,'message'=>'No leaves request submitted.']);
