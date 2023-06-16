@@ -48,7 +48,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::prefix('/dashboard')->group(function () {    
-        Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard');
+        Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard')->can('dashboard');
 
     //Profile Default made by breeze
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
