@@ -112,6 +112,10 @@ class LeaveRequestApiController extends Controller
                     'status' => $leave->status,
                     'approval_id' => $leave->approval_id,
                     'media' => $path,
+                    'created_at' => $leave->created_at,
+                    'updated_at' => $leave->updated_at,
+                ];
+                $summary = [
                     'availed_annual' => $leavesData['availed_annual'],
                     'remaining_annual' => $leavesData['remaining_annual'],
                     'availed_sick' => $leavesData['availed_sick'],
@@ -120,13 +124,11 @@ class LeaveRequestApiController extends Controller
                     'remaining_casual' => $leavesData['remaining_casual'],
                     'availed_half_day' => $leavesData['availed_half_day'],
                     'remaining_half_day' => $leavesData['remaining_half_day'],
-                    'created_at' => $leave->created_at,
-                    'updated_at' => $leave->updated_at,
                 ];
                 $response[] = $payload;
             }
             // dd($payload);
-            return response()->json(['success'=>true,'leaves'=>$response]);
+            return response()->json(['success'=>true,'leaves'=>$response, 'summary' => $summary]);
         }
         
         return response()->json(['success'=>false,'message'=>'No leaves request submitted.']);
