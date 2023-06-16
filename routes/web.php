@@ -48,7 +48,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::prefix('/dashboard')->group(function () {    
-        Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard')->can('dashboard');
+        Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard');
 
     //Profile Default made by breeze
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/{id}', [LeaveController::class, 'destroy'])->name('leave.delete');
         Route::post('/update-leave-status', [LeaveController::class, 'updateLeaveStatus'])->name('leaveType.updateLeaveStatus');
         Route::get('/load-table', [LeaveController::class, 'get_leave_data'])->name('leave.get_leave_type_data');
+        Route::get('/get-availed-leaves/{id}', [LeaveController::class, 'getEmpAvailedLeaves'])->name('leave.getEmpAvailedLeaves');
     });
 
     Route::prefix('/leave-type')->group(function () {
@@ -155,6 +156,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/employee')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('emp.index');
         Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('emp.edit');
+        Route::get('/create', [EmployeeController::class, 'create'])->name('emp.create');
+        Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('emp.show');
         Route::post('/store', [EmployeeController::class, 'store'])->name('emp.store');
         Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('emp.update');
         Route::get('/delete/{id}', [EmployeeController::class, 'destroy'])->name('emp.delete');
@@ -187,6 +190,9 @@ Route::middleware('auth')->group(function () {
         Route::post('cities-selected', [ AjaxRequestController::class, 'getSelectedCities' ])->name('selected_country_cities');
         Route::post('/store-emp-type-leave', [ AjaxRequestController::class, 'storeEmpTypeLeaves' ])->name('store_emp_type_leaves');
         Route::get('/get-emp-type-leave/{id}', [ AjaxRequestController::class, 'getEmpTypeLeaves' ])->name('get_emp_type_leaves');
+        Route::get('/get-emp-work-hours', [ AjaxRequestController::class, 'getEmpWorkHours' ])->name('getEmpWorkHours');
+        Route::get('/get-emp-requests', [ AjaxRequestController::class, 'getEmpRequests' ])->name('getEmpRequests');
+
     });
 
     Route::prefix('/report')->group(function () {
