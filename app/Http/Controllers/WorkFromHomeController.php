@@ -165,7 +165,7 @@ class WorkFromHomeController extends Controller
         $placeholders = ['[username]','[start_date]','[end_date]','[status]'];
         $values = [$user->name,$workFromHome->start_date,$workFromHome->end_date,$workFromHome->status];
         //Dispatch queue job
-        GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
+        GetEmailTemplates::dispatch($user->email, $templateName, $placeholders, $values);
         return response()->json(['type' =>'success']);
     }
 

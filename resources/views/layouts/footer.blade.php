@@ -45,9 +45,10 @@
 <script src="{{ asset('dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datedreamer/0.2.6/datedreamer.js" integrity="sha512-h6MTktnj4TYv94zo9nqijoSkIG7uBjdmZmYoCLzAh49SBYC6hYPrX+pnjlA4ZZkyGuCkhTAjvXNp6gLXBLpz4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    // $(".selectjs2").select2({
+    $(".selectjs2").select2({
         
-    // });
+    });
 </script>

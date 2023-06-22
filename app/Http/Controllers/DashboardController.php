@@ -44,24 +44,32 @@ class DashboardController extends Controller
         //HYDERABAD ACTIVE EMPLOYEES
         $data['hyd'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46828)->count();
         //OTHER CITIES ACTIVE EMPLOYEES
-        $data['khiPercentage'] = ($data['khi'] / count($data['totalEmployees'])) * 100;
-        $data['hydPercentage'] = ($data['hyd'] / count($data['totalEmployees'])) * 100;
-        $data['other'] = (100 - $data['khiPercentage'] - $data['hydPercentage']);
+        // dd(count($data['totalEmployees']));
+        if(count($data['totalEmployees']) > 0)
+        {
+            $data['khiPercentage'] = round(($data['khi'] / count($data['totalEmployees'])) * 100);
+            $data['hydPercentage'] = round(($data['hyd'] / count($data['totalEmployees'])) * 100);
+            $data['other'] = round((100 - $data['khiPercentage'] - $data['hydPercentage']));
+        } else {
+            $data['khiPercentage'] = 0;
+            $data['hydPercentage'] = 0;
+            $data['other'] = 0;
+        }
 
         //EMPLOYEE REQUESTS
         //PENDING LEAVES
         $leaveService = new LeaveService();
-        $data['annualLeavesRequest'] = $leaveService->leaveRequests(1);
-        $data['sickLeavesRequest'] = $leaveService->leaveRequests(2);
+        $data['annualLeavesRequest'] = $leaveService->leaveRequests(1,'Pending','1',null,null);
+        $data['sickLeavesRequest'] = $leaveService->leaveRequests(2,'Pending','1',null,null);
 
         //PENDING WFH
         $wfhService = new WfhService();
-        $data['wfhRequest'] = $wfhService->wfhRequests();
+        $data['wfhRequest'] = $wfhService->wfhRequests('Pending',1);
         // dd($data['sickLeavesRequest']->count());
 
         //PENDING TIMEADJUSTMENT
         $timeAdjService = new TimeAdjustmentService();
-        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests();
+        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests('Pending',1);
         // dd($data['sickLeavesRequest']->count());
         return view('dashboard',$data);
     }

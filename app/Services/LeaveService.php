@@ -8,17 +8,23 @@ use Carbon\Carbon;
 class LeaveService
 {
     //Returns the Leaves request by type and Status
-    //Note: It returns all requests in DB. Need to filter it based on current year as well.
-    //1 => weekly,  2 => monthly
-    public function leaveRequests($type, $status = 'Pending',$filter = '1')
+    //Filter: 1 => weekly,  2 => monthly
+    public function leaveRequests($type = null, $status = 'Pending',$filter = '1',$startDate = null, $endDate = null)
     {
-        $endDate = Carbon::now()->format('Y-m-d');      
-        $startDate = Carbon::now()->subWeek()->format('Y-m-d');   
-        // Fetch for month
-        if ($filter == '2')
-            $startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
+        // If Not filtered by date(fetch by weekly or monthly)
+        if($startDate == null && $endDate == null)
+        {
+            //Fetch Weekly
+            $endDate = Carbon::now()->format('Y-m-d');      
+            $startDate = Carbon::now()->subWeek()->format('Y-m-d');
+           
+            // Fetch Monthly
+            if ($filter == '2')
+                $startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
+        }
+
         //Pending Requests
-        if($type)
+        if(isset($type) && $type != null)
         {
             $requests = Leave::where('status',$status)
                 ->where('start_date','>=' ,$startDate)
@@ -30,7 +36,6 @@ class LeaveService
                 ->where('start_date','>=' ,$startDate)
                 ->where('end_date','<=',$endDate)
                 ->get();
-
         }
         return $requests;
     }
@@ -123,6 +128,7 @@ class LeaveService
             {
                 $allowedHalfDay = $decoded[3]->nol;
                 $remainingHalfDay = $allowedHalfDay - $availedHalfDay;
+                
             }
         }
 

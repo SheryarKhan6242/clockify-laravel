@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Report extends Model
 {
@@ -19,6 +20,36 @@ class Report extends Model
     public function checkinType()
     {
         return $this->belongsTo(CheckinType::class,'checkin_id');
+    }
+
+    public function fetchWeeklyHrs($userId)
+    {
+        $endDate = Carbon::now()->format('Y-m-d');
+        $startDate = Carbon::now()->subWeek()->format('Y-m-d');    
+        // dd($startDate);  
+        // Fetch the records from the database within the specified date range
+        // dd($endDate);
+        // $weeklyHrs = Report::where('user_id',$userId)
+        //     ->where('login_date','>=' ,$startDate)
+        //     ->where('login_date','<',$endDate)
+        //     ->selectRaw('SUM(total_work_hours) as weekly_hours')
+        //     ->groupBy('user_id')
+        //     ->first();
+        $weeklyHrs = Report::where('user_id', $userId)
+        ->where('login_date', '>=', $startDate)
+        ->where('login_date', '<', $endDate)
+        ->selectRaw('SEC_TO_TIME(SUM(TIME_TO_SEC(total_work_hours))) AS weekly_hours')    
+        ->groupBy('user_id')
+        ->first();
+    
+        $totalWorkHoursFormatted = 0;
+        if ($weeklyHrs) {
+            $hours = substr($weeklyHrs->weekly_hours, 0, 2); 
+            $minutes = substr($weeklyHrs->weekly_hours, 3, 2);
+            $totalWorkHoursFormatted = $hours . ':' . $minutes;
+        }
+
+        return $totalWorkHoursFormatted;
     }
 
     public static function fetchReports($userId, $month = null, $startDate = null, $endDate = null)

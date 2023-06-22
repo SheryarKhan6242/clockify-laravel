@@ -1,312 +1,211 @@
 @extends('layouts.app')
 @section('title')
-    Leave Types
+    Locations
 @endsection
+@php
+    use App\Models\LeaveType;
+    use App\Models\EmployeeType;
+@endphp
+
+
 @section('bread_crumb')
 <!-- Bread crumb and right sidebar toggle -->
 <!-- ============================================================== -->
 <div class="page-breadcrumb">
     <div class="row">
         <div class="col-7 align-self-center">
-            <div class="d-flex align-items-center">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb m-0 p-0">
-                        <li class="breadcrumb-item"><a href="">Leave Types</a>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
+            <h2 class="page-title text-truncate text-light font-weight-medium mb-1">Leave Type</h2>
         </div>
-        {{-- <div class="col-5 align-self-center">
-            <div class="customize-input float-end">
-                <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
-                    <option selected>Aug 23</option>
-                    <option value="1">July 23</option>
-                    <option value="2">Jun 23</option>
-                </select>
-            </div>
-        </div> --}}
+        <div class="col-5 text-end">
+            <a class="btn pt-3" href="#add-leave-type" data-bs-toggle="modal" data-bs-target="#add-leave-type" style="width: 186px; height: 60px; margin-right: 160px; border: 1px solid #27B9C2; border-radius: 12px; color: #ffffff;">Add Leave Type +</a>
+
+            {{-- <a class="btn pt-3" href="#add-leave-type" style="width: 186px; height: 60px; margin-right: 160px; border: 1px solid #27B9C2; border-radius: 12px; color: #ffffff;">Add Leave Type     +</a> --}}
+        </div>        
     </div>
+    <div class="toast-bar mt-3 pt-2" style="display: none;">
+        <span class="toast-icon"></span>
+        <span class="toast-message" style="vertical-align: top;"></span>
+    </div>  
 </div>
-<!-- ============================================================== -->
-<!-- End Bread crumb and right sidebar toggle -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
+
+
 @endsection
+
 @section('content')
-{{-- <div class="card"> --}}
-    {{-- <div class="card-header border-0 pt-6"> --}}
-        <!--begin::Card title-->
-        <div class="card-title">
-            <!--begin::Search-->
-            <div class="d-flex align-items-center position-relative my-1">
-                <!--begin::Svg Icon | path: icons/duotone/General/Search.svg-->
-                <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <rect x="0" y="0" width="24" height="24"></rect>
-                            <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
-                            <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero"></path>
-                        </g>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->
-                <input type="text" name="searchTerm" id="searchTerm" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Leave Type" autocomplete="off">
+<div class="row">
+    @foreach ($leaveType as $type)
+    {{-- <div class="col-md-4 mb-4">
+        <div class="display-card w-100">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #fff">{{ $type->type }}</h5>
+                <i class="fas fa-ellipsis-v"></i>
             </div>
-            <!--end::Search-->
         </div>
-            <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                <!--begin::Add user-->
-                <a href="#add_leave_type_modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_leave_type_modal">
-                <span class="svg-icon svg-icon-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                        <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"></rect>
-                        <rect fill="#000000" opacity="0.5" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000)" x="4" y="11" width="16" height="2" rx="1"></rect>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->Add Leave Type</a>
+    </div> --}}
+    <div class="col-md-4 mb-4">
+        <div class="display-card w-100">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <h5 class="card-title" style="color: #fff">{{ $type->type }}</h5>
+                <a href="#" class="text-decoration-none" style="color: #fff"><i class="fas fa-ellipsis-v"></i></a>
             </div>
-    {{-- <div class="card-body pt-0"> --}}
-        @include('leaveType.include.tabledata')              
-<!--end::Content-->
+        </div>
+    </div>
+    
+    @endforeach
+</div>
 @endsection
 
 @section('footer')
 
 @endsection
 
+
 @push('header-css')
+<style>
+    .ct-series .ct-bar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 5px 5px 0 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+        z-index: 1;
+    }
+    .ct-bar {
+        stroke-width: 24px;
+    }
+
+    .card.active {
+        background-color: #232B2E;
+    }
+    
+</style>
 
 @endpush
 
 @push('modals')
-{{-- Add leave type Modal --}}
-<div class="modal fade" id="add_leave_type_modal" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-650px">
+<div class="modal fade" id="add-leave-type" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="fw-bolder">Add Leave Type</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
-                            </g>
-                        </svg>
-                    </span>
-                </div> --}}
+                <h3 class="modal-heading">Leave Type</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Type</span>
-                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
-                    </label>
-                    {{ aire()->input('type')->placeholder('Type')->id('type')->class('form-control form-control-solid')->required() }}
+            <div class="modal-body scroll-y mx-3 my-7">
+                <div class="row pt-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="leave-type">Leave Type</label>
+                        {{ aire()->input('type')->placeholder('Enter Leave Type')->id('type')->class('form-control pt-1') }}
+                    </div>
                 </div>
-                <div class="text-center pt-15 show_update">
-                    {{-- {{ aire()- >button('Cancel')->class('btn btn-rounded btn-danger btnClosePopup')->id('btnClosePopup') }} --}}
-                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
-                    <a href="#" onclick="storeLeaveType()" class="btn btn-rounded btn-success btn-change">Add Type</a>
-                </div>             
+                {{-- <div class="row pt-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="leave-type">Assign To</label>
+                        {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee Type', ''),'emp_type')->id('emp_type')->class('form-control pt-1') }}
+                    </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="leave-type">No Of Leaves</label>
+                        {{ aire()->input('nol')->placeholder('Enter No Of Leaves')->id('nol')->class('form-control pt-1') }}
+                    </div>
+                </div> --}}
+                <div class="text-end pt-3">
+                    <a href="#" onclick="add_leave_type()" id="add_leave_type" class="btn btn-primary pt-3">Add</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endpush
-{{-- Add leave type Modal --}}
 
-{{-- Edit leave type Modal --}}
-<div class="modal fade" id="edit_leave_type_modal" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="fw-bolder">Edit Leave Type</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                {{-- <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-permissions-modal-action="close">
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
-                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
-                            </g>
-                        </svg>
-                    </span>
-                </div> --}}
-            </div>
-            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <div class="fv-row mb-7">
-                    <label class="fs-6 fw-bold">
-                        <span class="required">Type</span>
-                        {{-- <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="It is recommended a unique name is used!" aria-label="It is recommended a unique name is used!"></i> --}}
-                    </label>
-                    {{ aire()->input('edit_type')->placeholder('Leave Type')->id('edit_type')->class('form-control form-control-solid')->required() }}
-                </div>
-                <div class="text-center pt-15 show_update">
-                    {{-- {{ aire()- >button('Cancel')->class('btn btn-rounded btn-danger btnClosePopup')->id('btnClosePopup') }} --}}
-                    <a href="#" id="btnClosePopup" class="btn btn-rounded btn-danger btnClosePopup">Cancel</a>
-                    <a href="#" id="update_leave_type" onclick="updateLeaveType()" class="btn btn-rounded btn-success btn-change">Update Type</a>
-                </div>             
-            </div>
-        </div>
-    </div>
-</div>
-{{-- Edit leave type Modal --}}
 
-<div class="modal fade" id="success_message" tabindex="-1"  aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <div class="modal-content">
-            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <div class="text-center show_message">
+@push('header-scripts')
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@endpush
+
+
+@push('header-scripts')
+
+@endpush
 
 @push('footer-scripts')
 <script>
-
-//AJAX FOR SEARCHING AND GET PAGINATION DATA
-$(document).ready(function(){
-
-$('#searchTerm').on('keyup',function(){
-    search_item = $(this).val();
-    var page =  $('#hidden_page').val();
-    fetch_data(page,search_item);
-})
-
-$(document).on('click', '.pagination a', function(event){
-    event.preventDefault(); 
-    var page = $(this).attr('href').split('page=')[1];
-    var search_item = $('#searchTerm').val();
-    fetch_data(page,search_item);
-});
-
-function fetch_data(page,search_item)
-{
-    if(search_item === undefined){
-        search_item = "";
-    }
-
-    $.ajax({
-        url:"{{url('/leave-type/load-table?page=')}}"+page+"&search_item="+search_item,
-        success:function(data){
-            $('#table').html(data);
-        }
-    });
-}
-
-});
-
-$.ajaxSetup({
+    //Token for Post requests(Added once)
+    $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-//Store Leave Type data via ajax
-function storeLeaveType(){
-  // get the form values
-    var type = $("#type").val();
-//   make the ajax request
-    $.ajax({
-        url: '{{ route("leaveType.store") }}',
-        type: 'POST',
-        data: {
-            type: type
-        },
-        dataType: 'json',
-        success: function(result) {
-        // success handling
-        //Server side validation
-            if(result.errors)
-            {
-                jQuery.each(result.errors, function(fieldName, errorMsg){
-                    var field = $('[name="'+fieldName+'"]');
-                    field.addClass('is-invalid');
-                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
-                });
-                // Remove the error message and is-invalid class when the user corrects the input
-                $('input, select').on('input', function() {
-                    var field = $(this);
-                    field.removeClass('is-invalid');
-                    field.next('.invalid-feedback').remove();
-                });
-            }
-            else
-            {
-                //Show Success message on saving leave type and hide form modal
-                $('#add_leave_type_modal').hide() 
-                $('.show_message').append('Leave Type Added Successfully')
-                    $('#success_message').modal('show');
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 2000);
-                // jQuery('.alert-danger').hide();
-                // $('#open').hide();
-                // $('#add_guest').modal('hide');
-                // //User Already Reigstered
-                // if (result.type == 'danger') {
-                //     $('#alert-div').find('h4').text('User Already Registered');
-                //     $('#alert-div').find('span').text(result.message);
-                //     $('#alert-div').show();
-                    
-                // } else {
-                //     //Success bookinng
-                // }                
-            }
-        }
-    });
-}
+    //Active Card Click
+    function handleCardClick(event, emp) {
+        console.log(emp)
+        event.preventDefault();
+        // Remove active class from all cards
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => card.classList.remove('active'));
+        // Add active class to the clicked card
+        const clickedCard = document.getElementById('card-' + emp.id);
+        clickedCard.classList.add('active');
+    }
 
-//UPDATE LEAVE TYPE VIA AJAX
-function updateLeaveType(id){
-  // get the form values
-    var type = $("#edit_type").val();
-//   make the ajax request
-    $.ajax({
-        url:  "{{url('/leave-type/update')}}/"+id,
-        type: 'POST',
-        data: {
-            type: type
-        },
-        dataType: 'json',
-        success: function(result) {
-        // success handling
-        //Server side validation
-            if(result.errors)
-            {
-                jQuery.each(result.errors, function(fieldName, errorMsg){
-                    var field = $('[name="'+fieldName+'"]');
-                    field.addClass('is-invalid');
-                    field.after('<div class="invalid-feedback">'+errorMsg+'</div>');
-                });
-                // Remove the error message and is-invalid class when the user corrects the input
-                $('input, select').on('input', function() {
-                    var field = $(this);
-                    field.removeClass('is-invalid');
-                    field.next('.invalid-feedback').remove();
-                });
-            }
-            else
-            {
-                //Show Success message on saving leave type and hide form modal
-                $('#edit_leave_type_modal').hide() 
-                $('.show_message').append('leave Type Updated Successfully')
-                    $('#success_message').modal('show');
-                    setTimeout(function(){
-                    window.location.reload();
-                    }, 2000);             
-            }
-        }
-    });
-}
+    function add_leave_type(){
+        var type = $("#type").val();
+        $.ajax({
+            url: '{{ route("leaveType.store") }}',
+            type: 'POST',
+            data: {
+                type: type
+            },
+            dataType: 'json',
+            success: function(result) {
+            // success handling
+            //Server side validation
+                if(result.errors)
+                {
+                    jQuery.each(result.errors, function(fieldName, errorMsg){
+                        var field = $('[name="'+fieldName+'"]');
+                        if (!field.hasClass('is-invalid')) {
+                            field.addClass('is-invalid');
+                            field.after('<div class="invalid-feedback">' + errorMsg + '</div>');
+                        }
+                    });
+                    // Remove the error message and is-invalid class when the user corrects the input
+                    $('input, select').on('input', function() {
+                        var field = $(this);
+                        field.removeClass('is-invalid');
+                        field.next('.invalid-feedback').remove();
+                    });
+                }
+                else
+                {
+                    //Show Success message on saving leave type and hide form modal
+                    $('#add-leave-type').modal('hide') 
+                    // $('.show_message').append('Leave Type Added Successfully')
+                    //     $('#success_message').modal('show');
+                    //     setTimeout(function(){
+                    //     window.location.reload();
+                    //     }, 2000);
+                    $('.toast-bar').removeClass('toast-danger').addClass('toast-success');
+                    $('.toast-icon').removeClass().addClass('toast-icon-success');
+                    $('.toast-message').text(result.message);
+                    $('.toast-bar').show();        
+                    $('.toast-bar').fadeIn().delay(2000).fadeOut();
+   
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#add-leave-type').modal('hide') 
+                $('.toast-bar').removeClass('toast-success').addClass('toast-danger');
+                $('.toast-icon').removeClass().addClass('toast-icon-danger');
+                $('.toast-message').text('Error occurred during the request.');
+                $('.toast-bar').show();
+                $('.toast-bar').fadeIn().delay(2000).fadeOut();
 
-    $(".btnClosePopup").click(function () {
-        $("#add_leave_type_modal").modal("hide");
-    });
-</script>
+            }
+        });
+    }
+    </script>
 @endpush

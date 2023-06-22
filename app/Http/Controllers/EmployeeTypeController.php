@@ -15,7 +15,7 @@ class EmployeeTypeController extends Controller
     public function index()
     {
         //
-        $data['empTypes'] = EmployeeType::paginate(15);
+        $data['empTypes'] = EmployeeType::all();
         return view('empType.index',$data);
     }
 
@@ -58,6 +58,8 @@ class EmployeeTypeController extends Controller
         // dd($request->all());
         $validator = \Validator::make($request->all(), [
             'name' => 'required',
+            'leave_type' => 'required',
+            'nol' => 'required',
         ]);
         
         if ($validator->fails())
@@ -70,6 +72,10 @@ class EmployeeTypeController extends Controller
         $empType = new EmployeeType();
         $empType->name = $request->name;
         $empType->save();
+
+        //Save assigned to leaves to employee type
+        $empLeaveType = new EmployeeType();
+
         return response()->json(['type' =>'success']);
     }
 

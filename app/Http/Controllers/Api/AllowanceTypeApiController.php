@@ -10,6 +10,7 @@ class AllowanceTypeApiController extends Controller
 {
     //
 
+    // 1 => Sunday, 2 => General, 3 => Medical
     public function getAllowanceType()
     {
         $types = AllowanceType::all();

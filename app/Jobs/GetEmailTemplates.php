@@ -20,7 +20,7 @@ class GetEmailTemplates implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $user;
+    public $email;
     public $templateName;
     public $placeholders;
     public $values;
@@ -30,9 +30,9 @@ class GetEmailTemplates implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user, $templateName, $placeholders, $values)
+    public function __construct($email, $templateName, $placeholders, $values)
     {
-        $this->user = $user;
+        $this->email = $email;
         $this->templateName = $templateName;
         $this->placeholders = $placeholders;
         $this->values = $values;        
@@ -47,23 +47,9 @@ class GetEmailTemplates implements ShouldQueue
     {
         //Get Email Content and send email
         $template = EmailTemplate::where('name', $this->templateName)->first();
-        
-        try {
-            if($template)
-            {
-                $subject = $template->subject;
-                $emailBody = $template->body;
-                $emailBody = str_replace($this->placeholders, $this->values, $emailBody);
-                Mail::to($this->user->email)->send(new SendEmail($subject, $emailBody));
-            }
-
-        } catch (\Throwable $th) {
-            // Return the error response
-            if (env('APP_ENV') === 'local') {
-                return response()->json(['success' => false, 'message' => $th->getMessage()]);
-            }
-            Log::error($th);
-            return response()->json(['success' => false, 'message' => 'An error occurred while processing your request.']);
-        } 
+        $subject = $template->subject;
+        $emailBody = $template->body;
+        $emailBody = str_replace($this->placeholders, $this->values, $emailBody);
+        Mail::to($this->email)->send(new SendEmail($subject, $emailBody)); 
     }
 }

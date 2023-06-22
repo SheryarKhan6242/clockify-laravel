@@ -71,7 +71,7 @@ class LeaveRequestApiController extends Controller
             $user = User::find($request->user_id);
             $values = [$admin,$user->name,$request->start_date,$request->end_date];
             //Dispatch queue job
-            GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
+            GetEmailTemplates::dispatch($user->email, $templateName, $placeholders, $values);
 
             return response()->json(['success'=>true,'message'=>'Leave Request Submitted Successfully!']);
         } catch (\Throwable $th) {

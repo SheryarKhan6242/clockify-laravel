@@ -8,6 +8,7 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Services\LeaveService;
 use Carbon\Carbon;
 
 class EmployeeController extends Controller
@@ -19,13 +20,23 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $data['employees'] = Employee::paginate(15);
+        $data['employees'] = Employee::where('status',1)->paginate(15);
+                //First employee to be shown on the card(Selected by default)
+        $data['firstEmployee'] = $data['employees']->first();
+
+        //Fetch Availed and Remaining leaves(Annual + Sick)
+        if($data['firstEmployee'] != null)
+        {
+            $service = new LeaveService();
+            $data['availableLeaves'] = $service->getAvailableLeaves($data['firstEmployee']->user_id);
+        }
+        //Fetch Medical Reimbursement
         return view('employee.index',$data);
     }
 
     public function getEmpData(Request $request)
     {
-        $employees = Employee::paginate(15);
+        $employees = Employee::where('status',1)->paginate(15);
 
         if($request->ajax())
         {
@@ -50,6 +61,7 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+        return view ('employee.create');
     }
 
     /**
@@ -160,11 +172,11 @@ class EmployeeController extends Controller
         //Store Leaves Info (leaves Payload)
 
         //Store Financial Info(Bank Payload)
-        $bankPayload['acc_type']        = isset($request->acc_type) ? $request->acc_type : '';
-        $bankPayload['acc_holder']      = isset($request->acc_holder) ? $request->acc_holder : '';
-        $bankPayload['acc_no']          = isset($request->acc_no) ? $request->acc_no : '';
-        $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : '';
-        $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : '';
+        $bankPayload['acc_type']        = isset($request->acc_type) ? $request->acc_type : null;
+        $bankPayload['acc_holder']      = isset($request->acc_holder) ? $request->acc_holder : null;
+        $bankPayload['acc_no']          = isset($request->acc_no) ? $request->acc_no : null;
+        $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : null;
+        $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : null;
         $employee->bank_payload         = json_encode($bankPayload);
         //Store Financial Info(Bank Payload)
         $employee->save();
@@ -179,7 +191,16 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        //
+        //Fetch all employee data and pass
+        $data['employee'] = Employee::where('user_id',$id)
+            ->where('status',1)
+            ->first();
+
+        // dd(json_decode($data['employee']->bank_payload)->account_holder);
+        $service = new LeaveService();
+        $data['availableLeaves'] = $service->getAvailableLeaves($id);
+
+        return view('employee.view',$data);
     }
 
     /**
@@ -286,11 +307,11 @@ class EmployeeController extends Controller
         }
         
         //Update Financial Info(Bank Payload)
-        $bankPayload['acc_type']        = isset($request->acc_type) ? $request->acc_type : '';
-        $bankPayload['acc_holder']      = isset($request->acc_holder) ? $request->acc_holder : '';
-        $bankPayload['acc_no']          = isset($request->acc_no) ? $request->acc_no : '';
-        $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : '';
-        $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : '';
+        $bankPayload['acc_type']        = isset($request->acc_type) ? $request->acc_type : null;
+        $bankPayload['acc_holder']      = isset($request->acc_holder) ? $request->acc_holder : null;
+        $bankPayload['acc_no']          = isset($request->acc_no) ? $request->acc_no : null;
+        $bankPayload['branch_name']     = isset($request->branch_name) ? $request->branch_name : null;
+        $bankPayload['branch_location'] = isset($request->branch_location) ? $request->branch_location : null;
         $employee->bank_payload         = json_encode($bankPayload);
         //Update Financial Info(Bank Payload)
 

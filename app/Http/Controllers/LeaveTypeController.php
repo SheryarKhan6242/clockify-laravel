@@ -56,6 +56,7 @@ class LeaveTypeController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->all());
         $validator = \Validator::make($request->all(), [
             'type' => 'required'
         ]);
@@ -69,8 +70,8 @@ class LeaveTypeController extends Controller
         }
         $leaveType = new LeaveType();
         $leaveType->type = $request->type;
-        $leaveType->save();
-        return response()->json(['type' =>'success']);
+        // $leaveType->save();
+        return response()->json(['type' =>'success','message' => 'Leave Type Added Successfully!']);
     }
 
     /**

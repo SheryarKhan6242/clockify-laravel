@@ -47,7 +47,7 @@ class PasswordApiController extends Controller
                 $placeholders = ['[username]','[user_otp]'];
                 $values = [$user->name,$otp];
                 //Dispatch queue job
-                GetEmailTemplates::dispatch($user, $templateName, $placeholders, $values);
+                GetEmailTemplates::dispatch($user->email, $templateName, $placeholders, $values);
     
                 return response()->json(['success' => true,'status' => 200,'message' => 'OTP sent successfully',]);
             } else {

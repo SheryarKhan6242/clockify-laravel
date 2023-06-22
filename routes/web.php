@@ -192,6 +192,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/get-emp-type-leave/{id}', [ AjaxRequestController::class, 'getEmpTypeLeaves' ])->name('get_emp_type_leaves');
         Route::get('/get-emp-work-hours', [ AjaxRequestController::class, 'getEmpWorkHours' ])->name('getEmpWorkHours');
         Route::get('/get-emp-requests', [ AjaxRequestController::class, 'getEmpRequests' ])->name('getEmpRequests');
+        Route::get('/get-leaves-partial', [ AjaxRequestController::class, 'getLeavesPartialView' ])->name('getLeavesPartialView');
+        Route::get('/get-leaves-sidebar-partial', [ AjaxRequestController::class, 'getLeavesSidebarPartialView' ])->name('getLeavesSidebarPartialView');
+        Route::get('/get-filtered-leaves', [ AjaxRequestController::class, 'getFilteredLeaves' ])->name('getFilteredLeaves');
+        Route::get('/get-leave/{id}', [ AjaxRequestController::class, 'getLeaveById' ])->name('getLeaveById');
 
     });
 

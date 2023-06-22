@@ -20,7 +20,6 @@ class AllowanceApiController extends Controller
             'user_id' => 'required|integer',
             'allowance_date' => 'required|date_format:Y-m-d',
             'approver_id' => 'required|integer',
-            'allowance_id' => 'required|integer',
             'description' => 'required|min:8',
         ]);
 
@@ -59,7 +58,8 @@ class AllowanceApiController extends Controller
                 $allowance->user_id = $request->user_id;
                 $allowance->allowance_date = $request->allowance_date;
                 // dd(Carbon::createFromFormat('d-m-Y', $request->allowance_date)->format('Y-m-d'));
-                $allowance->allowance_id = $request->allowance_id;
+                // 1 => Sunday, 2 => General, 3 => Medical
+                $allowance->allowance_id = 1;
                 $allowance->approver_id = $request->approver_id;
                 $allowance->allowance_date = $request->allowance_date;
                 $allowance->description = $request->description;

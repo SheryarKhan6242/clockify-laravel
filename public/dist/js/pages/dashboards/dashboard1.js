@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
 
     // ==============================================================
     // Campaign
@@ -73,7 +73,7 @@ $(function () {
         ['screen and (max-width: 640px)', {
             seriesBarDistance: 5,
             axisX: {
-                labelInterpolationFnc: function (value) {
+                labelInterpolationFnc: function(value) {
                     return value[0];
                 }
             }
@@ -107,7 +107,7 @@ $(function () {
         selectedColor: '#bdc9d7',
         selectedRegions: [],
         showTooltip: true,
-        onRegionClick: function (element, code, region) {
+        onRegionClick: function(element, code, region) {
             var message = 'You clicked "' + region + '" which has the code: ' + code.toUpperCase();
             alert(message);
         }
@@ -133,14 +133,14 @@ $(function () {
             onlyInteger: true,
             scaleMinSpace: 40,
             offset: 20,
-            labelInterpolationFnc: function (value) {
+            labelInterpolationFnc: function(value) {
                 return (value / 1) + 'k';
             }
         },
     });
 
     // Offset x1 a tiny amount so that the straight stroke gets a bounding box
-    chart.on('draw', function (ctx) {
+    chart.on('draw', function(ctx) {
         if (ctx.type === 'area') {
             ctx.element.attr({
                 x1: ctx.x1 + 0.001
@@ -149,7 +149,7 @@ $(function () {
     });
 
     // Create the gradient definition on created event (always after chart re-render)
-    chart.on('created', function (ctx) {
+    chart.on('created', function(ctx) {
         var defs = ctx.svg.elem('defs');
         defs.elem('linearGradient', {
             id: 'gradient',
@@ -166,7 +166,7 @@ $(function () {
         });
     });
 
-    $(window).on('resize', function () {
+    $(window).on('resize', function() {
         chart.update();
     });
 })
