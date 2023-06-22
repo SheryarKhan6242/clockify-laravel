@@ -63,7 +63,7 @@ Dashboard
                                 </ul>
                             </div>                      
                             <div class="col-sm-6">
-                                <div id="campaign-v2" style="height: 134px; width: 100%; max-height: 158px; position: absolute; top: 0; right: 0; left: 135px;" class="mt-2 c3"></div> 
+                                <div id="time-status" style="height: 134px; width: 100%; max-height: 158px; position: absolute; top: 0; right: 0; left: 135px;" class="mt-2 c3"></div> 
                             </div>
                         </div>
                     </div>

@@ -128,8 +128,18 @@
                                 {{ aire()->select(EmployeeType::all()->pluck('name', 'id')->prepend('Select Employee Type', ''),'emp_type')->id('emp_type')->class('form-control pt-1') }}
                             </div>
                             <div class="form-group mb-3">
-                                <label class="form-label" for="designation">Designation</label>
                                 {{ aire()->input('designation')->placeholder('Enter Designation')->id('designation')->class('form-control pt-1') }}
+                            </div>
+                            {{-- <div class="form-group mb-3"> --}}
+                                {{ aire()->checkbox('is_lead', 'Is the employee lead ?')->class('form-check-input')->id('is_lead'); }}
+                            {{-- </div> --}}
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="reporting_to">Reporting To</label>
+                                {{-- {{ aire()->select(Employee::all()->pluck('name', 'id')->prepend('Select Employee Type', ''),'emp_type')->id('emp_type')->class('form-control pt-1') }} --}}
+                                {{ aire()->select(
+                                    Employee::whereHas('user', function ($query) {
+                                        $query->where('status', true)->orderBy('username');
+                                    })->get()->pluck('full_name', 'id')->prepend('Select Lead', ''),'reporting_to',)->id('reporting_to')->class('form-control pt-1') }}
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="shift">Shift</label>
@@ -194,7 +204,7 @@
                             </ul>
                         </div>
                         <div class="col-sm-6">
-                            <div id="campaign-v2" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
+                            <div id="time-status" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
                         </div>
                     </div>
                 </div>
@@ -326,6 +336,10 @@
     width: 32px;
     height: 32px;
     display: none;
+  }
+
+  .c3-shape .c3-shape .c3-arc .c3-arc-Remaining {
+    fill: #fff !important;
   }
     
 </style>

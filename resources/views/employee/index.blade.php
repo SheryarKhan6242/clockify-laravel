@@ -82,19 +82,19 @@
                                 <div class="card-heading">Annual Leaves</div>
                                 <ul class="list-style-none mt-4">
                                     <li class="d-flex align-items-center">
-                                        <i class="fas fa-circle text-cyan font-10 me-2"></i>
+                                        <i class="fas fa-circle font-10 me-2" style="color: #27C278"></i>
                                         <span class="text-muted">Availed:</span>
                                         <span class="text-light ms-2 font-weight-medium avail-annual">{{ isset($availableLeaves) ? $availableLeaves['availed_annual'] : (0) }}</span>
                                     </li>
                                     <li class="mt-2 d-flex align-items-center">
-                                        <i class="fas fa-circle text-danger font-10 me-2"></i>
+                                        <i class="fas fa-circle font-10 me-2" style="color: #274436"></i>
                                         <span class="text-muted">Remaining</span>
                                         <span class="text-light ms-2 font-weight-medium rem-annual">{{ isset($availableLeaves) ? $availableLeaves['remaining_annual'] : (0) }}</span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-sm-6">
-                                <div id="campaign-v2" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
+                                <div id="time-status" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
                             </div>
                         </div>
                     </div>
@@ -107,12 +107,12 @@
                                 <div class="card-heading">Sick Leaves</div>
                                 <ul class="list-style-none mt-4">
                                     <li class="d-flex align-items-center">
-                                        <i class="fas fa-circle text-cyan font-10 me-2"></i>
+                                        <i class="fas fa-circle font-10 me-2" style="color: #8854F5"></i>
                                         <span class="text-muted">Availed:</span>
                                         <span class="text-light ms-2 font-weight-medium avail-sick">{{ isset($availableLeaves) ? $availableLeaves['availed_sick'] : (0) }}</span>
                                     </li>
                                     <li class="mt-2 d-flex align-items-center">
-                                        <i class="fas fa-circle text-danger font-10 me-2"></i>
+                                        <i class="fas fa-circle font-10 me-2" style="color: #8767CC26"></i>
                                         <span class="text-muted">Remaining</span>
                                         <span class="text-light ms-2 font-weight-medium rem-sick">{{ isset($availableLeaves) ? $availableLeaves['remaining_sick'] : (0) }}</span>
                                     </li>
@@ -135,12 +135,12 @@
                         </div>
                         <ul class="list-style-none mt-4">
                             <li class="d-flex align-items-center">
-                                <i class="fas fa-circle text-cyan font-10 me-2"></i>
+                                <i class="fas fa-circle font-10 me-2" style="color: #8854F5;"></i>
                                 <span class="text-muted">Availed:</span>
                                 <span class="text-light ms-2 font-weight-medium">(0)</span>
                             </li>
                             <li class="mt-2 d-flex align-items-center">
-                                <i class="fas fa-circle text-danger font-10 me-2"></i>
+                                <i class="fas fa-circle font-10 me-2" style="color: #8767CC26"></i>
                                 <span class="text-muted">Remaining</span>
                                 <span class="text-light ms-2 font-weight-medium">(5)</span>
                             </li>

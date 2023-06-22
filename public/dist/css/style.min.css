@@ -6555,7 +6555,8 @@ sup {
 
 a {
     color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
-    text-decoration: underline
+    /* text-decoration: underline */
+    text-decoration: none
 }
 
 a:hover {
@@ -9219,7 +9220,7 @@ textarea.form-control-lg {
 }
 
 .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-    margin-left: calc($input-border-width * -1);
+    margin-left: calc(input-border-width * -1);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0
 }
@@ -22921,8 +22922,16 @@ strong {
     fill: #b8c3d5
 }
 
-#campaign-v2 .c3-chart-arc path {
-    stroke-width: 4px
+#time-status .c3-chart-arc path {
+    stroke-width: 0px
+}
+
+#sick-chart .c3-chart-arc path {
+    stroke-width: 0px
+}
+
+#medical-chart .c3-chart-arc path {
+    stroke-width: 0px
 }
 
 #visitbylocate .jvectormap-zoomin,

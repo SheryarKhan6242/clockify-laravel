@@ -25,7 +25,7 @@
             <h2 class="page-title text-truncate text-light font-weight-medium mb-1">View Details</h2>
         </div>
         <div class="col-5 text-end">
-            <button class="btn" style="width: 186px; height: 60px; margin-right: 160px; border: 1px solid #27B9C2; border-radius: 12px; color: #ffffff;">Add Employee     +</button>
+            <a class="btn pt-3" href="{{ route('emp.create') }}" style="width: 186px; height: 60px; margin-right: 160px; border: 1px solid #27B9C2; border-radius: 12px; color: #ffffff;">Add Employee     +</a>
         </div>        
     </div>
 </div>
@@ -85,23 +85,23 @@
                         <div class="row flex-column pt-3">
                             <div class="form-group mb-3">
                                 <label class="form-label" for="salary">Salary</label>
-                                {{ aire()->input('salary')->placeholder('Enter Salary')->id('salary')->class('form-control pt-1')->value(isset($employee) ? $employee->salary : '') }}
+                                {{ aire()->input('salary')->placeholder('Enter Salary')->id('salary')->class('form-control pt-1')->value(isset($employee->salary) ? $employee->salary : '') }}
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="acc_holder">Account Holder name</label>
-                                {{ aire()->input('acc_holder')->placeholder('Enter Account Holder Name')->id('acc_holder')->class('form-control pt-1')->value(isset($employee) ? json_decode($employee->bank_payload)->account_holder : '') }}
+                                {{ aire()->input('acc_holder')->placeholder('Enter Account Holder Name')->id('acc_holder')->class('form-control pt-1')->value(isset($employee->bank_payload) ? json_decode($employee->bank_payload)->account_holder : '') }}
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="acc_no">Account No + Branch Code</label>
-                                {{ aire()->input('acc_no')->placeholder('Enter account')->id('acc_no')->class('form-control pt-1')->value(isset($employee) ? json_decode($employee->bank_payload)->acc_no : '') }}
+                                {{ aire()->input('acc_no')->placeholder('Enter account')->id('acc_no')->class('form-control pt-1')->value(isset($employee->bank_payload) ? json_decode($employee->bank_payload)->acc_no : '') }}
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="branch_location">Branch Location</label>
-                                {{ aire()->input('branch_location')->placeholder('Enter branch location')->id('branch_location')->class('form-control pt-1')->value(isset($employee) ? json_decode($employee->bank_payload)->branch_location : '') }}
+                                {{ aire()->input('branch_location')->placeholder('Enter branch location')->id('branch_location')->class('form-control pt-1')->value(isset($employee->bank_payload) ? json_decode($employee->bank_payload)->branch_location : '') }}
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="branch_name">Branch Name</label>
-                                {{ aire()->input('branch_name')->placeholder('Enter branch name')->id('branch_name')->class('form-control pt-1')->value(isset($employee) ? json_decode($employee->bank_payload)->branch_name : '') }}
+                                {{ aire()->input('branch_name')->placeholder('Enter branch name')->id('branch_name')->class('form-control pt-1')->value(isset($employee->bank_payload) ? json_decode($employee->bank_payload)->branch_name : '') }}
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                             </ul>
                         </div>
                         <div class="col-sm-6">
-                            <div id="campaign-v2" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
+                            <div id="time-status" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
                         </div>
                     </div>
                 </div>

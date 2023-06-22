@@ -1,17 +1,14 @@
 .stats {
     height: 280px;
-
     .ct-series-a .ct-area {
         fill-opacity: 0.2;
         fill: transparent;
     }
-
     .ct-series-a .ct-line,
     .ct-series-a .ct-point {
         stroke: $primary;
         stroke-width: 3px;
     }
-
     .ct-series-a .ct-point {
         stroke-width: 3px;
     }
@@ -21,7 +18,6 @@
 // For Chartist Tooltips
 // Tooltip for the chartist charts
 // **************************************************
-
 .chartist-tooltip {
     position: absolute;
     display: inline-block;
@@ -39,7 +35,6 @@
     -moz-transition: opacity 0.2s linear;
     -o-transition: opacity 0.2s linear;
     transition: opacity 0.2s linear;
-
     &:before {
         content: '';
         position: absolute;
@@ -62,14 +57,13 @@
 // **************************************************
 // For Dashboard Total sales Chart
 // ************************************************** 
-#campaign-v2 {
+#time-status {
     .c3-chart-arc path {
         stroke-width: 4px;
     }
 }
 
 #visitbylocate {
-
     .jvectormap-zoomin,
     .jvectormap-zoomout {
         display: none;
@@ -78,7 +72,6 @@
 
 .chartist-tooltip {
     position: relative;
-
     &.tooltip-show {
         opacity: 1;
     }

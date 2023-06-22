@@ -5,7 +5,7 @@ $(function() {
     // ==============================================================
 
     var chart1 = c3.generate({
-        bindto: '#campaign-v2',
+        bindto: '#time-status',
         data: {
             columns: [
                 ['Direct Sales', 25],
@@ -40,7 +40,7 @@ $(function() {
         }
     });
 
-    d3.select('#campaign-v2 .c3-chart-arcs-title').style('font-family', 'Rubik');
+    d3.select('#time-status .c3-chart-arcs-title').style('font-family', 'Rubik');
 
     // ============================================================== 
     // income
