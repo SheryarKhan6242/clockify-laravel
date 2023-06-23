@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Report;
+use App\Models\City;
 use App\Services\LeaveService;
 use App\Services\WfhService;
 use App\Services\TimeAdjustmentService;
@@ -38,24 +39,45 @@ class DashboardController extends Controller
         ->select('reports.*', 'employees.id as employee_id','employees.first_name as employee_fname','employees.last_name as employee_lname', 'employees.designation as employee_designation')
         ->get();
 
-        //KARACHI ACTIVE EMPLOYEES
-        // 108(PAK ) 46828(HYD) 46821(KHI)
-        $data['khi'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46821)->count();
-        //HYDERABAD ACTIVE EMPLOYEES
-        $data['hyd'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46828)->count();
-        //OTHER CITIES ACTIVE EMPLOYEES
-        // dd(count($data['totalEmployees']));
-        if(count($data['totalEmployees']) > 0)
-        {
-            $data['khiPercentage'] = round(($data['khi'] / count($data['totalEmployees'])) * 100);
-            $data['hydPercentage'] = round(($data['hyd'] / count($data['totalEmployees'])) * 100);
-            $data['other'] = round((100 - $data['khiPercentage'] - $data['hydPercentage']));
-        } else {
-            $data['khiPercentage'] = 0;
-            $data['hydPercentage'] = 0;
-            $data['other'] = 0;
-        }
+        // //KARACHI ACTIVE EMPLOYEES
+        // // 108(PAK ) 46821(HYD) 46828(KHI)
+        // $data['khi'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46828)->count();
+        // //HYDERABAD ACTIVE EMPLOYEES
+        // $data['hyd'] = Employee::where('status',1)->where('country_id',108)->where('city_id',46821)->count();
+        // //OTHER CITIES ACTIVE EMPLOYEES
+        // // dd(count($data['totalEmployees']));
+        // if(count($data['totalEmployees']) > 0)
+        // {
+        //     $data['khiPercentage'] = round(($data['khi'] / count($data['totalEmployees'])) * 100);
+        //     $data['hydPercentage'] = round(($data['hyd'] / count($data['totalEmployees'])) * 100);
+        //     $data['other'] = round((100 - $data['khiPercentage'] - $data['hydPercentage']));
+        // } else {
+        //     $data['khiPercentage'] = 0;
+        //     $data['hydPercentage'] = 0;
+        //     $data['other'] = 0;
+        // }
 
+        //Fetch max 3 cities employees live in and their count
+        $cityPercentage = [];
+        $data['cities'] = Employee::select('city_id')
+            ->selectRaw('COUNT(*) as city_count')
+            ->where('status', 1)
+            ->groupBy('city_id')
+            ->orderByDesc('city_count')
+            ->limit(3)
+            ->with('city')
+            ->get();
+        
+        //Calculate %ages of cities
+        foreach ($data['cities'] as $city) {
+            $cityName = $city->city->name;
+            $cityId = $city->city_id;
+            $cityCount = $city->city_count;
+            $cityPercentage[$cityId] = round(($cityCount / count($data['totalEmployees'])) * 100);
+            // Perform further processing or display the city ID and employee count.
+        }
+        $data['cityPercentage'] = $cityPercentage;
+        
         //EMPLOYEE REQUESTS
         //PENDING LEAVES
         $leaveService = new LeaveService();

@@ -47,25 +47,6 @@ Dashboard
                 <div class="card">
                     <div class="card-body">
                         <div class="card-heading">Time Status</div>
-                        {{-- <div class="row">
-                            <div class="col-sm-6" style="position: absolute; bottom: 20px; left: 0;">
-                                <ul class="list-style-none mb-0">
-                                  <li>
-                                    <i class="fas fa-circle text-cyan font-10 me-2"></i>
-                                    <span class="text-muted">Present:</span>
-                                    <span class="text-light float-end font-weight-medium">{{ isset($totalPresents) && count($totalPresents) > 0 ? count($totalPresents) : 0 }}</span>
-                                  </li>
-                                  <li class="mt-1">
-                                    <i class="fas fa-circle text-danger font-10 me-2"></i>
-                                    <span class="text-muted">Absent:</span>
-                                    <span class="text-light float-end font-weight-medium">{{ isset($totalAbsents) && $totalAbsents > 0 ? $totalAbsents : 0 }}</span>
-                                  </li>
-                                </ul>
-                            </div>                      
-                            <div class="col-sm-6">
-                                <div id="time-status" style="height: 134px; width: 100%; max-height: 158px; position: absolute; top: 0; right: 0; left: 135px;" class="mt-2 c3"></div> 
-                            </div>
-                        </div> --}}
                         <div class="row">
                             <div class="col-sm-6" style="position: relative;">
                                 <ul class="list-style-none mt-4" style="position: absolute; bottom: 0; left: 0;">
@@ -89,55 +70,43 @@ Dashboard
                     </div>
                 </div>
             </div>
-            <div class="col 6">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-heading mb-4">Location</div>
-                        <div class="row mb-3 align-items-center mt-1 mt-5">
-                            <div class="col-5 text-end">
-                                <span class="text-muted font-14">Karachi</span>
-                            </div>
-                            <div class="col-4">
-                                <div class="progress" style="height: 16px; border-radius: 1000px;">
-                                    <div class="progress-bar bg-cyan" role="progressbar" style="width: {{ $khiPercentage }}%"
-                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        @php
+                            $colors = ['bg-cyan', 'bg-green', 'bg-blue', 'bg-orange', 'bg-purple'];
+                            $colorIndex = 0;
+                        @endphp
+                        @foreach ($cities as $city)
+                            <div class="row mb-3 align-items-center">
+                                <div class="col-5">
+                                    <div class="text-start">
+                                        <span class="text-muted font-14">{{ $city->city->name }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="progress" style="height: 16px; border-radius: 1000px;">
+                                        <div class="progress-bar {{ $colors[$colorIndex] }}" role="progressbar" style="width: {{ $cityPercentage[$city->city_id] }}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="text-start">
+                                        <span class="mb-0 font-14 text-light font-weight-medium">{{ $cityPercentage[$city->city_id] }}%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-3 text-end">
-                                <span class="mb-0 font-14 text-light font-weight-medium">{{ $khiPercentage }}%</span>
-                            </div>
-                        </div>
-                        <div class="row mb-3 align-items-center">
-                            <div class="col-5 text-end">
-                                <span class="text-muted font-14">Hyderabad</span>
-                            </div>
-                            <div class="col-4">
-                                <div class="progress" style="height: 16px; border-radius: 1000px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $hydPercentage }}%"
-                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="col-3 text-end">
-                                <span class="mb-0 font-14 text-light font-weight-medium">{{ $hydPercentage }}%</span>
-                            </div>
-                        </div>
-                        <div class="row align-items-center">
-                            <div class="col-5 text-end">
-                                <span class="text-muted font-14">Others</span>
-                            </div>
-                            <div class="col-4">
-                                <div class="progress" style="height: 16px; border-radius: 1000px;">
-                                    <div class="progress-bar" role="progressbar" style="width: {{ $other }}%; background-color: yellow;"
-                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="col-3 text-end">
-                                <span class="mb-0 font-14 text-light font-weight-medium">{{ $other }}%</span>
-                            </div>
-                        </div>
+                            @php
+                                $colorIndex++;
+                                if ($colorIndex >= count($colors)) {
+                                    $colorIndex = 0;
+                                }
+                            @endphp
+                        @endforeach
                     </div>
                 </div>
             </div>
+                       
         </div>
         <div class="row ms-0 pe-3">
             <div class="card">
