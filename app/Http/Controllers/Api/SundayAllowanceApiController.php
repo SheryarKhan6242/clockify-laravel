@@ -37,7 +37,7 @@ class SundayAllowanceApiController extends Controller
             return response()->json(['success'=>false,'errors'=>$errors]);
         }
 
-        $allowanceType = AllowanceType::find(4);
+        $allowanceType = AllowanceType::find(1);
         //If Allowance Type doesn't have that type in DB
         if(!$allowanceType)
             return response()->json(['success' => false, 'message' => 'Allowance type does not exist!']);
@@ -49,7 +49,7 @@ class SundayAllowanceApiController extends Controller
             $allowance->description = $request->description;
             // dd(Carbon::createFromFormat('d-m-Y', $request->allowance_date)->format('Y-m-d'));
             // 1 => Sunday, 2 => General, 3 => Medical
-            $allowance->allowance_id = 4;
+            $allowance->allowance_id = 1;
             $allowance->status = 'Pending';
             
             //Convert values to array

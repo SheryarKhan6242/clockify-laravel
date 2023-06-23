@@ -16,7 +16,7 @@ class LeaveService
         {
             //Fetch Weekly
             $endDate = Carbon::now()->format('Y-m-d');      
-            $startDate = Carbon::now()->subWeek()->format('Y-m-d');
+            $startDate = Carbon::now()->startOfWeek(Carbon::MONDAY)->subDay()->format('Y-m-d');           
            
             // Fetch Monthly
             if ($filter == '2')

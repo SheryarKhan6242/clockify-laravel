@@ -6,25 +6,29 @@ use Carbon\Carbon;
 
 class TimeAdjustmentService
 {
-    public function timeAdjustmentRequests($type = 'Pending', $filter = '1')
+    public function timeAdjustmentRequests($status = 'Pending',$filter = '1',$startDate = null, $endDate = null)
     {
-
-        $endDate = Carbon::now()->format('Y-m-d');      
-        $startDate = Carbon::now()->subWeek()->format('Y-m-d');   
-        // Fetch for month
-        if ($filter == '2')
-            $startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
-        //Type of Requests. Approved,Pending, Rejected
-        if($type)
+        // If Not filtered by date(fetch by weekly or monthly)
+        if($startDate == null && $endDate == null)
         {
-            $requests = TimeAdjustment::where('status',$type)
+            //Fetch Weekly
+            $endDate = Carbon::now()->format('Y-m-d');      
+            // $startDate = Carbon::now()->subWeek()->format('Y-m-d');
+            $startDate = Carbon::now()->startOfWeek(Carbon::MONDAY)->subDay()->format('Y-m-d');           
+            // Fetch Monthly
+            if ($filter == '2')
+                $startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
+        }
+        //Get Request based on Status(Approved,Pending, Rejected)
+        if($status && $status != null)
+        {
+            $requests = TimeAdjustment::where('status',$status)
                 ->where('adj_date','>=' ,$startDate)
                 ->where('adj_date','<=',$endDate)
                 ->get();
         } else 
         {
-            $requests = TimeAdjustment::where('status','Pending')
-                ->where('adj_date','>=' ,$startDate)
+            $requests = TimeAdjustment::where('adj_date','>=' ,$startDate)
                 ->where('adj_date','<=',$endDate)
                 ->get();
         }

@@ -64,12 +64,12 @@ class DashboardController extends Controller
 
         //PENDING WFH
         $wfhService = new WfhService();
-        $data['wfhRequest'] = $wfhService->wfhRequests('Pending',1);
+        $data['wfhRequest'] = $wfhService->wfhRequests('Pending',1,null,null);
         // dd($data['sickLeavesRequest']->count());
 
         //PENDING TIMEADJUSTMENT
         $timeAdjService = new TimeAdjustmentService();
-        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests('Pending',1);
+        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests('Pending',1,null,null);
         // dd($data['sickLeavesRequest']->count());
         return view('dashboard',$data);
     }

@@ -21161,12 +21161,12 @@ fieldset:disabled .btn {
 .page-wrapper>.container-xl,
 .page-wrapper>.container-xxl {
     padding: 35px;
-    max-width: 1300px;
+    max-width: 1650px;
     min-height: calc(100vh - 210px)
 }
 
 .page-wrapper>.page-breadcrumb {
-    max-width: 1300px;
+    max-width: 1650px;
     margin: 0 auto
 }
 
