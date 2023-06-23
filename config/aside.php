@@ -1,120 +1,120 @@
 <?php
 
 return [
-    // [
-    //     'route'      => '#',
-    //     'label'      => 'Employee',
-    //     'name'       => 'employee',
-    //     'icon'       => 'feather-icon',
-    //     'icon-image' => 'employee',
-    //     'sub-menu'   => [
-    //         [
-    //             'route'      => 'emp.index',
-    //             'label'      => 'Manage Employees',
-    //             'name'       => 'employees',
-    //             'icon'       => 'feather-icon',
-    //             // 'icon-image' => 'employee',
-    //         ],
-    //         [
-    //             'route'      => 'emp.type.index',
-    //             'label'      => 'Employee Type',
-    //             'name'       => 'emp-type',
-    //             'icon'       => 'feather-icon',
-    //             // 'icon-image' => 'employee',
-    //         ],
-    //         [
-    //             'route'      => 'workType.index',
-    //             'label'      => 'Work Type',
-    //             'name'       => 'Work Type',
-    //             'icon'       => 'feather-icon',
-    //             // 'icon-image' => 'employee',
-    //         ],
-    //     ]
-    // ],
-    // [
-    //     'route'      => '#',
-    //     'label'      => 'Request',
-    //     'name'       => 'request',
-    //     'icon'       => 'feather-icon',
-    //     'icon-image' => 'request',
-    //     'sub-menu'   => [
-    //         //Leave Requests
-    //         [
-    //             'route'      => 'leave.index',
-    //             'label'      => 'Leaves',
-    //             'name'       => 'leaves',
-    //             'icon'       => 'feather-icon',
-    //             // 'icon-image' => 'employee',
-    //             // 'sub-menu'   => [
-    //             //     [
-    //             //         'route'      => 'leave.index',
-    //             //         'label'      => 'Manage Leaves',
-    //             //         'name'       => 'manage-leaves',
-    //             //         'icon'       => 'feather-icon',
-    //             //         'icon-image' => 'employee',
-    //             //     ],
-    //             //     [
-    //             //         'route'      => 'leaveType.index',
-    //             //         'label'      => 'Leave Types',
-    //             //         'name'       => 'leave-types',
-    //             //         'icon'       => 'feather-icon',
-    //             //         'icon-image' => 'employee',
-    //             //     ],
-    //             // ],
-    //         ],
-    //         //Time Adjustment Requests
-    //         [
-    //             'route'     => '#',
-    //             'label'     => 'Time Adjustments',
-    //             'name'      => 'Time Adjustments',
-    //             'icon'      => 'feather-icon',
-    //             // 'icon-image' => 'employee',
-    //         ],
-    //         //Wfh Requests
-    //         [
-    //             'route'     => 'wfh.index',
-    //             'label'     => 'Work From Home',
-    //             'name'      => 'Work From Home',
-    //             'icon'      => 'feather-icon',
-    //             // 'icon-image' => 'employee',
-    //         ]
+    [
+        'route'      => '#',
+        'label'      => 'Employee',
+        'name'       => 'employee',
+        'icon'       => 'feather-icon',
+        'icon-image' => 'employee',
+        'sub-menu'   => [
+            [
+                'route'      => 'emp.index',
+                'label'      => 'Manage Employees',
+                'name'       => 'employees',
+                'icon'       => 'feather-icon',
+                // 'icon-image' => 'employee',
+            ],
+            [
+                'route'      => 'emp.type.index',
+                'label'      => 'Employee Type',
+                'name'       => 'emp-type',
+                'icon'       => 'feather-icon',
+                // 'icon-image' => 'employee',
+            ],
+            [
+                'route'      => 'workType.index',
+                'label'      => 'Work Type',
+                'name'       => 'Work Type',
+                'icon'       => 'feather-icon',
+                // 'icon-image' => 'employee',
+            ],
+        ]
+    ],
+    [
+        'route'      => '#',
+        'label'      => 'Request',
+        'name'       => 'request',
+        'icon'       => 'feather-icon',
+        'icon-image' => 'request',
+        'sub-menu'   => [
+            //Leave Requests
+            [
+                'route'      => 'leave.index',
+                'label'      => 'Leaves',
+                'name'       => 'leaves',
+                'icon'       => 'feather-icon',
+                // 'icon-image' => 'employee',
+                // 'sub-menu'   => [
+                //     [
+                //         'route'      => 'leave.index',
+                //         'label'      => 'Manage Leaves',
+                //         'name'       => 'manage-leaves',
+                //         'icon'       => 'feather-icon',
+                //         'icon-image' => 'employee',
+                //     ],
+                //     [
+                //         'route'      => 'leaveType.index',
+                //         'label'      => 'Leave Types',
+                //         'name'       => 'leave-types',
+                //         'icon'       => 'feather-icon',
+                //         'icon-image' => 'employee',
+                //     ],
+                // ],
+            ],
+            //Time Adjustment Requests
+            [
+                'route'     => '#',
+                'label'     => 'Time Adjustments',
+                'name'      => 'Time Adjustments',
+                'icon'      => 'feather-icon',
+                // 'icon-image' => 'employee',
+            ],
+            //Wfh Requests
+            [
+                'route'     => 'wfh.index',
+                'label'     => 'Work From Home',
+                'name'      => 'Work From Home',
+                'icon'      => 'feather-icon',
+                // 'icon-image' => 'employee',
+            ]
             
-    //     ],
-    // ],
+        ],
+    ],
 
-    // [
-    //     'route'      => '#',
-    //     'label'      => 'Reports',
-    //     'name'       => 'reports',
-    //     'icon'       => 'feather-icon',
-    //     'icon-image' => 'report',
-    //     'sub-menu'   => [
-    //         //Employee Reports
-    //         [
-    //             'route'      => 'report.index',
-    //             'label'      => 'Employee Reports',
-    //             'name'       => 'employee-reports',
-    //             'icon'       => 'feather-icon',
-    //             // 'icon-image' => 'report',
-    //         ],
-    //         //Payroll Reports
-    //         [
-    //             'route'      => '#',
-    //             'label'      => 'Payroll Reports',
-    //             'name'       => 'payroll-reports',
-    //             'icon'       => 'feather-icon',
-    //             // 'icon-image' => 'report',
-    //         ]
-    //     ],
-    // ],
-    // //Allowances
-    // [
-    //     'route'     => '#',
-    //     'label'     => 'Allowance',
-    //     'name'      => 'allowances',
-    //     // 'icon'      => 'feather-icon',
-    //     'icon-image' => 'allowance',
-    // ],
+    [
+        'route'      => '#',
+        'label'      => 'Reports',
+        'name'       => 'reports',
+        'icon'       => 'feather-icon',
+        'icon-image' => 'report',
+        'sub-menu'   => [
+            //Employee Reports
+            [
+                'route'      => 'report.index',
+                'label'      => 'Employee Reports',
+                'name'       => 'employee-reports',
+                'icon'       => 'feather-icon',
+                // 'icon-image' => 'report',
+            ],
+            //Payroll Reports
+            [
+                'route'      => '#',
+                'label'      => 'Payroll Reports',
+                'name'       => 'payroll-reports',
+                'icon'       => 'feather-icon',
+                // 'icon-image' => 'report',
+            ]
+        ],
+    ],
+    //Allowances
+    [
+        'route'     => '#',
+        'label'     => 'Allowance',
+        'name'      => 'allowances',
+        // 'icon'      => 'feather-icon',
+        'icon-image' => 'allowance',
+    ],
     // [
     //     'route'      => 'department.index',
     //     'label'      => 'Departments',
