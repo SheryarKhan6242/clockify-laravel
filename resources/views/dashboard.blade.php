@@ -363,7 +363,7 @@ select.form-select-sm option {
                 $('.wfh-count').text(response.data.wfhRequest.length) 
                 $('.annual-count').text(response.data.annualLeavesRequest.length) 
                 $('.sick-count').text(response.data.sickLeavesRequest.length) 
-                $('.time-adj-count').text(response.data.wfhRequest.length) 
+                $('.time-adj-count').text(response.data.timeAdjRequest.length) 
             },
             error: function(error) {
                 console.log(error);

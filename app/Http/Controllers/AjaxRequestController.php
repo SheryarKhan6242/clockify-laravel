@@ -123,12 +123,13 @@ class AjaxRequestController extends Controller
         //PENDING WFH
         $wfhService = new WfhService();
         // dd($filter);
-        $data['wfhRequest'] = $wfhService->wfhRequests('Pending',$filter);
+        $data['wfhRequest'] = $wfhService->wfhRequests('Pending',$filter,null,null);
+
         // dd($data['sickLeavesRequest']->count());
 
         //PENDING TIMEADJUSTMENT
         $timeAdjService = new TimeAdjustmentService();
-        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests('Pending',$filter);
+        $data['timeAdjRequest'] = $timeAdjService->timeAdjustmentRequests('Pending',$filter,null,null);
 
         return response(['success' => true, 'data' => $data]);
     }
