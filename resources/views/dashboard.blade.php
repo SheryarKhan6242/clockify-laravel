@@ -47,7 +47,7 @@ Dashboard
                 <div class="card">
                     <div class="card-body">
                         <div class="card-heading">Time Status</div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-sm-6" style="position: absolute; bottom: 20px; left: 0;">
                                 <ul class="list-style-none mb-0">
                                   <li>
@@ -65,7 +65,27 @@ Dashboard
                             <div class="col-sm-6">
                                 <div id="time-status" style="height: 134px; width: 100%; max-height: 158px; position: absolute; top: 0; right: 0; left: 135px;" class="mt-2 c3"></div> 
                             </div>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-sm-6" style="position: relative;">
+                                <ul class="list-style-none mt-4" style="position: absolute; bottom: 0; left: 0;">
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-circle text-cyan font-10 me-2"></i>
+                                        <span class="text-muted">Present: </span>
+                                        <span class="text-light float-end font-weight-medium ps-1">({{ isset($totalPresents) && count($totalPresents) > 0 ? count($totalPresents) : '0' }})</span>
+                                    </li>
+                                    <li class="mt-2 d-flex align-items-center">
+                                        <i class="fas fa-circle text-danger font-10 me-2"></i>
+                                        <span class="text-muted">Absent: </span>
+                                        <span class="text-light float-end font-weight-medium ps-1">({{ isset($totalAbsents) && $totalAbsents > 0 ? $totalAbsents : '0' }})</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="time-status" style="height: 134px; width: 100%; max-height: 158px;" class="mt-2 c3"></div>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
