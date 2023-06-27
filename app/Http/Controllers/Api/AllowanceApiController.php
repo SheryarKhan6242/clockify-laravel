@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
 use App\Models\AllowanceType;
 use App\Models\Allowance;
+use App\Models\User;
 use Carbon\Carbon;
 
 class AllowanceApiController extends Controller
@@ -71,26 +72,40 @@ class AllowanceApiController extends Controller
         }
     }
 
-    public function getUserAllowance($userId = null, $checkinId = null)
+    public function getUserAllowance($id = null)
     {
-        $allowance = Allowance::where('user_id',$userId)->where('allowance_id',$checkinId)->get();
-        if($allowance->count() > 0){
-            $approvedAllowance = 0;
-            foreach($allowance as $value)
-            {
-                if($value->status == "Approved" || $value->status == "approved")
-                {
-                    $approvedAllowance+=1;
-                }
-            }
+        if($id){
+            $user = User::find($id);
+            if(!$user)
+                return response()->json(['success'=>false,'message'=>'User does not exist.']);
+        }
+
+        $Allowance = Allowance::where('user_id',$id)->get();
+
+        $sundayAllowance = Allowance::where('user_id',$id)->where('allowance_id',1)->get();
+        $generalAllowance = Allowance::where('user_id',$id)->where('allowance_id',2)->get();
+        $medicalAllowance = Allowance::where('user_id',$id)->where('allowance_id',5)->get();
+        $response = [
+            'sunday' => $sundayAllowance,
+            'general' => $generalAllowance,
+            'medical' => $medicalAllowance
+        ];
+
+        return response()->json(['success' => true,'data' => $response]);
+            // $approvedAllowance = 0;
+            // foreach($allowance as $value)
+            // {
+            //     if($value->status == "Approved" || $value->status == "approved")
+            //     {
+            //         $approvedAllowance+=1;
+            //     }
+            // }
             
-            $totalAllowanceSubmitted = $allowance->count();
-            return response()->json(['success' => true,
-                'allowance' => $allowance,
-                'total_submitted_allowance' => $totalAllowanceSubmitted,
-                'approved_allowance' => $approvedAllowance
-                ]);
-        }        
-        return response()->json(['success'=>false,'message'=>'No Allowance request submitted.']);
+            // $totalAllowanceSubmitted = $allowance->count();
+            // return response()->json(['success' => true,
+            //     'allowance' => $allowance,
+            //     'total_submitted_allowance' => $totalAllowanceSubmitted,
+            //     'approved_allowance' => $approvedAllowance
+            //     ]);       
     }
 }
