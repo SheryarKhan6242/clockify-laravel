@@ -18,7 +18,7 @@ In TimeSphere: An attendance management application that provides functionalitie
 - **Approving/Rejecting leaves**
 - **Setting Up Allowances**
 - **Approving/Rejecting Allowances**
-- **Approving/Rejecting Time Adjustments **
+- **Approving/Rejecting Time Adjustments**
 - **Email Templates for Onboarding, Leave Requests, Acceptane,Rejection, Allowances and Time Adjustments**
 - **Employee Reports**
 - **Payroll Reports**
